@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans";
+    user-select: none;
+    color: inherit;
+    transition: ease all 200ms;
+}
+
+*:focus {
+    outline: 0;
+}
+
+body {
+    position: relative;
+}
+
+a {
+    text-decoration: none;
+}
+
+input,
+button {
+    display: inline-block;
+    padding: 5px 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    font-family: Roboto;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+/* Alineación */
+
+.aIzq {
+    text-align: left;
+}
+
+.aCentro {
+    text-align: center;
+}
+
+.aDer {
+    text-align: right;
+}
+
+.inline {
+    display: inline-block;
+}
+
+/* espaciado */
+
+.marginL20 {
+    margin-left: 20px;
+}
+
+.marginTop20 {
+    margin-top: 20px;
+}
+
+.marginB20 {
+    margin-bottom: 20px;
+}
+
+.paddLR25 {
+    padding: 0px 25px;
+}
+
+.padddB20 {
+    padding-bottom: 20px;
+}
+
+.miniSombra {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Otros */
+
+.pointer {
+    cursor: pointer;
+}
+
+.bgCelestillo{
+    background: #0096b0;
+    color: #fff;
+}
+
+.f20{
+    font-size: 20px
+}
+.f22{
+    font-size: 22px
+}
+
+/* alerts, prompt y confirm personalizados */
+
+.alertContainer {
+    position: absolute;
+    z-index: 0;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 10px;
+    color: #fff;
+    transition: ease all 1s;
+    max-width: 50%;
+    z-index: 10;
+}
+
+.alertContainer .alert {
+    position: relative;
+    margin-bottom: 15px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.alert span {
+    position: absolute;
+    top: -12px;
+    right: -5px;
+    font-size: 14px;
+    padding: 1px 4px;
+    background: #09b047;
+    color: #fff;
+    border: 1px solid #fff;
+    font-weight: bolder;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.alert div {
+    display: inline-block;
+    padding: 8px;
+    background: #09B047;
+    border-radius: 8px;
+    position: relative;
+    text-align: left;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes animacionOcultar {
+    0% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        margin-bottom: 0px;
+    }
+}
+
+.ocultarAlert {
+    animation: animacionOcultar 1s forwards;
+}
+
+/* personalizacion del scroll bar */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-button {
+    background: #ccc;
+    height: 0px;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: black;
+}
+
+/* fin personalizacion del scroll bar */

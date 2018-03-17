@@ -1,0 +1,29 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    height: 100vh;
+}
+
+.login {
+    background: #fff;
+    border-radius: 10px;
+}
+
+.login .title {
+    background: #09b047;
+    color: #fff;
+    padding: 10px;
+}
+
+.login form {
+    padding: 10px 20px;
+}
+
+button {
+    background: #0099b4;
+    margin: 5px;
+    color: #fff;
+}
+

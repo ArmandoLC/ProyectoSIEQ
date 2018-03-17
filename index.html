@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="app" ng-controller="mainController">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administrador</title>
+    <link rel="stylesheet" href="css/globales.css">
+    <link rel="stylesheet" href="css/menuAdmin.css">
+    <link rel="stylesheet" href="css/panelAdmin.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div>
+        <input id="chkMenu" type="checkbox">
+        <div class="menu"><span>Panel de Administración</span>
+            <label for="chkMenu"></label>
+            <div> <a href="#!adminSitios">Sitios turísticos</a> <a href="#!adminFlotillas">Flotillas</a> <a href="#!adminGiras">Excursiones</a> <a href="#!adminReservaciones">Reservaciones</a> </div>
+        </div>
+        <div ng-include="templateUrl"></div>
+        <div class="main">
+            <div ng-view class="mc aCentro"> </div>
+            <!-- alerts, prompt y confirm personalizados -->
+            <div class="alertContainer">
+                <div class="alert" ng-class="a.classAlert" ng-repeat="a in listaAlerts">
+                    <div><span ng-click="a.ocultarAlerta()">X</span><i class="fa fa-info-circle" aria-hidden="true"></i> {{a.texto}} </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-cookies.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/appConfigRoute.js"></script>
+</body>
+
+</html>

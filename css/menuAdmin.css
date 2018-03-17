@@ -1,0 +1,90 @@
+/* todo lo relacionado con el menú */
+
+.menu * {
+    font-family: Roboto;
+}
+
+.menu {
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    color: #fff;
+    transition: ease all 250ms;
+    z-index: 1;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+}
+
+.menu > span {
+    background: rgba(0, 0, 0, 0.4);
+    display: block;
+    padding: 20px 15px;
+    font-size: 24px;
+}
+
+.menu label {
+    color: #fff;
+}
+
+.menu label:before {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    position: absolute;
+    top: 15px;
+    font-size: 20px;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-family: fontawesome;
+    transition: ease all 250ms;
+    background: #fff;
+    color: #000;
+}
+
+.menu a {
+    display: block;
+    background: rgba(228, 20, 20, 0.93);
+    color: #fff;
+    font-size: 20px;
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.menu a:nth-child(1) {
+    border-top: none;
+}
+
+.menu a:hover {
+    background: rgba(253, 38, 38, 1);
+    border-left: 2px solid;
+}
+
+
+#chkMenu {
+    display: none;
+}
+
+#chkMenu:checked ~ .menu {
+    transform: translateX(-100%);
+}
+
+#chkMenu:not(checked) ~ .main {
+    margin-left: 280px;
+}
+
+#chkMenu:checked ~ .main {
+    margin-left: 0px;
+}
+
+#chkMenu:checked ~ .menu label:before {
+    content: "\f0c9";
+    right: -50px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+
+#chkMenu:not(checked) ~ .menu label:before {
+    content: "\f070";
+    right: 15px;
+}

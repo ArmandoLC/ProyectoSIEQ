@@ -1,0 +1,59 @@
+.mc {
+    background: #fbfbfb;
+    min-height: 100vh;
+}
+
+.mc h1 {
+    background: #09b047;
+    color: #fff;
+    padding: 10px 30px;
+}
+.tbNuevoVehi{
+    margin: auto;
+}
+.tbNuevoVehi tr th{
+    padding: 15px;
+}
+
+.tbLista{
+    border-collapse: collapse;
+    margin: auto;
+    width: 100%
+}
+
+.tbLista i{
+    padding: 5px;
+    cursor: pointer
+}
+
+.tbLista th, td {
+    padding: 8px;
+}
+.tbLista tr:nth-child(even){background-color: #f2f2f2}
+.tbLista th {
+    background-color: #106d5f;
+    color: white;
+}
+
+.button {
+
+  padding: 5px 5px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #747a90;
+
+  border-radius: 4px;
+  box-shadow: 0 2px #999;
+}
+
+.button:hover {background-color: #696e81}
+
+.button:active {
+  background-color: #2e3d76;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}

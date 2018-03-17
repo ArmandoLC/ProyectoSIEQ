@@ -1,0 +1,215 @@
+iniciarSesion   ret.. user if OK,  [] si no se logueo correctamente
+    pUser
+    pPass
+    
+insertarAdministrador   ret.. 1 if inserted,  OK if not
+    pUser
+    pPass
+    
+borrarAdministrador   ret.. 1
+    pUser    
+
+insertarFlotilla   ret.. 1 if inserted,  OK if not
+    pPlaca
+    pCapacidad
+
+borrarFlotilla   ret.. 1 if deleted,  OK if not (puede estar de gira)
+    pIdFlotilla
+    
+modificarFlotilla   ret.. 1 if updated, OK if not (puede estar de gira)
+    pIdFlotilla
+    pPlaca
+    pCapacidad
+    pEstado
+    
+getFlotilla     ret.. idFlotilla, placa, capacidad,estado
+    nada
+    
+insertarServicioFlotilla   ret.. 1 if inserted, OK if not (ya estaba)
+    pNombre
+
+borrarServicioFlotilla      ret 1
+    pIdServicio
+
+getServiciosFlotilla     ret.. id, nombre
+    nada
+
+insertarServicioXFlotilla   ret.. 1 if inserted, OK if not (ya estaba)
+    pFk_IdFlotilla
+    pFk_ServicioFlotilla
+    
+borrarServicioXFlotilla   ret.. 1
+    pFk_IdFlotilla
+    pFk_ServicioFlotilla
+
+getServiciosXFlotilla     ret.. id, nombre
+    pFk_IdFlotilla
+    
+getRoles        ret.. id, nombreRol
+    nada
+    
+insertarPersona     ret.. 1 if inserted, OK if not (ya estaba)
+    pNombre
+    pCelular
+    pFk_Rol
+
+modificarPersona    ret.. 1
+    pIdPersona
+    pNombre
+    pCelular
+    pFk_Rol
+  
+borrarPersona     ret.. 1 (se cambia de estado)
+    pIdPersona
+    
+getPersonas     ret.. id, nombre, celular, Fk_Rol, eliminado
+    nada
+    
+getChoferes     ret.. id, nombre, celular, Fk_Rol, eliminado
+    nada
+    
+getGuias     ret.. id, nombre, celular, Fk_Rol, eliminado
+    nada
+    
+insertarServicioGira        ret.. 1 if inserted, OK if not (ya estaba)
+    pNombre
+    
+borrarServicioGira      ret 1
+    pIdServicio
+    
+getServiciosGira        ret.. id, nombre
+    nada
+    
+insertarServicioXGira   ret.. 1 if inserted, OK if not (ya estaba)
+    pFk_IdGira
+    pFk_ServicioGira
+    pCostoAsociado
+
+borrarServicioXGira     ret.. 1
+    pFk_IdGira
+    pFk_ServicioGira
+
+getServiciosXGira     ret.. id, nombre, costoAsociado
+    pFk_IdGira
+
+insertarFlotillaXGira   ret.. 1 if inserted, OK if not (ya estaba)
+    pFk_Flotilla
+    pFk_IdGira
+
+borrarFlotillaXGira     ret.. 1
+    pFk_Flotilla
+    pFk_IdGira
+
+getFlotillaXGira     ret.. id, placa
+    pFk_IdGira
+
+insertarParadaXGira   ret.. 1 if inserted, OK if not (ya estaba)
+    pFk_IdGira
+    pNombreParada
+
+borrarParadaXGira     ret.. 1
+    pFk_IdGira
+    pNombreParada
+
+getParadasXGira     ret.. id, placa
+    pFk_IdGira
+
+insertarSitioTuristico      ret.. 1 if inserted, OK if not (ya estaba)
+    pNombre
+    pDescripcion
+
+borrarSitioTutistico      ret.. 1
+    pFk_Sitio
+
+modificarSitioTuristico      ret.. 1 if updated, OK if not (puede estar el nombre ya)
+    pIdSitio
+    pNombre
+    pDescripcion
+
+getSitiosTuristicos     ret.. id, nombre, descripcion, eliminado
+    nada
+
+insertarImagenXSitio   ret.. 1 if inserted, OK if not (ya estaba)
+    pFk_Sitio
+    pImg (BLOB)
+
+borrarImagenXSitio     ret.. 1
+    pFk_Sitio
+
+getImagenenesXSitio     ret.. id, img
+    pFk_Sitio
+    
+insertarGira            ret.. 1
+    pLugarSalida
+	pLugarDestino
+	pFechaPartida
+	pLimitePersonas
+	pPrecioAdulto
+	pPrecioNino
+	pPrecioAdultoMayor
+	pFechaLimDepo
+	pFechaLimPago
+	pFk_SitioTuristico
+	pFk_Chofer
+	pFk_Guia
+    
+borrarGira      ret.. 1
+  pFk_IdGira
+
+*modificarGira   ret.. 1
+    pFk_IdGira
+    pLugarSalida
+	pLugarDestino
+	pFechaPartida
+	pLimitePersonas
+	pPrecioAdulto
+	pPrecioNino
+	pPrecioAdultoMayor
+	pFechaLimDepo
+	pFechaLimPago
+	pFk_SitioTuristico
+	pFk_Chofer
+	pFk_Guia
+    
+getGiras    ret.. lugarSalida, lugarDestino, fechaPartida, limitePersonas, precioAdulto, precioNino, precioAdultoMayor, fechaLimDepo, fechaLimPago, Fk_SitioTuristico, Fk_Chofer, Fk_Guia
+    nada
+
+
+insertarReservacion         ret.. 1
+    pCliente,
+    pCelularCliente,
+    pCantNinos,
+    pCantAdultos,
+    pCantAdultosMayores,
+    pDepositado,
+    pPagado,
+    pImgDeposito,
+    pImgPagoTotal,
+    pCancelado,
+    pFk_Gira
+
+cancelarReservacion     ret.. 1
+    pIdReservacion
+
+modificarReservacion    ret.. 1
+    pIdReservacion
+	pDepositado
+	pPagado
+    pCancelado
+
+getReservaciones        ret 
+    nada
+
+consultarReservacion    ret.. depositado,pagado,cancelado
+    pIdReservacion
+    
+adjuntarDepositoRes     ret 1
+    pIdReservacion
+    pimgDep (BLOB)
+    
+adjuntarPagoFinalRes     ret 1
+    pIdReservacion
+    pimgPagoFin (BLOB)
+    
+getGirasXSitio
+    pFk_Sitio
