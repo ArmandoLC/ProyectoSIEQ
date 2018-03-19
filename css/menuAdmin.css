@@ -6,7 +6,7 @@
 
 .menu {
     min-height: 100vh;
-    background: rgba(255, 255, 255, 0.5);
+    background: #ccc;
     position: fixed;
     top: 0;
     left: 0;
@@ -18,10 +18,11 @@
 }
 
 .menu > span {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.7);
     display: block;
     padding: 20px 15px;
-    font-size: 24px;
+    font-size: 23px;
+    color: #fff;
 }
 
 .menu label {
@@ -30,7 +31,7 @@
 
 .menu label:before {
     background: rgba(0, 0, 0, 0.5);
-    border-radius: 3px;
+    border-radius: 5px;
     position: absolute;
     top: 15px;
     font-size: 20px;
@@ -42,9 +43,10 @@
     color: #000;
 }
 
+
 .menu a {
     display: block;
-    background: rgba(228, 20, 20, 0.93);
+    background: rgba(0, 0, 0, 0.4);
     color: #fff;
     font-size: 20px;
     padding: 15px;
@@ -56,8 +58,9 @@
 }
 
 .menu a:hover {
-    background: rgba(253, 38, 38, 1);
+    background: #140e39;
     border-left: 2px solid;
+    text-decoration: underline;
 }
 
 

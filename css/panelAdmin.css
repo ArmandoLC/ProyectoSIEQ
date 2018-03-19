@@ -1,6 +1,22 @@
+.headerPrincipal {
+    background: #140e39;
+    color: #fff;
+    padding: 10px 30px;
+}
+
+.usuarioActivo {
+    font-size: 14px;
+    text-align: right;
+}
+.usuarioActivo :hover{
+    color: cadetblue;
+}
+
 .mc {
     background: #fbfbfb;
     min-height: 100vh;
+    width: 90%;
+    margin-left: 5%;
 }
 
 .mc h1 {
