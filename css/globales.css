@@ -48,7 +48,7 @@ button {
 }
 
 .aDer {
-    text-align: right;
+    text-align: right!important;
 }
 
 .inline {
