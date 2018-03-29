@@ -1,46 +1,65 @@
-<h1>Administrando Sitios Turísticos</h1>
-<h2>Registrar Nuevo Sitio Turistico</h2>
-<table class="tbNuevoVehi aIzq">
-    <tr>
-        <td>Nombre:</td>
-        <td>
-            <input type="text"> </td>
-    </tr>
-    <tr>
-        <td>Descripcion</td>
-        <td>
-            <input type="text"> </td>
-    </tr>
-</table>
-<button class="button">Agregar Sitio</button>
-<br>
-<br>
-<h2>Lista de Sitios Turísticos</h2>
+<h1>Administración de Inventarios</h1>
+<h2>Inventario de Reactivos Químicos</h2>
 <br>
 <table class="tbLista">
     <tr class="aCentro">
         <th>Nombre:</th>
-        <th>Descripción:</th>
-        <th>Opciones:</th>
+        <th>Ubicación:</th>
+        <th>Cant Actual:</th>
+        <th>Cant de Alerta:</th>
+        <th>Hoja de Seguridad:</th>
+        <th>¿Es Precursor?</th>
+        <th>Opciones</th>
     </tr>
     <tr class="aCentro">
-        <td> Tierra Luna </td>
-        <td> Lugar de recreo con amplias zonas verdes, cancha de fútbol, piscina, restaurante, entre otros atractivos </td>
-        <td><i class="fa fa-pencil"></i> <i class="fa fa-trash"> <i class="fa fa-picture-o"></i></i></td>
+        <td> Azufre </td>
+        <td> Esatante G-18 </td>
+        <td> 10 L </td>
+        <td> 5 L </td>
+        <td><a href="http://www.inet.edu.ar/wp-content/uploads/2012/11/azufre.pdf">Link</a></td>
+        <td><label class="checkContainer">
+                    <input type="checkbox" checked="checked" ng-model="objReactivo.precursor">
+                    <span class="checkmark"></span>
+                </label></td>
+        <td><i class="fa fa-pencil"></i> <i class="fa fa-trash"> <i class="fa fa-picture-o"></i></i>
+        </td>
     </tr>
     <tr class="aCentro">
-        <td> Holan </td>
-        <td> Lugar de recreo con amplias zonas verdes, cancha de fútbol, piscina, restaurante, entre otros atractivos </td>
-        <td><i class="fa fa-pencil"></i> <i class="fa fa-trash"> <i class="fa fa-picture-o"></i></i></td>
+        <td> Azufre </td>
+        <td> Esatante G-18 </td>
+        <td> 10 L </td>
+        <td> 5 L </td>
+        <td><a href="http://www.inet.edu.ar/wp-content/uploads/2012/11/azufre.pdf">Link</a></td>
+        <td><label class="checkContainer">
+                    <input type="checkbox" checked="checked" ng-model="objReactivo.precursor2">
+                    <span class="checkmark"></span>
+                </label></td>
+        <td><i class="fa fa-pencil"></i> <i class="fa fa-trash"> <i class="fa fa-picture-o"></i></i>
+        </td>
     </tr>
-    <tr class="aCentro">
-        <td> Cataratas </td>
-        <td> Lugar de recreo con amplias zonas verdes, cancha de fútbol, piscina, restaurante, entre otros atractivos </td>
-        <td><i class="fa fa-pencil"></i> <i class="fa fa-trash"> <i class="fa fa-picture-o"></i></i></td>
-    </tr>
-    <tr class="aCentro">
-        <td> Asomobi </td>
-        <td> Lugar de recreo con amplias zonas verdes, cancha de fútbol, piscina, restaurante, entre otros atractivos </td>
-        <td><i class="fa fa-pencil"></i> <i class="fa fa-trash"> <i class="fa fa-picture-o"></i></i></td>
-    </tr>
+
 </table>
+
+<div ng-init="popupCrearReactivo = true" ng-show="popupCrearReactivo" class="popup">
+    <div class="popContenido">
+        <h2>Crear Nuevo Reactivo <span class="pointer" ng-click="popupCrearReactivo=false">X</span></h2>
+        <div ng-init="objReactivo = {}">
+            <p><b class="f22">Detalles del Reactivo</b></p>
+            <p>Nombre<input type="text" ng-model="objReactivo.nombre"></p>
+            <p>Ubicación<input type="text" ng-model="objReactivo.ubicacion"></p>
+            <p>Cantidad Inicial<input type="number" ng-model="objReactivo.cantInicial" step="0.1"></p>
+            <p>Unidad de Medida <select ng-model="objReactivo.unidad" name="" id=""></select> </p>
+            <p>Cantidad alerta<input type="number" ng-model="objReactivo.cantAlerta" step="0.1"></p>
+            <p>Enlace de Hoja de Seguridad<input type="text" ng-model="objReactivo.hojaSeguridad"></p>
+            <p>¿Es Precursor?
+                <label class="checkContainer">
+                    <input type="checkbox" checked="checked" ng-model="objReactivo.precursor">
+                    <span class="checkmark"></span>
+                </label>
+            </p>
+        </div>
+        <div class="buttonContainer aDer">
+            <button>Agregar</button>
+        </div>
+    </div>
+</div>
