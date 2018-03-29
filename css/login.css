@@ -4,6 +4,7 @@ body {
     align-items: center;
     background: #000;
     height: 100vh;
+    color: whitesmoke;
 }
 
 .login {
@@ -21,9 +22,43 @@ body {
     padding: 10px 20px;
 }
 
+input{
+    color: #555;
+}
+
+select{
+    color: #555;
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+}
+
 button {
-    background: #0099b4;
+    background-color: #008CBA; /* Blue */
     margin: 5px;
-    color: #fff;
+    color: white;
+    text-align: center;
+}
+
+.bgImage{
+    background-image: url(/img/wallpaper.jpg);
+    background-size: cover;
+}
+.bgTransparent{
+    background-color: transparent;
+}
+.bgGray{
+    background-color: rgba(0,0,0,0.5);
+}
+
+.link{
+    font-size: 14px;
+    text-decoration: underline;
+    color: cornflowerblue;
+    font-style: italic;
+}
+
+.link:hover{
+    font-style: normal;
 }
 
