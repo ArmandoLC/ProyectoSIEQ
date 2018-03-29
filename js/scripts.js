@@ -34,6 +34,7 @@ app.controller("login", function ($scope, $rootScope, $location, $http, $cookies
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("Los datos de inicio de sesión son incorrectos");
                 } else {
+                    $rootScope.agregarAlerta("Ingresando al sistema...")
                     var usuario = listaDatos[0];
                     // guardar la sesion en una cookie
                     var sesion = {};
@@ -65,11 +66,13 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
             $rootScope.solicitudHttp(rootHost + "API/AgregarUsuario.php", obj,function(){
                 $rootScope.agregarAlerta("Nombre de usuario no disponible");
             }, function (listaDatos) {
-                log(listaDatos);
-                $rootScope.agregarAlerta("Usuario miedo agregado");
-                log("LISTO Solicitud registrada");
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("Error desconocido");
+                } else {
+                    $rootScope.agregarAlerta("Solicitud agregada con éxito");
 
-                //window.location.pathname = "login.html";
+                    //window.location.pathname = "login.html";
+                }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
