@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="mainController">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="css/globales.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body class="bgImage">
+    <div class="login bgGray" ng-controller="registrarse">
+        <div class="title">Registrarse en el SIEQ</div>
+
+        <form ng-init="l={}" ng-submit="registrarse(l)" class="aDer">
+            <table>
+                <tr>
+                    <td>Nombre Completo:&nbsp;</td>
+                    <td>
+                        <input type="text" ng-model="l.Nombre" autofocus required> </td>
+                </tr>
+                <tr>
+                    <td>Usuario:&nbsp;</td>
+                    <td>
+                        <input type="text" ng-model="l.Usuario" autofocus required> </td>
+                </tr>
+                <tr>
+                    <td>Contraseña:&nbsp; </td>
+                    <td>
+                        <input type="password" ng-model="l.Contrasenha" required> </td>
+                </tr>
+                <tr>
+                    <td>Email:&nbsp;</td>
+                    <td>
+                        <input type="email" ng-model="l.Correo" autofocus required> </td>
+                </tr>
+                <tr>
+                    <td>Rol de Usuario:&nbsp;</td>
+                    <td>
+                        <select ng-model="l.RolID" ng-init="l.RolID = roles[0].id">
+                          <option ng-value="rol.id" ng-repeat="rol in roles">
+                             {{rol.nombre}}
+                          </option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <button type="submit">Solicitar Cuenta</button>
+        </form>
+        <div class="aCentro marginB20">¿Ya tienes una cuenta? <a href="login.html" class="link">Inicia Sesión</a></div>
+    </div>
+    <div class="alertContainer">
+        <div class="alert" ng-class="a.classAlert" ng-repeat="a in listaAlerts">
+            <div><span ng-click="a.ocultarAlerta()">X</span><i class="fa fa-info-circle" aria-hidden="true"></i> {{a.texto}} </div>
+        </div>
+    </div>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-cookies.js"></script>
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>

@@ -20,19 +20,62 @@ var app = angular.module('app', ['ngRoute', 'ngCookies']);
 }
 // host
 //host = "http://localhost/ProyectoWeb/";
-rootHost = "/ProyectoWeb/"
+rootHost = "https://sieq.000webhostapp.com/"
 
 /* LOGIN CONTROLLER */
 app.controller("login", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
-    if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        window.location.pathname = rootHost + "admin.html";
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = rootHost + "login.html";
     } else {
         log("login");
-        /*
-            Codigo aquí
-        */
+
+        $scope.ingresar = function (obj) {
+            $rootScope.solicitudHttp(rootHost + "API/VerificarLogin.php", obj, "Los datos de inicio de sesión son incorrectos", function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("Los datos de inicio de sesión son incorrectos");
+                } else {
+                    var usuario = listaDatos[0];
+                    // guardar la sesion en una cookie
+                    var sesion = {};
+                    sesion.userUsuarioActivo = usuario.nombreUsuario;
+                    $log.log(sesion);
+                    var tiempo = new Date();
+                    tiempo.setHours(tiempo.getHours() + 12); // guardamos la sesion por 12 horas
+                    $cookies.putObject("fdsfsdfgsfg5vbv", sesion, {
+                        expires: tiempo
+                    });
+                    //window.location.pathname = rootHost + "/includes/adminSitios.html";
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
     }
 });
+
+/* REGISTRARSE CONTROLLER */
+app.controller("registrarse", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = rootHost + "login.html";
+    } else {
+        log("registrarse");
+        $scope.roles = [{ nombre:"Administrador", id:1},
+                 { nombre:"Coordinador", id:2}]
+
+        $scope.registrarse = function(obj){
+            $rootScope.solicitudHttp(rootHost + "API/AgregarUsuario.php", obj,function(){
+                $rootScope.agregarAlerta("Nombre de usuario no disponible");
+            }, function (listaDatos) {
+                log(listaDatos);
+                $rootScope.agregarAlerta("Usuario miedo agregado");
+                log("LISTO Solicitud registrada");
+
+                //window.location.pathname = "login.html";
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+    }
+});
+
 /* ADMINSITIOS CONTROLLER */
 app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
@@ -75,6 +118,7 @@ app.controller("adminReservaciones", function ($scope, $rootScope, $location, $h
         /*
             Codigo aquí
         */
+
     }
 });
 
@@ -200,10 +244,10 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
     $rootScope.limpiarTxt = function (txtId) {
         var txt = document.getElementById(txtId);
         txt.value = "/";
-    }
+    };
     $rootScope.formatearFecha = function (fecha) {
         return $filter('date')(new Date(fecha), "dd/MM/yyyy hh:mm:ss a", "-0600")
-    }
+    };
 });
 
 /* Eventos */

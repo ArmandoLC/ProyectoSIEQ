@@ -3,29 +3,31 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Iniciar Sesión - Panel Administrador</title>
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="css/globales.css">
     <link rel="stylesheet" href="css/login.css">
 </head>
 
-<body >
-    <div class="login" ng-controller="login">
-        <div class="title">Panel de Administrador | Iniciar Sesión</div>
+<body class="bgImage">
+    <div class="login bgGray" ng-controller="login">
+        <div class="title">Iniciar Sesión</div>
+
         <form ng-init="l={}" ng-submit="ingresar(l)" class="aDer">
             <table>
                 <tr>
                     <td>Usuario:&nbsp;</td>
                     <td>
-                        <input type="text" ng-model="l.pUser" autofocus required> </td>
+                        <input type="text" ng-model="l.Usuario" autofocus required> </td>
                 </tr>
                 <tr>
                     <td>Contraseña:&nbsp; </td>
                     <td>
-                        <input type="password" ng-model="l.pPass" required> </td>
+                        <input type="password" ng-model="l.Contrasenha" required> </td>
                 </tr>
             </table>
-            <button type="submit">Ingresar al sistema</button>
+            <button type="submit">Ingresar al Sistema</button>
         </form>
+        <div class="aCentro marginB20">¿Nuevo en el SIEQ? <a href="registrarse.html" class="link">Registrarse</a></div>
     </div>
     <div class="alertContainer">
         <div class="alert" ng-class="a.classAlert" ng-repeat="a in listaAlerts">
