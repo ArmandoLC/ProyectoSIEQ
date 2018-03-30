@@ -11,7 +11,7 @@
     </div>
     <div>
         <button ng-click="mostrarPanelCrearReactivo()" title="Agregar Nuevo Reactivo"> <i class="fa fa-plus"></i> Agregar Nuevo</button>
-        <button ng-click="cargarListaProductos()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+        <button ng-click="cargarListaReactivos()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
     </div>
 </div>
 <table class="tbLista">
@@ -82,7 +82,7 @@
             <p>Cantidad Inicial<input type="number" ng-model="reactivoEditar.CantidadActual" step="0.1"></p>
             <p>Unidad de Medida
                 <select ng-model="reactivoEditar.UnidadMetricaID">
-                    <option ng-value="u.id" ng-selected="reactivoEditar.UnidadMetricaID == u.id" ng-repeat="u in unidades">{{u.Nombre}}</option>
+                    <option ng-value="u.id" ng-selected="reactivoEditar.UnidadMetricaID == u.UnidadMetricaID" ng-repeat="u in unidades">{{u.Nombre}}</option>
                 </select>
             </p>
             <p>Cantidad alerta<input type="number" ng-model="reactivoEditar.PuntoReorden" step="0.1"></p>

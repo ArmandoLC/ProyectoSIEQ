@@ -117,10 +117,8 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
         $scope.editarReactivo = function (r) {
             $scope.popupEditarReactivo = true;
             $scope.reactivoEditar = JSON.clone(r);
-            log($scope.reactivoEditar);
             $scope.reactivoEditar.CantidadActual = parseFloat($scope.reactivoEditar.CantidadActual);
             $scope.reactivoEditar.PuntoReorden = parseFloat($scope.reactivoEditar.PuntoReorden);
-            $scope.reactivoEditar.UnidadMetricaID = parseInt($scope.reactivoEditar.UnidadMetricaID);
         }
 
         function cargarListaReactivos() {
@@ -137,7 +135,6 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
                 $rootScope.agregarAlerta("Error Desconocido");
             }, function (listaDatos) {
                 $scope.unidades = listaDatos;
-                log($scope.unidades);
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
 
