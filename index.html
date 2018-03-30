@@ -14,7 +14,7 @@
 
 <body>
     <div>
-        <input id="chkMenu" type="checkbox">
+        <input id="chkMenu" type="checkbox" checked="false">
         <div class="menu"><span>Menú de Opciones</span>
             <label for="chkMenu"></label>
             <div>
@@ -24,8 +24,9 @@
                 <a href="#!adminReservaciones"><i class="marginDer10 fa fa-exclamation-triangle" aria-hidden="true"></i>Alertas</a>
                 <a href="#!"><i class="marginDer10 fa fa-handshake-o" aria-hidden="true"></i>Préstamos</a>
                 <a href="#!"><i class="marginDer10 fa fa-exclamation" aria-hidden="true"></i>Precursores</a>
-                <a href="#!"><i class="marginDer10 fa fa-users" aria-hidden="true"></i>Usuarios</a>
+                <a href="#!adminUsuarios"><i class="marginDer10 fa fa-users" aria-hidden="true"></i>Usuarios</a>
                 <a href="#!"><i class="marginDer10 fa fa-comments-o" aria-hidden="true"></i>Chat</a>
+                <a ng-click="cerrarSesion()"><i class="marginDer10 fa fa-sign-out" aria-hidden="true"></i>Cerrar Sesión</a>
             </div>
         </div>
         <div ng-include="templateUrl"></div>
@@ -35,7 +36,7 @@
                     Sistema de Invetario de la Escuela de Química (SIEQ)
                 </div>
                 <div class="usuarioActivo">
-                    <a href="#">Armando LC{{nombreUsuarioActivo}} | Coordinador{{rolUsuarioActivo}}</a>
+                    <a href="#">{{nombreUsuarioActivo}} | {{rolUsuarioActivo}}</a>
                 </div>
             </div>
 

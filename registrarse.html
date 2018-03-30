@@ -37,9 +37,9 @@
                 <tr>
                     <td>Rol de Usuario:&nbsp;</td>
                     <td>
-                        <select ng-model="l.RolID" ng-init="l.RolID = roles[0].id">
-                          <option ng-value="rol.id" ng-repeat="rol in roles">
-                             {{rol.nombre}}
+                        <select ng-model="l.RolID" ng-init="l.RolID = roles[0].RolID">
+                          <option ng-value="rol.RolID" ng-repeat="rol in roles">
+                             {{rol.Nombre}}
                           </option>
                         </select>
                     </td>

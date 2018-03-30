@@ -24,8 +24,8 @@ rootHost = "https://sieq.000webhostapp.com/"
 
 /* LOGIN CONTROLLER */
 app.controller("login", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
-    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        //window.location.pathname = rootHost + "login.html";
+    if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        window.location.pathname = "index.html";
     } else {
         log("login");
 
@@ -34,17 +34,21 @@ app.controller("login", function ($scope, $rootScope, $location, $http, $cookies
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("Los datos de inicio de sesión son incorrectos");
                 } else {
-                    $rootScope.agregarAlerta("Ingresando al sistema...")
+                    
                     var usuario = listaDatos[0];
+                    log(usuario);
+                    
                     // guardar la sesion en una cookie
                     var sesion = {};
-                    sesion.userUsuarioActivo = usuario.nombreUsuario;
-                    $log.log(sesion);
+                    sesion.nombreUsuarioActivo = usuario.Nombre;
+                    sesion.rolUsuarioActivo = usuario.Rol;
+                    sesion.idUsuarioActivo = usuario.UsuarioID
                     var tiempo = new Date();
                     tiempo.setHours(tiempo.getHours() + 12); // guardamos la sesion por 12 horas
                     $cookies.putObject("fdsfsdfgsfg5vbv", sesion, {
                         expires: tiempo
                     });
+                    window.location.pathname = "index.html"
                     //window.location.pathname = rootHost + "/includes/adminSitios.html";
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
@@ -55,13 +59,13 @@ app.controller("login", function ($scope, $rootScope, $location, $http, $cookies
 
 /* REGISTRARSE CONTROLLER */
 app.controller("registrarse", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
-    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+    if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
         //window.location.pathname = rootHost + "login.html";
+        
     } else {
         log("registrarse");
-        $scope.roles = [{ nombre:"Administrador", id:1},
-                 { nombre:"Coordinador", id:2}]
-
+        //$scope.roles = "";
+        
         $scope.registrarse = function(obj){
             $rootScope.solicitudHttp(rootHost + "API/AgregarUsuario.php", obj,function(){
                 $rootScope.agregarAlerta("Nombre de usuario no disponible");
@@ -69,13 +73,69 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("Error desconocido");
                 } else {
-                    $rootScope.agregarAlerta("Solicitud agregada con éxito");
+                    log("Solicitud agregada con éxito");
 
-                    //window.location.pathname = "login.html";
+                    window.location.pathname = "login.html";
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
+        
+        $scope.verRolesUsuario = function(){
+            $rootScope.solicitudHttp(rootHost + "API/VerRolesUsuario.php", {},function(){
+                $rootScope.agregarAlerta("Respuesta desconocida");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("No se encontraron roles de usuario");
+                } else {
+                    log("Roles de usuario consultados con éxito");
 
+                    $scope.roles = listaDatos;
+                    $scope.l.RolID = $scope.roles[0].RolID;
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        
+        $scope.verRolesUsuario();
+
+    }
+});
+
+/* ADMIN USUARIOS CONTROLLER */
+app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = rootHost + "login.html";
+    } else {
+        log("adminUsuarios");
+        $scope.solicitudesCuenta = [];
+        
+        $scope.verUsuariosPendientes = function(obj){
+            $rootScope.solicitudHttp(rootHost + "API/VerUsuariosPendientes.php", obj,function(){
+                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("No hay solicitudes de cuentas");
+                } else {
+                    log("Solicitudes consultadas con éxito");
+                    $scope.solicitudesCuenta = listaDatos;
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        
+        $scope.actualizarEstadoUsuario = function(obj){
+            $rootScope.solicitudHttp(rootHost + "API/ActualizarEstadoUsuario.php", obj,function(){
+                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("No hay solicitudes de cuentas");
+                } else {
+                    log("Solicitudes consultadas con éxito");
+                    $scope.solicitudesCuenta = listaDatos;
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        
+        
+        $scope.verUsuariosPendientes();
     }
 });
 
@@ -127,6 +187,8 @@ app.controller("adminReservaciones", function ($scope, $rootScope, $location, $h
 
 /* CONTROLADOR PRINCIPAL */
 app.controller("mainController", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    
+    
     //*********************************************
     // Sistema de alertas personalizados
     $rootScope.listaAlerts = [];
@@ -161,18 +223,21 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
         }
     };
     // **** Datos de Usuario ****
-//    $rootScope.userUsuarioActivo = "";
-    $rootScope.userUsuarioActivo = "Administrador";
-    //$rootScope.sesionIniciada = false;
-    $rootScope.sesionIniciada = true;
+    $rootScope.nombreUsuarioActivo = "";
+    $rootScope.rolUsuarioActivo = "";
+    $rootScope.idUsuarioActivo = "";    
+
     // PARA CONTROLAR LA SESION
+    $rootScope.sesionIniciada = false;
     $rootScope.sesionActiva = function () {
         if ($rootScope.sesionIniciada) {
             return true;
         } else if ($cookies.getObject("fdsfsdfgsfg5vbv")) {
             // carga las variables necesarias para garantizar el correcto funcionamiento de la aplicacioegn
             var sesion = $cookies.getObject("fdsfsdfgsfg5vbv");
-            $rootScope.userUsuarioActivo = sesion.userUsuarioActivo;
+            $rootScope.nombreUsuarioActivo = sesion.nombreUsuarioActivo;
+            $rootScope.rolUsuarioActivo = sesion.rolUsuarioActivo;
+            $rootScope.idUsuarioActivo = sesion.idUsuarioActivo;        
             $rootScope.sesionIniciada = true;
             var tiempo = new Date();
             tiempo.setHours(tiempo.getHours() + 12); // guardamos la sesion por 12 horas
@@ -186,9 +251,11 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
     };
     $rootScope.cerrarSesion = function () {
         $cookies.remove("fdsfsdfgsfg5vbv");
-        $rootScope.userUsuarioActivo = "";
+        $rootScope.nombreUsuarioActivo = "";
+        $rootScope.rolUsuarioActivo = "";
+        $rootScope.idUsuarioActivo = "";        
         $rootScope.sesionIniciada = false;
-        $location.path("login");
+        window.location.pathname = "login.html";
     };
     /* Funcion generica para solicitudes http */
     $rootScope.debugMode = false;

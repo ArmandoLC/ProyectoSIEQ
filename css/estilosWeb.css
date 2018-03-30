@@ -262,3 +262,14 @@ h2 span {
 .popup button:active{
     box-shadow: 0 0px #666;
 }
+
+
+
+/* Efectos al hacer hover*/
+.confirmHover:hover{
+    color: darkblue;
+}
+
+.deleteHover:hover{
+    color: darkred;
+}
