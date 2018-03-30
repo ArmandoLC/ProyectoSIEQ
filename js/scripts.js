@@ -17,6 +17,10 @@ var app = angular.module('app', ['ngRoute', 'ngCookies']);
         console.log(o);
     }
 
+    function setEditable(e) {
+        e.readOnly = false;
+    }
+
 }
 // host
 //host = "http://localhost/ProyectoWeb/";
@@ -58,11 +62,17 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
         //window.location.pathname = rootHost + "login.html";
     } else {
         log("registrarse");
-        $scope.roles = [{ nombre:"Administrador", id:1},
-                 { nombre:"Coordinador", id:2}]
+        $scope.roles = [{
+                nombre: "Administrador",
+                id: 1
+            },
+            {
+                nombre: "Coordinador",
+                id: 2
+            }]
 
-        $scope.registrarse = function(obj){
-            $rootScope.solicitudHttp(rootHost + "API/AgregarUsuario.php", obj,function(){
+        $scope.registrarse = function (obj) {
+            $rootScope.solicitudHttp(rootHost + "API/AgregarUsuario.php", obj, function () {
                 $rootScope.agregarAlerta("Nombre de usuario no disponible");
             }, function (listaDatos) {
                 log(listaDatos);
@@ -82,9 +92,24 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
         window.location.pathname = rootHost + "login.html";
     } else {
         log("adminSitios");
-        /*
-            Codigo aquí
-        */
+        $scope.editarReactivo = function (r) {
+            $scope.reactivoEditar = JSON.clone(r);
+            $scope.popupEditarReactivo = true;
+        }
+        $scope.mostrarPanelUnidades = function () {
+            $scope.panelUnidades = true;
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/getUnidades.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                log(listaDatos);
+                $scope.unidades = listaDatos;
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+
+        }
+        /*Variables globales del Scope*/
+        $scope.panelUnidades = false;
     }
 });
 /* ADMINFLOTILLAS CONTROLLER */
@@ -158,7 +183,7 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
         }
     };
     // **** Datos de Usuario ****
-//    $rootScope.userUsuarioActivo = "";
+    //    $rootScope.userUsuarioActivo = "";
     $rootScope.userUsuarioActivo = "Administrador";
     //$rootScope.sesionIniciada = false;
     $rootScope.sesionIniciada = true;
