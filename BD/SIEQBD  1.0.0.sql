@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `SIEQ` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
-USE `SIEQ`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: SIEQ
@@ -37,7 +35,7 @@ CREATE TABLE `Articulo` (
   UNIQUE KEY `ArticuloID_UNIQUE` (`ArticuloID`),
   KEY `FK_TipoArticulo_idx` (`TipoArticulo`),
   CONSTRAINT `FK_TipoArticulo` FOREIGN KEY (`TipoArticulo`) REFERENCES `TipoArticulo` (`TipoArticuloID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +44,7 @@ CREATE TABLE `Articulo` (
 
 LOCK TABLES `Articulo` WRITE;
 /*!40000 ALTER TABLE `Articulo` DISABLE KEYS */;
+INSERT INTO `Articulo` VALUES (1,'Acetaldehido','G - 2',1,0.1,'Probando Reactivos',1,''),(2,'Acetato de Etilo','A - 2',4,0.1,'Probando Reactivos',1,''),(4,'Acetato','A - 2',4,0.1,'Probando Reactivos',1,''),(5,'Acetato de Sodio','A - 2',4,0.1,'Probando Reactivos',1,''),(7,'Acetato de','A - 2',4,0.1,'Probando Reactivos',1,''),(16,'Polietileno','A - 2',4,0.1,'Probando Reactivos',1,''),(27,'Reactivo de Prueba','A - 2',4,0.1,'Probando Reactivos',1,''),(28,'Reactivo de Prueba 2','A - 2',4,0.1,'Probando Reactivos',1,'');
 /*!40000 ALTER TABLE `Articulo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,6 +231,7 @@ CREATE TABLE `Movimiento` (
   `Fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `TipoMovimientoID` int(11) NOT NULL,
   `UsuarioAutorizadorID` int(11) NOT NULL,
+  `ArticuloID` int(11) NOT NULL,
   `CantidadAntes` float NOT NULL,
   `CantidadDespues` float NOT NULL,
   `Destino` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -242,7 +242,7 @@ CREATE TABLE `Movimiento` (
   KEY `FK_UsuarioAutorizador_idx` (`UsuarioAutorizadorID`),
   CONSTRAINT `FK_TipoMovimiento` FOREIGN KEY (`TipoMovimientoID`) REFERENCES `TipoMovimiento` (`TipoMovimientoID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_UsuarioAutorizadorID` FOREIGN KEY (`UsuarioAutorizadorID`) REFERENCES `Usuario` (`UsuarioID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -251,6 +251,7 @@ CREATE TABLE `Movimiento` (
 
 LOCK TABLES `Movimiento` WRITE;
 /*!40000 ALTER TABLE `Movimiento` DISABLE KEYS */;
+INSERT INTO `Movimiento` VALUES (1,'2018-03-29 12:13:58',1,7,1,0,1,'G - 2','Ingreso del reactivo al sistema.'),(2,'2018-03-29 12:16:23',1,7,2,0,4,'A - 2','Ingreso del reactivo al sistema.'),(3,'2018-03-29 23:58:42',1,7,4,0,4,'A - 2','Ingreso del reactivo al sistema.'),(4,'2018-03-30 00:11:54',1,7,5,0,4,'A - 2','Ingreso del reactivo al sistema.'),(5,'2018-03-30 00:21:00',1,7,7,0,4,'A - 2','Ingreso del reactivo al sistema.'),(6,'2018-03-30 10:14:16',1,7,16,0,4,'A - 2','Ingreso del reactivo al sistema.'),(8,'2018-03-30 10:28:20',1,7,27,0,4,'A - 2','Ingreso del reactivo al sistema.'),(9,'2018-03-30 10:28:28',1,7,28,0,4,'A - 2','Ingreso del reactivo al sistema.'),(10,'2018-03-30 11:20:14',1,7,28,0,10,'kjhi','Ingreso del reactivo al sistema.');
 /*!40000 ALTER TABLE `Movimiento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -372,7 +373,7 @@ CREATE TABLE `Reactivo` (
   CONSTRAINT `FK_Articulo` FOREIGN KEY (`ArticuloID`) REFERENCES `Articulo` (`ArticuloID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_Categoria` FOREIGN KEY (`Categoria`) REFERENCES `CategoriaReactivo` (`CategoriaReactivoID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_UnidadMetrica` FOREIGN KEY (`UnidadMetricaID`) REFERENCES `UnidadMetrica` (`UnidadMetricaID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -381,6 +382,7 @@ CREATE TABLE `Reactivo` (
 
 LOCK TABLES `Reactivo` WRITE;
 /*!40000 ALTER TABLE `Reactivo` DISABLE KEYS */;
+INSERT INTO `Reactivo` VALUES (1,1,'',1,3,'www.sieq.000webhost.com'),(2,2,'\0',2,3,'www.sieq.000webhost.com'),(3,4,'\0',2,3,'www.sieq.000webhost.com'),(4,5,'\0',2,3,'www.sieq.000webhost.com'),(6,7,'\0',2,3,'www.sieq.000webhost.com'),(8,16,'\0',2,3,'www.sieq.000webhost.com'),(17,27,'\0',2,3,'www.sieq.000webhost.com'),(18,28,'\0',2,3,'www.sieq.000webhost.com');
 /*!40000 ALTER TABLE `Reactivo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -605,6 +607,70 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `AgregarReactivo` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarReactivo`(
+	Nombre VARCHAR(100),
+    Ubicacion VARCHAR(100),
+    CantidadActual DOUBLE,
+    PuntoReorden DOUBLE,
+    Descripcion VARCHAR(300),
+    EsPrecursor BIT,
+    UnidadMetricaID INT,
+    CategoriaID INT,
+    URLHojaSeguridad VARCHAR(300),
+    UsuarioID INT)
+BEGIN
+	DECLARE ArticuloID  INT;
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+		-- ERROR	
+        ROLLBACK;
+	END;
+
+	DECLARE EXIT HANDLER FOR SQLWARNING
+	 BEGIN
+		-- WARNING
+	 ROLLBACK;
+	END;
+
+	START TRANSACTION;
+
+		IF NOT EXISTS((SELECT 1 FROM Articulo a WHERE a.Nombre = Nombre)) THEN        
+				INSERT INTO Articulo(Nombre, Ubicacion, CantidadActual, PuntoReorden, Descripcion, TipoArticulo, Visible)
+				VALUES (Nombre, Ubicacion, CantidadActual, PuntoReorden, Descripcion, 1, 1);
+				
+				SET ArticuloID = (	SELECT AUTO_INCREMENT - 1 AS UltimoID 
+									FROM information_schema.tables 
+                                    WHERE TABLE_SCHEMA LIKE '%SIEQ%' 
+                                    AND TABLE_NAME = 'Articulo');
+
+				INSERT INTO Reactivo(ArticuloID, EsPrecursor, UnidadMetricaID, Categoria, URLHojaSeguridad)
+					VALUES (ArticuloID, EsPrecursor, UnidadMetricaID, CategoriaID, URLHojaSeguridad);
+				
+				INSERT INTO Movimiento(TipoMovimientoID, UsuarioAutorizadorID, ArticuloID, CantidadAntes, CantidadDespues, Destino, Observaciones)
+					VALUES (1, UsuarioID, ArticuloID, 0, CantidadActual, Ubicacion, 'Ingreso del reactivo al sistema.');
+					
+				SELECT 1;
+
+		COMMIT;
+    END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `AgregarUsuario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -633,6 +699,28 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `VerEstadosUsuario` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VerEstadosUsuario`()
+BEGIN
+
+	SELECT *
+    FROM EstadoUsuario;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `VerificarLogin` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -651,6 +739,28 @@ BEGIN
     WHERE u.Usuario = Usuario 
     AND u.Contrasenha = sha2(Contrasenha, 256)
     AND eu.Nombre LIKE '%Activo%';
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `VerRolesUsuario` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VerRolesUsuario`()
+BEGIN
+
+	SELECT *
+    FROM Rol;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -693,4 +803,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-29 10:23:30
+-- Dump completed on 2018-03-30 12:20:23

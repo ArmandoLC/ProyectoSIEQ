@@ -9,17 +9,8 @@ if(!@include("funciones/funciones.php")){
 
 $conexion = mysqli_connect($host, $user, $pw, $db);
 
-$obj = cargarObjPost();
-$UsuarioID = $obj["UsuarioID"];
-$EstadoID = $obj["EstadoID"];
-
-// $UsuarioID = 7;
-// $EstadoID = 1;
-
 if($conexion){
-    $consulta = "CALL ActualizarEstadoUsuario(
-					".mysqli_real_escape_string($conexion, $UsuarioID).",
-					".mysqli_real_escape_string($conexion, $EstadoID).")";
+    $consulta = "CALL VerRolesUsuario()";
 					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
