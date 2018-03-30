@@ -16,8 +16,8 @@
         <td> {{solicitud.Usuario}} </td>
         <td> {{solicitud.Rol}} </td>
         <td> {{solicitud.correo}} </td>
-        <td> <i class="fa fa-check confirmHover" ng-click="actualizarEstadoUsuario"></i></td>
-        <td> <i class="fa fa-ban deleteHover" ng-click=""></i></td>
+        <td> <i class="fa fa-check confirmHover" ng-click="actualizarEstadoUsuario(solicitud.UsuarioID, 1)"></i></td>
+        <td> <i class="fa fa-ban deleteHover" ng-click="actualizarEstadoUsuario(solicitud.UsuarioID, 2)"></i></td>
         
     </tr>
 

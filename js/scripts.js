@@ -108,8 +108,8 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
         log("adminUsuarios");
         $scope.solicitudesCuenta = [];
         
-        $scope.verUsuariosPendientes = function(obj){
-            $rootScope.solicitudHttp(rootHost + "API/VerUsuariosPendientes.php", obj,function(){
+        $scope.verUsuariosPendientes = function(){
+            $rootScope.solicitudHttp(rootHost + "API/VerUsuariosPendientes.php", {},function(){
                 $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
             }, function (listaDatos) {
                 if (listaDatos.length == 0) {
@@ -121,15 +121,19 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         
-        $scope.actualizarEstadoUsuario = function(obj){
+        $scope.actualizarEstadoUsuario = function(usuarioID, tipo){
+            var obj = {}
+            obj.EstadoID = tipo;
+            obj.UsuarioID = usuarioID
             $rootScope.solicitudHttp(rootHost + "API/ActualizarEstadoUsuario.php", obj,function(){
                 $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
             }, function (listaDatos) {
                 if (listaDatos.length == 0) {
-                    $rootScope.agregarAlerta("No hay solicitudes de cuentas");
+                    $rootScope.agregarAlerta("Lista Tamaño 0");
                 } else {
-                    log("Solicitudes consultadas con éxito");
-                    $scope.solicitudesCuenta = listaDatos;
+                    log("Lista con datos");
+                    log(listaDatos);
+                    $scope.verUsuariosPendientes();
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
