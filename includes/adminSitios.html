@@ -36,7 +36,7 @@
                 </label></td>
         <td>
             <div class="flex noWrap">
-                <i class="fa fa-pencil" ng-click="editarReactivo(r)"></i><i class="fa fa-retweet"></i><i class="fa fa-trash"></i>
+                <i class="fa fa-pencil" ng-click="preEditarReactivo(r)"></i><i class="fa fa-retweet"></i><i class="fa fa-trash"></i>
             </div>
         </td>
     </tr>
@@ -100,7 +100,7 @@
     </div>
 </div>
 
-<div ng-show="panelUnidades" class="popup">
+<div ng-show="panelUnidades" class="popup" ng-init="preUnidades = []">
     <div class="popContenido">
         <h2>Unidades de Medida <span class="pointer" ng-click="panelUnidades=false">X</span></h2>
         <div>
@@ -111,7 +111,7 @@
                     <th class="aCentro">Borrar</th>
                     <th class="aCentro">Actualizar</th>
                 </tr>
-                <tr ng-repeat="u in unidades">
+                <tr ng-repeat="u in preUnidades">
                     <td><input readonly ondblclick="setEditable(this)" type="text" ng-value="u.Nombre"></td>
                     <td><input readonly ondblclick="setEditable(this)" type="text" ng-value="u.Siglas"></td>
                     <td class="aCentro"><i class="fa fa-trash bordesLados pointer"></i></td>
