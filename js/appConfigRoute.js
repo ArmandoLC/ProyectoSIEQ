@@ -12,6 +12,11 @@ app.config(function ($routeProvider) {
     }).when("/adminReservaciones", {
         templateUrl: "includes/adminReservaciones.html",
         controller: "adminReservaciones"
+    }).when("/adminUsuarios",{
+        templateUrl: "includes/adminUsuarios.html",
+        controller: "adminUsuarios"
+    }).when("/login",{
+        templateUrl: "login.html"
     }).otherwise({
         redirectTo: "/adminSitios"
     });

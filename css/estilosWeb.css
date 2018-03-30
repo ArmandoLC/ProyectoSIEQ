@@ -193,3 +193,12 @@ table i{
 .noPointer {
     cursor: default;
 }
+
+/* Efectos al hacer hover*/
+.confirmHover:hover{
+    color: darkblue;
+}
+
+.deleteHover:hover{
+    color: darkred;
+}
