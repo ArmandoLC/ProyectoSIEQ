@@ -21,7 +21,7 @@
         <th>Cant Actual:</th>
         <th>Cant de Alerta:</th>
         <th>Hoja de Seguridad:</th>
-        <th>¿Es Precursor?</th>
+        <th >¿Es Precursor?</th>
         <th>Opciones</th>
     </tr>
     <tr class="aCentro" ng-repeat="r in listaReactivos | filter:filtroReactivos">
@@ -30,23 +30,26 @@
         <td>{{r.CantidadActual}} {{r.Siglas}}</td>
         <td> {{r.PuntoReorden}} {{r.Siglas}} </td>
         <td><a href={{r.URLHojaSeguridad}} target="_blank">Link</a></td>
-        <td><label class="checkContainer">
+        <td><label class="checkContainer noPointer">
                     <input type="checkbox" ng-checked="r.EsPrecursor==1" disabled>
                     <span class="checkmark"></span>
                 </label></td>
-        <td><i class="fa fa-pencil" ng-click="editarReactivo(r)"></i><i class="fa fa-retweet"></i><i class="fa fa-trash"></i>
+        <td>
+            <div class="flex noWrap">
+                <i class="fa fa-pencil" ng-click="editarReactivo(r)"></i><i class="fa fa-retweet"></i><i class="fa fa-trash"></i>
+            </div>
         </td>
     </tr>
 </table>
 
-<div ng-init="popupCrearReactivo = true" ng-show="popupCrearReactivo" class="popup">
+<div ng-init="popupCrearReactivo = false" ng-show="popupCrearReactivo" class="popup">
     <div class="popContenido">
         <h2>Crear Nuevo Reactivo <span class="pointer" ng-click="popupCrearReactivo=false">X</span></h2>
         <div ng-init="objReactivo = {}">
             <p><b class="f22">Detalles del Reactivo</b></p>
             <p>Nombre<input type="text" ng-model="objReactivo.nombre"></p>
             <p>Ubicación<input type="text" ng-model="objReactivo.ubicacion"></p>
-            <p>Cantidad Inicial<input type="number" ng-model="objReactivo.cantInicial" step="0.1"></p>
+            <p>Cantidad Inicial<input type="number" ng-model="objReactivo.CantidadActual" step="0.1"></p>
             <p>Unidad de Medida
                 <select ng-model="objReactivo.UnidadMetricaID" ng-init="objReactivo.UnidadMetricaID = unidades[0].UnidadMetricaID">
                     <option ng-value="u.id" ng-repeat="u in unidades">
@@ -54,8 +57,8 @@
                     </option>
                 </select>
             </p>
-            <p>Cantidad alerta<input type="number" ng-model="objReactivo.cantAlerta" step="0.1"></p>
-            <p>Enlace de Hoja de Seguridad<input type="text" ng-model="objReactivo.hojaSeguridad"></p>
+            <p>Cantidad alerta<input type="number" ng-model="objReactivo.PuntoReorden" step="0.1"></p>
+            <p>Enlace de Hoja de Seguridad<input type="text" ng-model="objReactivo.URLHojaSeguridad"></p>
             <p>¿Es Precursor?
                 <label class="checkContainer">
                     <input type="checkbox" ng-model="objReactivo.precursor">
@@ -69,20 +72,24 @@
     </div>
 </div>
 
-<div ng-show="popupEditarReactivo" class="popup">
+<div ng-show="popupEditarReactivo" ng-init="reactivoEditar = {}" class="popup">
     <div class="popContenido">
         <h2>Crear Nuevo Reactivo <span class="pointer" ng-click="popupEditarReactivo=false">X</span></h2>
         <div>
             <p><b class="f22">Detalles del Reactivo</b></p>
-            <p>Nombre<input type="text" ng-model="reactivoEditar.nombre"></p>
-            <p>Ubicación<input type="text" ng-model="reactivoEditar.ubicacion"></p>
-            <p>Cantidad Inicial<input type="number" ng-model="reactivoEditar.cantInicial" step="0.1"></p>
-            <p>Unidad de Medida <select ng-model="reactivoEditar.unidad" name="" id=""></select> </p>
-            <p>Cantidad alerta<input type="number" ng-model="reactivoEditar.cantAlerta" step="0.1"></p>
-            <p>Enlace de Hoja de Seguridad<input type="text" ng-model="reactivoEditar.hojaSeguridad"></p>
+            <p>Nombre<input type="text" ng-model="reactivoEditar.nombreReactivo"></p>
+            <p>Ubicación<input type="text" ng-model="reactivoEditar.Ubicacion"></p>
+            <p>Cantidad Inicial<input type="number" ng-model="reactivoEditar.CantidadActual" step="0.1"></p>
+            <p>Unidad de Medida
+                <select ng-model="reactivoEditar.UnidadMetricaID">
+                    <option ng-value="u.id" ng-selected="reactivoEditar.UnidadMetricaID == u.id" ng-repeat="u in unidades">{{u.Nombre}}</option>
+                </select>
+            </p>
+            <p>Cantidad alerta<input type="number" ng-model="reactivoEditar.PuntoReorden" step="0.1"></p>
+            <p>Enlace de Hoja de Seguridad<input type="text" ng-model="reactivoEditar.URLHojaSeguridad"></p>
             <p>¿Es Precursor?
                 <label class="checkContainer">
-                    <input type="checkbox" ng-model="reactivoEditar.precursor">
+                    <input type="checkbox" ng-checked="reactivoEditar.EsPrecursor==1" >
                     <span class="checkmark"></span>
                 </label>
             </p>

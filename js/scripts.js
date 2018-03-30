@@ -42,7 +42,6 @@ app.controller("login", function ($scope, $rootScope, $location, $http, $cookies
                     // guardar la sesion en una cookie
                     var sesion = {};
                     sesion.userUsuarioActivo = usuario.nombreUsuario;
-                    $log.log(sesion);
                     var tiempo = new Date();
                     tiempo.setHours(tiempo.getHours() + 12); // guardamos la sesion por 12 horas
                     $cookies.putObject("fdsfsdfgsfg5vbv", sesion, {
@@ -50,7 +49,7 @@ app.controller("login", function ($scope, $rootScope, $location, $http, $cookies
                     });
                     //window.location.pathname = rootHost + "/includes/adminSitios.html";
                 }
-            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
     }
@@ -80,7 +79,7 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
                 log("LISTO Solicitud registrada");
 
                 //window.location.pathname = "login.html";
-            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
     }
@@ -109,23 +108,27 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
             }
         }
 
-        $scope.cargarListaReactivos = function (){
+        $scope.cargarListaReactivos = function () {
             if (!$scope.listaReactivos) {
                 cargarListaReactivos();
             }
         }
 
-        $scope.editarReactivo = function(r){
-
+        $scope.editarReactivo = function (r) {
+            $scope.popupEditarReactivo = true;
+            $scope.reactivoEditar = JSON.clone(r);
+            log($scope.reactivoEditar);
+            $scope.reactivoEditar.CantidadActual = parseFloat($scope.reactivoEditar.CantidadActual);
+            $scope.reactivoEditar.PuntoReorden = parseFloat($scope.reactivoEditar.PuntoReorden);
+            $scope.reactivoEditar.UnidadMetricaID = parseInt($scope.reactivoEditar.UnidadMetricaID);
         }
 
         function cargarListaReactivos() {
             $rootScope.solicitudHttp(rootHost + "API/VerListaReactivos.php", null, function () {
                 $rootScope.agregarAlerta("Error Desconocido");
             }, function (listaDatos) {
-                log(listaDatos);
                 $scope.listaReactivos = listaDatos;
-            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
 
         function cargarUnidades() {
@@ -134,11 +137,17 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
                 $rootScope.agregarAlerta("Error Desconocido");
             }, function (listaDatos) {
                 $scope.unidades = listaDatos;
-            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+                log($scope.unidades);
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
 
         /*Variables definidas del Scope y llamados a funciones */
-        cargarListaReactivos();
+        if (!$scope.unidades) {
+            cargarUnidades();
+        }
+        if (!$scope.listaReactivos) {
+            cargarListaReactivos();
+        };
     }
 });
 /* ADMINFLOTILLAS CONTROLLER */
@@ -255,7 +264,6 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
         $http.post(url, fd, config).then(function (respuesta) {
             if ($rootScope.debugMode || forzarDebug) {
                 log("Solicitud " + url + " | " + respuesta.data.message);
-                log(respuesta);
             }
             if (respuesta.data.message === "OK") {
                 if (respuesta.data.listaDatos != undefined) {

@@ -74,7 +74,7 @@ h2 span {
 .checkContainer {
     display: inline-block;
     position: relative;
-    margin-left: 10px;
+    margin-left: -20px;
     margin-bottom: 20px;
     cursor: pointer;
     font-size: 22px;
@@ -179,7 +179,17 @@ table i{
     width: 100%;
 }
 
+.flex{
+    display: flex;
+}
+.noWrap{
+    flex-wrap: nowrap;
+}
 
 .bordesLados {
     padding:2px 25px
+}
+
+.noPointer {
+    cursor: default;
 }
