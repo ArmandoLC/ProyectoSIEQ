@@ -14,7 +14,9 @@ $UsuarioID = $obj["UsuarioID"];
 $EstadoID = $obj["EstadoID"];
 
 if($conexion){
-    $consulta = "CALL ActualizarEstadoUsuario(".mysqli_real_escape_string($conexion, $UsuarioID).",".mysqli_real_escape_string($conexion, $EstadoID).")";
+    $consulta = "CALL ActualizarEstadoUsuario(
+					".mysqli_real_escape_string($conexion, $UsuarioID).",
+					".mysqli_real_escape_string($conexion, $EstadoID).")";
 					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
