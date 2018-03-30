@@ -98,18 +98,47 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
         }
         $scope.mostrarPanelUnidades = function () {
             $scope.panelUnidades = true;
-            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
-            $rootScope.solicitudHttp(rootHost + "API/getUnidades.php", null, function () {
+            if (!$scope.unidades) {
+                cargarUnidades();
+            }
+        }
+        $scope.mostrarPanelCrearReactivo = function () {
+            $scope.popupCrearReactivo = true;
+            if (!$scope.unidades) {
+                cargarUnidades();
+            }
+        }
+
+        $scope.cargarListaReactivos = function (){
+            if (!$scope.listaReactivos) {
+                cargarListaReactivos();
+            }
+        }
+
+        $scope.editarReactivo = function(r){
+
+        }
+
+        function cargarListaReactivos() {
+            $rootScope.solicitudHttp(rootHost + "API/VerListaReactivos.php", null, function () {
                 $rootScope.agregarAlerta("Error Desconocido");
             }, function (listaDatos) {
                 log(listaDatos);
+                $scope.listaReactivos = listaDatos;
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+
+        function cargarUnidades() {
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/VerUnidadesMetricas.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
                 $scope.unidades = listaDatos;
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
-
-
         }
-        /*Variables globales del Scope*/
-        $scope.panelUnidades = false;
+
+        /*Variables definidas del Scope y llamados a funciones */
+        cargarListaReactivos();
     }
 });
 /* ADMINFLOTILLAS CONTROLLER */

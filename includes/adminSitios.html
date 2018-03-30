@@ -1,8 +1,19 @@
-<h1>Inventario de Reactivos<div class="unidadesMedida" ng-click="mostrarPanelUnidades()"><i class="fa fa-cog"></i><span>Unidades de Medida</span></div></h1>
+<h1>Inventario de Reactivos
+    <div class="unidadesMedida" ng-click="mostrarPanelUnidades()"><i class="fa fa-cog"></i><span>Unidades de Medida</span></div>
+</h1>
 
 <!--<h2>Inventario de Reactivos Químicos</h2> -->
 
-<br>
+<div style="display: flex; justify-content: space-between; padding: 10px 0px">
+    <div>
+        <input class="fullMargin" type="text" ng-model="filtroReactivos" placeholder="Buscar" id="txtBusqueda">
+        <i class="fa fa-search" style="margin-left: -25px"></i>
+    </div>
+    <div>
+        <button ng-click="mostrarPanelCrearReactivo()" title="Agregar Nuevo Reactivo"> <i class="fa fa-plus"></i> Agregar Nuevo</button>
+        <button ng-click="cargarListaProductos()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+    </div>
+</div>
 <table class="tbLista">
     <tr class="aCentro">
         <th>Nombre:</th>
@@ -13,35 +24,22 @@
         <th>¿Es Precursor?</th>
         <th>Opciones</th>
     </tr>
-    <tr class="aCentro">
-        <td> Azufre </td>
-        <td> Esatante G-18 </td>
-        <td> 10 L </td>
-        <td> 5 L </td>
-        <td><a href="http://www.inet.edu.ar/wp-content/uploads/2012/11/azufre.pdf" target="_blank">Link</a></td>
+    <tr class="aCentro" ng-repeat="r in listaReactivos | filter:filtroReactivos">
+        <td>{{r.nombreReactivo}}</td>
+        <td>{{r.Ubicacion}}</td>
+        <td>{{r.CantidadActual}} {{r.Siglas}}</td>
+        <td> {{r.PuntoReorden}} {{r.Siglas}} </td>
+        <td><a href={{r.URLHojaSeguridad}} target="_blank">Link</a></td>
         <td><label class="checkContainer">
-                    <input type="checkbox" checked="checked" ng-model="objReactivo.precursor">
+                    <input type="checkbox" ng-checked="r.EsPrecursor==1" disabled>
                     <span class="checkmark"></span>
                 </label></td>
         <td><i class="fa fa-pencil" ng-click="editarReactivo(r)"></i><i class="fa fa-retweet"></i><i class="fa fa-trash"></i>
         </td>
     </tr>
-    <tr class="aCentro">
-        <td> Azufre </td>
-        <td> Esatante G-18 </td>
-        <td> 10 L </td>
-        <td> 5 L </td>
-        <td><a href="http://www.inet.edu.ar/wp-content/uploads/2012/11/azufre.pdf" target="_blank">Link</a></td>
-        <td><label class="checkContainer">
-                    <input type="checkbox" checked="checked" ng-model="objReactivo.precursor">
-                    <span class="checkmark"></span>
-                </label></td>
-        <td><i class="fa fa-pencil"></i><i class="fa fa-retweet"></i><i class="fa fa-trash"></i>
-        </td>
-    </tr>
 </table>
 
-<div ng-show="popupCrearReactivo" class="popup">
+<div ng-init="popupCrearReactivo = true" ng-show="popupCrearReactivo" class="popup">
     <div class="popContenido">
         <h2>Crear Nuevo Reactivo <span class="pointer" ng-click="popupCrearReactivo=false">X</span></h2>
         <div ng-init="objReactivo = {}">
@@ -49,7 +47,13 @@
             <p>Nombre<input type="text" ng-model="objReactivo.nombre"></p>
             <p>Ubicación<input type="text" ng-model="objReactivo.ubicacion"></p>
             <p>Cantidad Inicial<input type="number" ng-model="objReactivo.cantInicial" step="0.1"></p>
-            <p>Unidad de Medida <select ng-model="objReactivo.unidad" name="" id=""></select> </p>
+            <p>Unidad de Medida
+                <select ng-model="objReactivo.UnidadMetricaID" ng-init="objReactivo.UnidadMetricaID = unidades[0].UnidadMetricaID">
+                    <option ng-value="u.id" ng-repeat="u in unidades">
+                    {{u.Nombre}}
+                    </option>
+                </select>
+            </p>
             <p>Cantidad alerta<input type="number" ng-model="objReactivo.cantAlerta" step="0.1"></p>
             <p>Enlace de Hoja de Seguridad<input type="text" ng-model="objReactivo.hojaSeguridad"></p>
             <p>¿Es Precursor?

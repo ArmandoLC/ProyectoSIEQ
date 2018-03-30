@@ -10,7 +10,7 @@ if(!@include("funciones/funciones.php")){
 $conexion = mysqli_connect($host, $user, $pw, $db);
 
 if($conexion){
-    $consulta = "CALL getUnidades()";
+    $consulta = "CALL VerListaReactivos()";
 
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
