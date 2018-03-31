@@ -17,9 +17,13 @@ var app = angular.module('app', ['ngRoute', 'ngCookies']);
         console.log(o);
     }
 
+    function setEditable(e) {
+        e.readOnly = false;
+    }
+
 }
 // host
-//host = "http://localhost/ProyectoWeb/";
+host = "ProyectoSIEQ/";
 rootHost = "https://sieq.000webhostapp.com/"
 
 /* LOGIN CONTROLLER */
@@ -48,7 +52,7 @@ app.controller("login", function ($scope, $rootScope, $location, $http, $cookies
                     $cookies.putObject("fdsfsdfgsfg5vbv", sesion, {
                         expires: tiempo
                     });
-                    window.location.pathname = "index.html"
+                    window.location.pathname = host + "index.html"
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
@@ -59,14 +63,13 @@ app.controller("login", function ($scope, $rootScope, $location, $http, $cookies
 /* REGISTRARSE CONTROLLER */
 app.controller("registrarse", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        //window.location.pathname = rootHost + "login.html";
-
+        //window.location.pathname = "login.html";
     } else {
         log("registrarse");
         //$scope.roles = "";
 
-        $scope.registrarse = function(obj){
-            $rootScope.solicitudHttp(rootHost + "API/AgregarUsuario.php", obj,function(){
+        $scope.registrarse = function (obj) {
+            $rootScope.solicitudHttp(rootHost + "API/AgregarUsuario.php", obj, function () {
                 $rootScope.agregarAlerta("Nombre de usuario no disponible");
             }, function (listaDatos) {
                 if (listaDatos.length == 0) {
@@ -74,13 +77,13 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
                 } else {
                     log("Solicitud agregada con éxito");
 
-                    window.location.pathname = "login.html";
+                    window.location.pathname = host + "login.html";
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        $scope.verRolesUsuario = function(){
-            $rootScope.solicitudHttp(rootHost + "API/VerRolesUsuario.php", {},function(){
+        $scope.verRolesUsuario = function () {
+            $rootScope.solicitudHttp(rootHost + "API/VerRolesUsuario.php", {}, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida");
             }, function (listaDatos) {
                 if (listaDatos.length == 0) {
@@ -102,13 +105,13 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
 /* ADMIN USUARIOS CONTROLLER */
 app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        //window.location.pathname = rootHost + "login.html";
+        //window.location.pathname = host + "login.html";
     } else {
         log("adminUsuarios");
         $scope.solicitudesCuenta = [];
 
-        $scope.verUsuariosPendientes = function(){
-            $rootScope.solicitudHttp(rootHost + "API/VerUsuariosPendientes.php", {},function(){
+        $scope.verUsuariosPendientes = function () {
+            $rootScope.solicitudHttp(rootHost + "API/VerUsuariosPendientes.php", {}, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
             }, function (listaDatos) {
                 if (listaDatos.length == 0) {
@@ -120,11 +123,11 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        $scope.actualizarEstadoUsuario = function(usuarioID, tipo){
+        $scope.actualizarEstadoUsuario = function (usuarioID, tipo) {
             var obj = {}
             obj.EstadoID = tipo;
             obj.UsuarioID = usuarioID
-            $rootScope.solicitudHttp(rootHost + "API/ActualizarEstadoUsuario.php", obj,function(){
+            $rootScope.solicitudHttp(rootHost + "API/ActualizarEstadoUsuario.php", obj, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
             }, function (listaDatos) {
                 if (listaDatos.length == 0) {
@@ -141,22 +144,10 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
         $scope.verUsuariosPendientes();
     }
 });
-
-/* ADMINSITIOS CONTROLLER */
-app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
-    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        window.location.pathname = rootHost + "login.html";
-    } else {
-        log("adminSitios");
-        /*
-            Codigo aquí
-        */
-    }
-});
 /* ADMINFLOTILLAS CONTROLLER */
 app.controller("adminFlotillas", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        window.location.pathname = rootHost + "login.html";
+        window.location.pathname = host + "login.html";
     } else {
         log("adminFlotillas");
         /*
@@ -167,7 +158,7 @@ app.controller("adminFlotillas", function ($scope, $rootScope, $location, $http,
 /* ADMINGIRAS CONTROLLER */
 app.controller("adminGiras", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        window.location.pathname = rootHost + "login.html";
+        window.location.pathname = host + "login.html";
     } else {
         log("adminGiras");
         /*
@@ -175,10 +166,134 @@ app.controller("adminGiras", function ($scope, $rootScope, $location, $http, $co
         */
     }
 });
+/* ADMINSITIOS CONTROLLER */
+app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        window.location.pathname = host + "login.html";
+    } else {
+        log("adminSitios");
+        $scope.editarReactivo = function (r) {
+            $scope.reactivoEditar = JSON.clone(r);
+            $scope.popupEditarReactivo = true;
+        }
+        $scope.mostrarPanelUnidades = function () {
+            cargarUnidades();
+            $scope.panelUnidades = true;
+        }
+        $scope.mostrarPanelCategorias = function () {
+            cargarCategorias();
+            $scope.panelCategorias = true;
+        }
+        $scope.mostrarPanelCrearReactivo = function () {
+            $scope.popupCrearReactivo = true;
+            if (!$scope.unidades) {
+                cargarUnidades();
+            }
+            $scope.objReactivo.UnidadMetricaID = $scope.unidades[0].UnidadMetricaID;
+            $scope.objReactivo.precursor = false;
+            $scope.objReactivo.Descripcion = '';
+            $scope.objReactivo.URLHojaSeguridad = '';
+            $scope.objReactivo.UsuarioID = $rootScope.idUsuarioActivo;
+        }
+
+        $scope.cargarListaReactivos = function () {
+            if (!$scope.listaReactivos) {
+                cargarListaReactivos();
+            }
+        }
+
+        $scope.preEditarReactivo = function (r) {
+            $scope.popupEditarReactivo = true;
+            $scope.reactivoEditar = JSON.clone(r);
+            $scope.reactivoEditar.CantidadActual = parseFloat($scope.reactivoEditar.CantidadActual);
+            $scope.reactivoEditar.PuntoReorden = parseFloat($scope.reactivoEditar.PuntoReorden);
+            log($scope.reactivoEditar);
+        }
+
+        $scope.editarReactivo = function () {
+            var objReactivocrear = {
+                Nombre: $scope.reactivoEditar.nombreReactivo,
+                Ubicacion: $scope.reactivoEditar.Ubicacion,
+                CantidadActual: $scope.reactivoEditar.CantidadActual,
+                PuntoReorden: $scope.reactivoEditar.PuntoReorden,
+                Descripcion: $scope.reactivoEditar.Descripcion,
+                EsPrecursor: $scope.reactivoEditar.EsPrecursor,
+                UnidadMetricaID: $scope.reactivoEditar.UnidadMetricaID,
+                CategoriaID: $scope.reactivoEditar.CategoriaReactivoID,
+                URLHojaSeguridad: $scope.reactivoEditar.URLHojaSeguridad,
+                UsuarioID: $rootScope.idUsuarioActivo
+            };
+        }
+
+        $scope.agregarReactivo = function () {
+            log($scope.objReactivo);
+            log("solicitando...")
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/AgregarReactivo.php", $scope.objReactivo,function () {
+                $rootScope.agregarAlerta("No se ha podido ingresar el reactivo");
+                log("ya existía")
+            }, function (listaDatos) {
+                log("Se metió")
+                log(listaDatos);
+                $rootScope.agregarAlerta("Se ha agregado el reactivo");
+                cargarListaReactivos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+        };
+
+        function cargarListaReactivos() {
+            $rootScope.solicitudHttp(rootHost + "API/VerListaReactivos.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.listaReactivos = listaDatos;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        function cargarUnidades() {
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/VerUnidadesMetricas.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.unidades = listaDatos;
+                $scope.unidades.forEach(function (u) {
+                    u.UnidadMetricaID = parseInt(u.UnidadMetricaID);
+                })
+                $scope.preUnidades = listaDatos;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        function cargarCategorias() {
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/VerCategorias.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.categorias = listaDatos;
+                $scope.categorias.forEach(function (c) {
+                    c.CategoriaReactivoID = parseInt(c.CategoriaReactivoID);
+                })
+                log( $scope.categorias);
+                $scope.preCategorias = listaDatos;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+
+
+        /*Variables definidas del Scope y llamados a funciones */
+        if (!$scope.categorias) {
+            cargarCategorias();
+        };
+        if (!$scope.unidades) {
+            cargarUnidades();
+        };
+        if (!$scope.listaReactivos) {
+            cargarListaReactivos();
+        };
+    }
+});
 /* ADMINRESERVACIONES CONTROLLER */
 app.controller("adminReservaciones", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        window.location.pathname = rootHost + "login.html";
+        window.location.pathname = host + "login.html";
     } else {
         log("adminReservaciones");
         /*
@@ -190,8 +305,6 @@ app.controller("adminReservaciones", function ($scope, $rootScope, $location, $h
 
 /* CONTROLADOR PRINCIPAL */
 app.controller("mainController", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
-
-
     //*********************************************
     // Sistema de alertas personalizados
     $rootScope.listaAlerts = [];
@@ -258,7 +371,7 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
         $rootScope.rolUsuarioActivo = "";
         $rootScope.idUsuarioActivo = "";
         $rootScope.sesionIniciada = false;
-        window.location.pathname = "login.html";
+        window.location.pathname = host + "login.html";
     };
     /* Funcion generica para solicitudes http */
     $rootScope.debugMode = false;
@@ -274,7 +387,6 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
         $http.post(url, fd, config).then(function (respuesta) {
             if ($rootScope.debugMode || forzarDebug) {
                 log("Solicitud " + url + " | " + respuesta.data.message);
-                log(respuesta);
             }
             if (respuesta.data.message === "OK") {
                 if (respuesta.data.listaDatos != undefined) {
