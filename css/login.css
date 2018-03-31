@@ -41,7 +41,7 @@ button {
 }
 
 .bgImage{
-    background-image: url(/img/wallpaper.jpg);
+    background-image: url(../img/wallpaper.jpg);
     background-size: cover;
 }
 .bgTransparent{
