@@ -190,7 +190,8 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
                 cargarUnidades();
             }
             $scope.objReactivo.UnidadMetricaID = $scope.unidades[0].UnidadMetricaID;
-            $scope.objReactivo.precursor = false;
+            $scope.objReactivo.CategoriaID = $scope.categorias[0].CategoriaReactivoID;
+            $scope.objReactivo.EsPrecursor = false;
             $scope.objReactivo.Descripcion = '';
             $scope.objReactivo.URLHojaSeguridad = '';
             $scope.objReactivo.UsuarioID = $rootScope.idUsuarioActivo;
@@ -227,18 +228,19 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
 
         $scope.agregarReactivo = function () {
             log($scope.objReactivo);
-            log("solicitando...")
+            if ($scope.objReactivo.EsPrecursor == false) {
+                $scope.objReactivo.EsPrecursor = 0;
+            };
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
-            $rootScope.solicitudHttp(rootHost + "API/AgregarReactivo.php", $scope.objReactivo,function () {
+            $rootScope.solicitudHttp(rootHost + "API/AgregarReactivo.php", $scope.objReactivo, function () {
                 $rootScope.agregarAlerta("No se ha podido ingresar el reactivo");
                 log("ya existía")
             }, function (listaDatos) {
                 log("Se metió")
-                log(listaDatos);
                 $rootScope.agregarAlerta("Se ha agregado el reactivo");
+                $scope.popupCrearReactivo = false;
                 cargarListaReactivos();
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
-
         };
 
         function cargarListaReactivos() {
@@ -271,7 +273,6 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
                 $scope.categorias.forEach(function (c) {
                     c.CategoriaReactivoID = parseInt(c.CategoriaReactivoID);
                 })
-                log( $scope.categorias);
                 $scope.preCategorias = listaDatos;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
