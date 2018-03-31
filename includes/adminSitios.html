@@ -6,7 +6,7 @@
     <div class="flex">
         <input class="fullMargin" type="text" ng-model="filtroReactivos" placeholder="Buscar" id="txtBusqueda">
         <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
-        <div class="unidadesMedida" ng-click="mostrarPanelUnidades()"  title="Administrar Unidades de Medida"><i class="fa fa-cog"></i><span>Unidades</span></div>
+        <div class="unidadesMedida" ng-click="mostrarPanelUnidades()" title="Administrar Unidades de Medida"><i class="fa fa-cog"></i><span>Unidades</span></div>
         <div class="unidadesMedida" ng-click="mostrarPanelCategorias()" title="Administrar Categorias"><i class="fa fa-cog"></i><span>Categorías</span></div>
     </div>
     <div>
@@ -27,15 +27,17 @@
     </tr>
     <tr class="aCentro" ng-repeat="r in listaReactivos | filter:filtroReactivos">
         <td>{{r.nombreReactivo}}</td>
-        <td class="mW200px">{{r.Descripcion}} adasdasd asd asd as d asdsad asasds ad sad as das das d ad s</td>
+        <td class="mW200px">{{r.Descripcion}}</td>
         <td>{{r.Ubicacion}}</td>
         <td>{{r.CantidadActual}} {{r.Siglas}}</td>
         <td> {{r.PuntoReorden}} {{r.Siglas}} </td>
         <td><a href={{r.URLHojaSeguridad}} target="_blank">Link</a></td>
-        <td><label class="checkContainer noPointer">
-                    <input type="checkbox" ng-checked="r.EsPrecursor==1" disabled>
-                    <span class="checkmark"></span>
-                </label></td>
+        <td>
+            <label class="checkContainer noPointer">
+                <input type="checkbox" ng-checked="r.EsPrecursor==1" disabled>
+                <span class="checkmark"></span>
+            </label>
+        </td>
         <td>
             <div class="flex noWrap">
                 <i class="fa fa-pencil" ng-click="preEditarReactivo(r)"></i><i class="fa fa-retweet"></i><i class="fa fa-trash"></i>
@@ -57,6 +59,11 @@
                 <p>Unidad de Medida
                     <select ng-model="objReactivo.UnidadMetricaID">
                         <option ng-value="u.UnidadMetricaID" ng-repeat="u in unidades" ng-selected="objReactivo.UnidadMetricaID==u.UnidadMetricaID">{{u.Nombre}}</option>
+                    </select>
+                </p>
+                <p>Categoría del Reactivo
+                    <select ng-model="objReactivo.CategoriaID">
+                        <option ng-value="c.CategoriaReactivoID" ng-repeat="c in categorias" ng-selected="objReactivo.CategoriaID==c.CategoriaReactivoID">{{c.Nombre}}</option>
                     </select>
                 </p>
                 <p>Cantidad alerta<input type="number" ng-model="objReactivo.PuntoReorden" step="0.1" required></p>
@@ -86,6 +93,11 @@
             <p>Unidad de Medida
                 <select ng-model="reactivoEditar.UnidadMetricaID">
                     <option ng-value="u.UnidadMetricaID" ng-selected="reactivoEditar.UnidadMetricaID == u.UnidadMetricaID" ng-repeat="u in unidades">{{u.Nombre}}</option>
+                </select>
+            </p>
+            <p>Categoria del Reactivo
+                <select ng-model="reactivoEditar.CategoriaID">
+                    <option ng-value="c.CategoriaReactivoID" ng-selected="reactivoEditar.CategoriaID == c.CategoriaReactivoID" ng-repeat="c in categorias">{{c.Nombre}}</option>
                 </select>
             </p>
             <p>Cantidad alerta<input type="number" ng-model="reactivoEditar.PuntoReorden" step="0.1"></p>
@@ -127,7 +139,7 @@
 
 <div ng-show="panelCategorias" class="popup" ng-init="preCategorias = []">
     <div class="popContenido">
-        <h2>Categorí    as de Reactivos<span class="pointer" ng-click="panelCategorias=false">X</span></h2>
+        <h2>Categorías de Reactivos<span class="pointer" ng-click="panelCategorias=false">X</span></h2>
         <div>
             <table class="marginAuto w100pc tbLista">
                 <tr>
