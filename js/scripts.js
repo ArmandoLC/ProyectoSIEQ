@@ -108,6 +108,52 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
         //window.location.pathname = host + "login.html";
     } else {
         log("adminUsuarios");
+        $scope.usuarios = [];
+
+        $scope.verListaUsuarios = function (UsuarioID) {
+            var obj = {};
+            obj.UsuarioID = UsuarioID;
+            $rootScope.solicitudHttp(rootHost + "API/VerListaUsuarios.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("No hay usuarios en el sistema");
+                } else {
+                    log("Lista de usuarios consultada con éxito");
+                    $scope.usuarios = listaDatos;
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        /*
+        $scope.actualizarEstadoUsuario = function (usuarioID, tipo) {
+            var obj = {}
+            obj.EstadoID = tipo;
+            obj.UsuarioID = usuarioID
+            $rootScope.solicitudHttp(rootHost + "API/ActualizarEstadoUsuario.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("Lista Tamaño 0");
+                } else {
+                    log("Lista con datos");
+                    log(listaDatos);
+                    $scope.verUsuariosPendientes();
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        */
+        $scope.verListaUsuarios($rootScope.idUsuarioActivo);
+
+    }
+});
+
+/* ADMIN DE SOLICITUDES CONTROLLER */
+app.controller("adminSolicitudes", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = host + "login.html";
+    } else {
+        log("adminSolicitudes");
         $scope.solicitudesCuenta = [];
 
         $scope.verUsuariosPendientes = function () {
@@ -144,6 +190,7 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
         $scope.verUsuariosPendientes();
     }
 });
+
 /* ADMINFLOTILLAS CONTROLLER */
 app.controller("adminFlotillas", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada

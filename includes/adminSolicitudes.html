@@ -1,0 +1,28 @@
+<h1>Administración de Solicitudes</h1>
+<ul class="ulMenu">
+  <li class="liMenu"><a class="activeMenu aMenu" href="#!adminSolicitudes">Solicitudes de cuentas</a></li>
+  <li class="liMenu"><a class="aMenu" href="#!adminUsuarios">Administración de usuarios</a></li>
+</ul>
+<br>
+
+<table class="tbLista">
+    <tr class="aCentro">
+        <th>Nombre:</th>
+        <th>Usuario:</th>
+        <th>Rol:</th>
+        <th>Correo:</th>
+        <th>¿Aceptar?</th>
+        <th>¿Rechazar?</th>
+    </tr>
+
+    <tr class="aCentro" ng-repeat="solicitud in solicitudesCuenta">
+        <td> {{solicitud.Nombre}} </td>
+        <td> {{solicitud.Usuario}} </td>
+        <td> {{solicitud.Rol}} </td>
+        <td> {{solicitud.Correo}} </td>
+        <td> <i class="fa fa-check confirmHover" ng-click="actualizarEstadoUsuario(solicitud.UsuarioID, 1)"></i></td>
+        <td> <i class="fa fa-ban deleteHover" ng-click="actualizarEstadoUsuario(solicitud.UsuarioID, 2)"></i></td>
+
+    </tr>
+
+</table>

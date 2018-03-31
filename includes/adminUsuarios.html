@@ -1,24 +1,25 @@
 <h1>Administración de Usuarios</h1>
-<h2>Solicitudes de cuenta</h2>
+<ul class="ulMenu">
+  <li class="liMenu"><a class="aMenu" href="#!adminSolicitudes">Solicitudes de cuentas</a></li>
+  <li class="liMenu"><a class="activeMenu aMenu" href="#!adminUsuarios">Administración de usuarios</a></li>
+</ul>
 <br>
 <table class="tbLista">
     <tr class="aCentro">
         <th>Nombre:</th>
         <th>Usuario:</th>
-        <th>Rol:</th>
         <th>Correo:</th>
-        <th>¿Aceptar?</th>
-        <th>¿Rechazar?</th>
+        <th>Rol:</th>
+        <th>¿Bloqueado?</th>
+        <th>¿Eliminar?</th>
     </tr>
 
-    <tr class="aCentro" ng-repeat="solicitud in solicitudesCuenta">
-        <td> {{solicitud.Nombre}} </td>
-        <td> {{solicitud.Usuario}} </td>
-        <td> {{solicitud.Rol}} </td>
-        <td> {{solicitud.correo}} </td>
-        <td> <i class="fa fa-check confirmHover" ng-click="actualizarEstadoUsuario(solicitud.UsuarioID, 1)"></i></td>
-        <td> <i class="fa fa-ban deleteHover" ng-click="actualizarEstadoUsuario(solicitud.UsuarioID, 2)"></i></td>
-
+    <tr class="aCentro" ng-repeat="usuario in usuarios">
+        <td>{{usuario.Nombre}}</td>
+        <td>{{usuario.Usuario}}</td>
+        <td>{{usuario.Correo}}</td>
+        <td>{{usuario.Rol}}</td>
+        <td> <i class="fa fa-check confirmHover" ng-click=""></i></td>
+        <td> <i class="fa fa-times-circle deleteHover" ng-click=""></i></td>
     </tr>
-
 </table>

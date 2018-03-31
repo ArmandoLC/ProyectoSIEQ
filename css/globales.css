@@ -198,3 +198,36 @@ button {
 }
 
 /* fin personalizacion del scroll bar */
+
+
+
+
+/*Personalización de submenús*/
+
+.ulMenu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.liMenu {
+    float: left;
+}
+
+.aMenu {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.aMenu:hover:not(.activeMenu) {
+    background-color: #111;
+}
+
+.activeMenu {
+    background-color: #09B047;
+}

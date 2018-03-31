@@ -15,6 +15,9 @@ app.config(function ($routeProvider) {
     }).when("/adminUsuarios",{
         templateUrl: "includes/adminUsuarios.html",
         controller: "adminUsuarios"
+    }).when("/adminSolicitudes",{
+        templateUrl: "includes/adminSolicitudes.html",
+        controller: "adminSolicitudes"
     }).when("/login",{
         templateUrl: "login.html"
     }).otherwise({
