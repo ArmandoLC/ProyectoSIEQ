@@ -124,6 +124,24 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
+
+        $scope.verRolesUsuario = function () {
+            $rootScope.solicitudHttp(rootHost + "API/VerRolesUsuario.php", {}, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("No se encontraron roles de usuario");
+                } else {
+                    log("Roles de usuario consultados con éxito");
+
+                    $scope.roles = listaDatos;
+                    //$scope.rolID = $scope.roles[0].RolID;
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+
+
         /*
         $scope.actualizarEstadoUsuario = function (usuarioID, tipo) {
             var obj = {}
@@ -143,7 +161,9 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
         };
 
         */
+
         $scope.verListaUsuarios($rootScope.idUsuarioActivo);
+        $scope.verRolesUsuario();
 
     }
 });
@@ -472,6 +492,15 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
                 }
             };
         });
+    };
+
+    $rootScope.esCoordinador = function(){
+        if($rootScope.rolUsuarioActivo == 'Coordinador'){
+            return true;
+        }
+        else{
+            return false;
+        }
     };
 
     $rootScope.limpiarTxt = function (txtId) {
