@@ -29,7 +29,7 @@ rootHost = "https://sieq.000webhostapp.com/"
 /* LOGIN CONTROLLER */
 app.controller("login", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        window.location.pathname = "index.html";
+        window.location.pathname = host + "index.html";
     } else {
         log("login");
 
