@@ -56,8 +56,13 @@ h2 span {
 
 .popContenido > div p input[type='number'],
 .popContenido > div p select,
+.popContenido > div p textarea,
 .popContenido > div p input[type='text'] {
     width: 100%;
+}
+
+.popContenido > div p textarea {
+    resize: none;
 }
 
 .popContenido > div p input[type='checkbox'] {
@@ -83,6 +88,7 @@ h2 span {
 }
 
 /* Hide the browser's default checkbox */
+
 .checkContainer input {
     position: absolute;
     opacity: 0;
@@ -90,6 +96,7 @@ h2 span {
 }
 
 /* Create a custom checkbox */
+
 .checkmark {
     position: absolute;
     top: 0;
@@ -101,16 +108,19 @@ h2 span {
 }
 
 /* On mouse-over, add a grey background color */
+
 .checkContainer:hover input ~ .checkmark {
     background-color: #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */
+
 .checkContainer input:checked ~ .checkmark {
     background-color: #2196F3;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
+
 .checkmark:after {
     content: "";
     position: absolute;
@@ -118,11 +128,13 @@ h2 span {
 }
 
 /* Show the checkmark when checked */
+
 .checkContainer input:checked ~ .checkmark:after {
     display: block;
 }
 
 /* Style the checkmark/indicator */
+
 .checkContainer .checkmark:after {
     left: 9px;
     top: 5px;
@@ -134,10 +146,13 @@ h2 span {
 }
 
 /*Botones del Pop Up*/
-.buttonContainer{
+
+.buttonContainer {
     padding: 0px!important;
 }
-.popup button{
+
+.popup button,
+.popup input[type='submit'] {
     font-size: 18px;
     padding: 8px 10px;
     color: #fff;
@@ -146,28 +161,34 @@ h2 span {
     box-shadow: 0 2px #666;
     margin: 5px 8px
 }
-.popup button:hover{
+
+.popup button:hover,
+.popup input[type='submit']:hover {
     background: #08a141;
 }
 
-.popup button:active{
+.popup button:active,
+.popup input[type='submit']:active{
     box-shadow: 0 0px #666;
 }
 
 /*Subpages o Includes*/
-table i{
+
+table i {
     font-size: 25px!important;
     margin: 2px;
     padding: 2px;
 }
 
 .unidadesMedida {
-    float: right;
-    margin: 15px -25px 0px 0px;
+    background: rgb(221, 221, 221);
+    margin-left: 10px;
     display: inline-flex;
     flex-direction: column;
     font-size: 15px;
     cursor: pointer;
+    padding: 2px;
+    border-radius: 2px;
 }
 
 .marginAuto {
@@ -175,19 +196,21 @@ table i{
 }
 
 /*Globales*/
-.w100pc{
+
+.w100pc {
     width: 100%;
 }
 
-.flex{
+.flex {
     display: flex;
 }
-.noWrap{
+
+.noWrap {
     flex-wrap: nowrap;
 }
 
 .bordesLados {
-    padding:2px 25px
+    padding: 2px 25px
 }
 
 .noPointer {
@@ -195,10 +218,27 @@ table i{
 }
 
 /* Efectos al hacer hover*/
-.confirmHover:hover{
+
+.confirmHover:hover {
     color: darkblue;
 }
 
-.deleteHover:hover{
+.deleteHover:hover {
     color: darkred;
+}
+
+.paddingLeft0 {
+    margin-left: 0;
+}
+
+.mW200px {
+    max-width: 200px;
+}
+
+.h100pc {
+    height: 100%
+}
+
+.fullPaddingIzqDer {
+    padding: 0px 10px
 }

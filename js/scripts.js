@@ -180,11 +180,20 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
             cargarUnidades();
             $scope.panelUnidades = true;
         }
+        $scope.mostrarPanelCategorias = function () {
+            cargarCategorias();
+            $scope.panelCategorias = true;
+        }
         $scope.mostrarPanelCrearReactivo = function () {
             $scope.popupCrearReactivo = true;
             if (!$scope.unidades) {
                 cargarUnidades();
             }
+            $scope.objReactivo.UnidadMetricaID = $scope.unidades[0].UnidadMetricaID;
+            $scope.objReactivo.precursor = false;
+            $scope.objReactivo.Descripcion = '';
+            $scope.objReactivo.URLHojaSeguridad = '';
+            $scope.objReactivo.UsuarioID = $rootScope.idUsuarioActivo;
         }
 
         $scope.cargarListaReactivos = function () {
@@ -201,7 +210,7 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
             log($scope.reactivoEditar);
         }
 
-        $scope.agregarReactivo = function () {
+        $scope.editarReactivo = function () {
             var objReactivocrear = {
                 Nombre: $scope.reactivoEditar.nombreReactivo,
                 Ubicacion: $scope.reactivoEditar.Ubicacion,
@@ -212,22 +221,24 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
                 UnidadMetricaID: $scope.reactivoEditar.UnidadMetricaID,
                 CategoriaID: $scope.reactivoEditar.CategoriaReactivoID,
                 URLHojaSeguridad: $scope.reactivoEditar.URLHojaSeguridad,
-                //UsuarioID: $scope.reactivoEditar.
-                UsuarioID: 1
+                UsuarioID: $rootScope.idUsuarioActivo
             };
-            agregarReactivo()
         }
 
-        function agregarReactivo(r) {
-            $scope.reactivoEditar
+        $scope.agregarReactivo = function () {
+            log($scope.objReactivo);
+            log("solicitando...")
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
-            $rootScope.solicitudHttp(rootHost + "API/VerListaReactivos.php", function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+            $rootScope.solicitudHttp(rootHost + "API/AgregarReactivo.php", $scope.objReactivo,function () {
+                $rootScope.agregarAlerta("No se ha podido ingresar el reactivo");
+                log("ya existía")
             }, function (listaDatos) {
+                log("Se metió")
                 log(listaDatos);
                 $rootScope.agregarAlerta("Se ha agregado el reactivo");
-                $scope.listaReactivos = listaDatos;
+                cargarListaReactivos();
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
         };
 
         function cargarListaReactivos() {
@@ -244,13 +255,33 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
                 $rootScope.agregarAlerta("Error Desconocido");
             }, function (listaDatos) {
                 $scope.unidades = listaDatos;
+                $scope.unidades.forEach(function (u) {
+                    u.UnidadMetricaID = parseInt(u.UnidadMetricaID);
+                })
                 $scope.preUnidades = listaDatos;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        function cargarCategorias() {
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/VerCategorias.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.categorias = listaDatos;
+                $scope.categorias.forEach(function (c) {
+                    c.CategoriaReactivoID = parseInt(c.CategoriaReactivoID);
+                })
+                log( $scope.categorias);
+                $scope.preCategorias = listaDatos;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
 
 
         /*Variables definidas del Scope y llamados a funciones */
+        if (!$scope.categorias) {
+            cargarCategorias();
+        };
         if (!$scope.unidades) {
             cargarUnidades();
         };

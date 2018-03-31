@@ -1,31 +1,33 @@
-<h1>Inventario de Reactivos
-    <div class="unidadesMedida" ng-click="mostrarPanelUnidades()"><i class="fa fa-cog"></i><span>Unidades de Medida</span></div>
-</h1>
+<h1>Inventario de Reactivos</h1>
 
 <!--<h2>Inventario de Reactivos Químicos</h2> -->
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
-    <div>
+    <div class="flex">
         <input class="fullMargin" type="text" ng-model="filtroReactivos" placeholder="Buscar" id="txtBusqueda">
-        <i class="fa fa-search" style="margin-left: -25px"></i>
+        <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
+        <div class="unidadesMedida" ng-click="mostrarPanelUnidades()"  title="Administrar Unidades de Medida"><i class="fa fa-cog"></i><span>Unidades</span></div>
+        <div class="unidadesMedida" ng-click="mostrarPanelCategorias()" title="Administrar Categorias"><i class="fa fa-cog"></i><span>Categorías</span></div>
     </div>
     <div>
-        <button ng-click="mostrarPanelCrearReactivo()" title="Agregar Nuevo Reactivo"> <i class="fa fa-plus"></i> Agregar Nuevo</button>
-        <button ng-click="cargarListaReactivos()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+        <button class="h100pc" ng-click="mostrarPanelCrearReactivo()" title="Agregar Nuevo Reactivo"> <i class="fa fa-plus"></i> Agregar Nuevo</button>
+        <button class="h100pc fullPaddingIzqDer" ng-click="cargarListaReactivos()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
     </div>
 </div>
 <table class="tbLista">
     <tr class="aCentro">
         <th>Nombre:</th>
+        <th>Descripción:</th>
         <th>Ubicación:</th>
         <th>Cant Actual:</th>
         <th>Cant de Alerta:</th>
         <th>Hoja de Seguridad:</th>
-        <th >¿Es Precursor?</th>
+        <th>¿Es Precursor?</th>
         <th>Opciones</th>
     </tr>
     <tr class="aCentro" ng-repeat="r in listaReactivos | filter:filtroReactivos">
         <td>{{r.nombreReactivo}}</td>
+        <td class="mW200px">{{r.Descripcion}} adasdasd asd asd as d asdsad asasds ad sad as das das d ad s</td>
         <td>{{r.Ubicacion}}</td>
         <td>{{r.CantidadActual}} {{r.Siglas}}</td>
         <td> {{r.PuntoReorden}} {{r.Siglas}} </td>
@@ -43,33 +45,34 @@
 </table>
 
 <div ng-init="popupCrearReactivo = false" ng-show="popupCrearReactivo" class="popup">
-    <div class="popContenido">
-        <h2>Crear Nuevo Reactivo <span class="pointer" ng-click="popupCrearReactivo=false">X</span></h2>
-        <div ng-init="objReactivo = {}">
-            <p><b class="f22">Detalles del Reactivo</b></p>
-            <p>Nombre<input type="text" ng-model="objReactivo.nombre"></p>
-            <p>Ubicación<input type="text" ng-model="objReactivo.ubicacion"></p>
-            <p>Cantidad Inicial<input type="number" ng-model="objReactivo.CantidadActual" step="0.1"></p>
-            <p>Unidad de Medida
-                <select ng-model="objReactivo.UnidadMetricaID" ng-init="objReactivo.UnidadMetricaID = unidades[0].UnidadMetricaID">
-                    <option ng-value="u.id" ng-repeat="u in unidades">
-                    {{u.Nombre}}
-                    </option>
-                </select>
-            </p>
-            <p>Cantidad alerta<input type="number" ng-model="objReactivo.PuntoReorden" step="0.1"></p>
-            <p>Enlace de Hoja de Seguridad<input type="text" ng-model="objReactivo.URLHojaSeguridad"></p>
-            <p>¿Es Precursor?
-                <label class="checkContainer">
-                    <input type="checkbox" ng-model="objReactivo.precursor">
-                    <span class="checkmark"></span>
-                </label>
-            </p>
+    <form ng-submit="agregarReactivo()">
+        <div class="popContenido">
+            <h2>Crear Nuevo Reactivo <span class="pointer" ng-click="popupCrearReactivo=false">X</span></h2>
+            <div ng-init="objReactivo = {}">
+                <p><b class="f22">Detalles del Reactivo</b></p>
+                <p>Nombre<input type="text" ng-model="objReactivo.Nombre" required></p>
+                <p>Descripción <textarea name="" id="" cols="40" rows="5" ng-model="objReactivo.Descripcion"></textarea> </p>
+                <p>Ubicación<input type="text" ng-model="objReactivo.Ubicacion" required></p>
+                <p>Cantidad Inicial<input type="number" ng-model="objReactivo.CantidadActual" step="0.1" required></p>
+                <p>Unidad de Medida
+                    <select ng-model="objReactivo.UnidadMetricaID">
+                        <option ng-value="u.UnidadMetricaID" ng-repeat="u in unidades" ng-selected="objReactivo.UnidadMetricaID==u.UnidadMetricaID">{{u.Nombre}}</option>
+                    </select>
+                </p>
+                <p>Cantidad alerta<input type="number" ng-model="objReactivo.PuntoReorden" step="0.1" required></p>
+                <p>Enlace de Hoja de Seguridad<input type="text" ng-model="objReactivo.URLHojaSeguridad"></p>
+                <p>¿Es Precursor?
+                    <label class="checkContainer paddingLeft0">
+                        <input type="checkbox" ng-model="objReactivo.EsPrecursor">
+                        <span class="checkmark"></span>
+                    </label>
+                </p>
+            </div>
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Agregar">
+            </div>
         </div>
-        <div class="buttonContainer aDer">
-            <button>Agregar</button>
-        </div>
-    </div>
+    </form>
 </div>
 
 <div ng-show="popupEditarReactivo" ng-init="reactivoEditar = {}" class="popup">
@@ -82,7 +85,7 @@
             <p>Cantidad Inicial<input type="number" ng-model="reactivoEditar.CantidadActual" step="0.1"></p>
             <p>Unidad de Medida
                 <select ng-model="reactivoEditar.UnidadMetricaID">
-                    <option ng-value="u.id" ng-selected="reactivoEditar.UnidadMetricaID == u.UnidadMetricaID" ng-repeat="u in unidades">{{u.Nombre}}</option>
+                    <option ng-value="u.UnidadMetricaID" ng-selected="reactivoEditar.UnidadMetricaID == u.UnidadMetricaID" ng-repeat="u in unidades">{{u.Nombre}}</option>
                 </select>
             </p>
             <p>Cantidad alerta<input type="number" ng-model="reactivoEditar.PuntoReorden" step="0.1"></p>
@@ -114,6 +117,26 @@
                 <tr ng-repeat="u in preUnidades">
                     <td><input readonly ondblclick="setEditable(this)" type="text" ng-value="u.Nombre"></td>
                     <td><input readonly ondblclick="setEditable(this)" type="text" ng-value="u.Siglas"></td>
+                    <td class="aCentro"><i class="fa fa-trash bordesLados pointer"></i></td>
+                    <td class="aCentro"><i class="fa fa-check-circle bordesLados pointer"></i></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div ng-show="panelCategorias" class="popup" ng-init="preCategorias = []">
+    <div class="popContenido">
+        <h2>Categorí    as de Reactivos<span class="pointer" ng-click="panelCategorias=false">X</span></h2>
+        <div>
+            <table class="marginAuto w100pc tbLista">
+                <tr>
+                    <th>Nombre</th>
+                    <th class="aCentro">Borrar</th>
+                    <th class="aCentro">Actualizar</th>
+                </tr>
+                <tr ng-repeat="c in preCategorias">
+                    <td><input readonly ondblclick="setEditable(this)" type="text" ng-value="c.Nombre"></td>
                     <td class="aCentro"><i class="fa fa-trash bordesLados pointer"></i></td>
                     <td class="aCentro"><i class="fa fa-check-circle bordesLados pointer"></i></td>
                 </tr>
