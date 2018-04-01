@@ -404,6 +404,18 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
 
+        $scope.borrarCategoria = function (c) {
+            var obj = {
+                CategoriaReactivoID: c.CategoriaReactivoID
+            }
+            $rootScope.solicitudHttp(rootHost + "API/borrarCategoria.php", obj, function () {
+                $rootScope.agregarAlerta("No se puede borrar la categoría ya que está siendo utilizada");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha borrado la categoría");
+                cargarCategorias();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+
         $scope.editarCategoria = function (c) {
             if (c.Nombre != "") {
                 $rootScope.solicitudHttp(rootHost + "API/ActualizarCategoria.php", c, function () {

@@ -159,7 +159,7 @@
                 </tr>
                 <tr ng-repeat="c in preCategorias">
                     <td><input readonly ondblclick="setEditable(this)" type="text" ng-model="c.Nombre"></td>
-                    <td class="aCentro"><i class="fa fa-trash bordesLados pointer"></i></td>
+                    <td class="aCentro"><span ng-click="borrarCategoria(c)"><i class="fa fa-trash bordesLados pointer"></i></span></td>
                     <td class="aCentro"><span ng-click="editarCategoria(c)"><i class="fa fa-check-circle bordesLados pointer"></i></span></td>
                 </tr>
                 <tr>
