@@ -6,18 +6,12 @@ app.config(function ($routeProvider) {
     }).when("/adminInventarioCristaleria", {
         templateUrl: "includes/adminInventarioCristaleria.html",
         controller: "adminInventarioCristaleria"
-    }).when("/adminFlotillas", {
-        templateUrl: "includes/adminFlotillas.html",
-        controller: "adminFlotillas"
-    }).when("/adminGiras", {
-        templateUrl: "includes/adminGiras.html",
-        controller: "adminGiras"
-    }).when("/adminReservaciones", {
-        templateUrl: "includes/adminReservaciones.html",
-        controller: "adminReservaciones"
     }).when("/adminUsuarios",{
         templateUrl: "includes/adminUsuarios.html",
         controller: "adminUsuarios"
+    }).when("/reportes",{
+        templateUrl: "includes/reportes.html",
+        controller: "reportes"
     }).when("/adminSolicitudes",{
         templateUrl: "includes/adminSolicitudes.html",
         controller: "adminSolicitudes"
