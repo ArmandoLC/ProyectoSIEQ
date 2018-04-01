@@ -106,7 +106,7 @@
                 <p>Enlace de Hoja de Seguridad<input type="text" ng-model="reactivoEditar.URLHojaSeguridad"></p>
                 <p>¿Es Precursor?
                     <label class="checkContainer paddingLeft0">
-                    <input type="checkbox" ng-checked="reactivoEditar.EsPrecursor==1" ng-model="precursor">
+                    <input type="checkbox" ng-checked="precursor" ng-model="precursor">
                     <span class="checkmark"></span>
                 </label>
                 </p>
@@ -174,10 +174,10 @@
 </div>
 
 <div ng-init="panelPregunta" ng-show="panelPregunta" class="popup">
-    <div class="popContenido">
+    <div class="popContenido mW30pc">
         <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>
-        <div>
-            {{mensaje}}
+        <div class="fullPadding"style="font-size: 18px;">
+            <b>{{mensaje}}</b>
         </div>
         <div class="buttonContainer aDer">
             <button ng-click="borrarReactivo()" >Borrar</button>

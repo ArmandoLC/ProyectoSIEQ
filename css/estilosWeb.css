@@ -243,3 +243,11 @@ table i {
 .fullPaddingIzqDer {
     padding: 0px 10px
 }
+
+.mW30pc {
+    max-width: 30%
+}
+
+.fullPadding {
+    padding: 5px;
+}

@@ -276,12 +276,11 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
             $scope.reactivoEditar.UnidadMetricaID = parseInt($scope.reactivoEditar.UnidadMetricaID);
             $scope.reactivoEditar.TipoArticulo = parseInt($scope.reactivoEditar.TipoArticulo);
             $scope.popupEditarReactivo = true;
-            if ($scope.precursor) {
-                $scope.reactivoEditar.EsPrecursor = 1
+            if ($scope.reactivoEditar.EsPrecursor == 1) {
+                $scope.precursor = true;
             } else {
-                $scope.reactivoEditar.EsPrecursor = 0
+                $scope.precursor = false;
             }
-            log($scope.reactivoEditar);
         }
 
         $scope.editarReactivo = function () {
@@ -302,7 +301,6 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
             } else {
                 objEnviar.EsPrecursor = 0
             }
-            log(objEnviar);
             $rootScope.solicitudHttp(rootHost + "API/ActualizarReactivo.php", objEnviar, function () {
                 $rootScope.agregarAlerta("No se ha podido actualizar el reactivo");
             }, function (listaDatos) {
@@ -359,7 +357,6 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
         }
 
         $scope.agregarUnidad = function (u) {
-            log(u);
             if (u.Nombre != "" && u.Siglas != "") {
 
                 $rootScope.solicitudHttp(rootHost + "API/AgregarUnidadMetrica.php", u, function () {
@@ -376,7 +373,7 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
             }
         }
         $scope.agregarCategoria = function (c) {
-            log(c);
+
             if (c.Nombre != "") {
 
                 $rootScope.solicitudHttp(rootHost + "API/agregarCategoria.php", c, function () {
@@ -395,7 +392,6 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
             var obj = {
                 UnidadMetricaID: u.UnidadMetricaID
             }
-            log(obj)
             $rootScope.solicitudHttp(rootHost + "API/borrarUnidadMetrica.php", obj, function () {
                 $rootScope.agregarAlerta("No se puede borrar la unidad ya que está siendo utilizada");
             }, function (listaDatos) {
@@ -614,11 +610,10 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
         });
     };
 
-    $rootScope.esCoordinador = function(){
-        if($rootScope.rolUsuarioActivo == 'Coordinador'){
+    $rootScope.esCoordinador = function () {
+        if ($rootScope.rolUsuarioActivo == 'Coordinador') {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     };
