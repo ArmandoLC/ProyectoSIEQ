@@ -223,7 +223,7 @@ app.controller("adminFlotillas", function ($scope, $rootScope, $location, $http,
     }
 });
 /* ADMINGIRAS CONTROLLER */
-app.controller("adminGiras", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+app.controller("adminInventarioCristaleria", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
         window.location.pathname = host + "login.html";
     } else {
@@ -234,7 +234,7 @@ app.controller("adminGiras", function ($scope, $rootScope, $location, $http, $co
     }
 });
 /* ADMINSITIOS CONTROLLER */
-app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+app.controller("adminInventarioReactivos", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
         window.location.pathname = host + "login.html";
     } else {

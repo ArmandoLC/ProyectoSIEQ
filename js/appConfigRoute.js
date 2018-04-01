@@ -1,8 +1,11 @@
 // control del archivo html que se carga en el ngview de la página dependiendo del path en la url
 app.config(function ($routeProvider) {
-    $routeProvider.when("/adminSitios", {
-        templateUrl: "includes/adminSitios.html",
-        controller: "adminSitios"
+    $routeProvider.when("/adminInventarioReactivos", {
+        templateUrl: "includes/adminInventarioReactivos.html",
+        controller: "adminInventarioReactivos"
+    }).when("/adminInventarioCristaleria", {
+        templateUrl: "includes/adminInventarioCristaleria.html",
+        controller: "adminInventarioCristaleria"
     }).when("/adminFlotillas", {
         templateUrl: "includes/adminFlotillas.html",
         controller: "adminFlotillas"
@@ -21,6 +24,6 @@ app.config(function ($routeProvider) {
     }).when("/login",{
         templateUrl: "login.html"
     }).otherwise({
-        redirectTo: "/adminSitios"
+        redirectTo: "/adminInventarioReactivos"
     });
 });

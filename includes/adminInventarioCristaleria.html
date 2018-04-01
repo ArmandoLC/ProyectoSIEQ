@@ -1,13 +1,15 @@
-<h1>Inventario de Reactivos</h1>
-
+<h1>Administración de Inventarios</h1>
+<ul class="ulMenu">
+  <li class="liMenu"><a class="aMenu" href="#!adminInventarioReactivos">Reactivos</a></li>
+  <li class="liMenu"><a class="activeMenu aMenu" href="#!adminInventarioCristaleria">Cristalería</a></li>
+</ul>
+<br>
 <!--<h2>Inventario de Reactivos Químicos</h2> -->
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
         <input class="fullMargin" type="text" ng-model="filtroReactivos" placeholder="Buscar" id="txtBusqueda">
         <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
-        <div class="unidadesMedida" ng-click="mostrarPanelUnidades()" title="Administrar Unidades de Medida"><i class="fa fa-cog"></i><span>Unidades</span></div>
-        <div class="unidadesMedida" ng-click="mostrarPanelCategorias()" title="Administrar Categorias"><i class="fa fa-cog"></i><span>Categorías</span></div>
     </div>
     <div>
         <button class="h100pc" ng-click="mostrarPanelCrearReactivo()" title="Agregar Nuevo Reactivo"> <i class="fa fa-plus"></i> Agregar Nuevo</button>
