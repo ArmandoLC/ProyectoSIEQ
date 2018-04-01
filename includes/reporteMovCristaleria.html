@@ -1,80 +1,39 @@
 <h1>Reportes Del Sistema</h1>
 <ul class="ulMenu">
-    <li class="liMenu"><a class="activeMenu aMenu pointer" href="#!adminInventarioReactivos">Movimientos de Reactivos</a></li>
-    <li class="liMenu"><a class="aMenu pointer" href="#!adminInventarioReactivos">Movimientos de Cristalería</a></li>
+    <li class="liMenu"><a class="activeMenu aMenu pointer" href="#!reporteMovReactivos">Movimientos de Reactivos</a></li>
+    <li class="liMenu"><a class="aMenu pointer" href="#!reporteMovCristaleria">Movimientos de Cristalería</a></li>
 </ul>
 <br>
-<div ng-show="mostrarReporteMovReact">
-    <div style="display: flex; justify-content: space-between; padding: 10px 0px">
-        <div class="flex">
-            <input class="fullMargin" type="text" ng-model="filtroMovReact" placeholder="Buscar" id="txtBusqueda">
-            <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
-        </div>
-        <div>
-            <button class="h100pc" ng-click="popupCrearCristaleria = true" title="Agregar Nueva Cristalería"> <i class="fa fa-plus"></i> Agregar Nuevo</button>
-            <button class="h100pc fullPaddingIzqDer" ng-click="cargarListaCristaleria()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
-        </div>
-    </div>
-    <table class="tbLista">
-        <tr class="aCentro">
-            <th>Reactivo</th>
-            <th>Tipo de Movimiento</th>
-            <th>Antes</th>
-            <th>Después</th>
-            <th>Movido</th>
-            <th>Categoría</th>
-            <th>Fecha</th>
-            <th>Destino</th>
-            <th>Observaciones</th>
-            <th>Firma</th>
-        </tr>
-        <tr class="aCentro" ng-repeat="m in listaMovimientos | filter:filtroMovReact">
-            <td>{{m.Reactivo}}</td>
-            <td class="mW200px">{{c.Descripcion}}</td>
-            <td>{{c.Ubicacion}}</td>
-            <td>{{c.CantidadActual}}</td>
-            <td> {{c.PuntoReorden}}</td>
-            <td>
-                <div class="flex noWrap">
-                    <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
 
-
-<div ng-show="mostrarReporteMovCristaleria">
-    <div style="display: flex; justify-content: space-between; padding: 10px 0px">
-        <div class="flex">
-            <input class="fullMargin" type="text" ng-model="filtroCristaleria" placeholder="Buscar" id="txtBusqueda">
-            <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
-        </div>
-        <div>
-            <button class="h100pc" ng-click="popupCrearCristaleria = true" title="Agregar Nueva Cristalería"> <i class="fa fa-plus"></i> Agregar Nuevo</button>
-            <button class="h100pc fullPaddingIzqDer" ng-click="cargarListaCristaleria()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
-        </div>
+<div style="display: flex; justify-content: space-between; padding: 10px 0px">
+    <div class="flex">
+        <input class="fullMargin" type="text" ng-model="filtroMovReact" placeholder="Buscar" id="txtBusqueda">
+        <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
     </div>
-    <table class="tbLista">
-        <tr class="aCentro">
-            <th>Nombre:</th>
-            <th>Descripción:</th>
-            <th>Ubicación:</th>
-            <th>Cant Actual:</th>
-            <th>Cant de Alerta:</th>
-            <th>Opciones</th>
-        </tr>
-        <tr class="aCentro" ng-repeat="c in listaCristaleria | filter:filtroCristaleria">
-            <td>{{c.NombreArticulo}}</td>
-            <td class="mW200px">{{c.Descripcion}}</td>
-            <td>{{c.Ubicacion}}</td>
-            <td>{{c.CantidadActual}}</td>
-            <td> {{c.PuntoReorden}}</td>
-            <td>
-                <div class="flex noWrap">
-                    <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
-                </div>
-            </td>
-        </tr>
-    </table>
 </div>
+<table class="tbLista">
+    <tr class="aCentro">
+        <th>Reactivo</th>
+        <th>Tipo de Movimiento</th>
+        <th>Antes</th>
+        <th>Después</th>
+        <th>Movido</th>
+        <th>Categoría</th>
+        <th>Fecha</th>
+        <th>Destino</th>
+        <th>Observaciones</th>
+        <th>Firma</th>
+    </tr>
+    <tr class="aCentro" ng-repeat="m in listaMovimientos | filter:filtroMovReact">
+        <td>{{m.Reactivo}}</td>
+        <td class="mW200px">{{c.Descripcion}}</td>
+        <td>{{c.Ubicacion}}</td>
+        <td>{{c.CantidadActual}}</td>
+        <td> {{c.PuntoReorden}}</td>
+        <td>
+            <div class="flex noWrap">
+                <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+</table>
