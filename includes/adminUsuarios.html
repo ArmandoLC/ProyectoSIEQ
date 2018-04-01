@@ -18,8 +18,19 @@
         <td>{{usuario.Nombre}}</td>
         <td>{{usuario.Usuario}}</td>
         <td>{{usuario.Correo}}</td>
-        <td>{{usuario.Rol}}</td>
-        <td> <i class="fa fa-check confirmHover" ng-click=""></i></td>
-        <td> <i class="fa fa-times-circle deleteHover" ng-click=""></i></td>
+        <td>
+           {{usuario.RolID}}
+            <select ng-model="rolID" ng-init="rolID = usuario.RolID">
+                <option ng-value="rol.RolID" ng-repeat="rol in roles">{{rol.Nombre}}</option>
+            </select>
+        </td>
+        <td>
+           {{usuario.Estado}} <br>
+            <label class="checkContainer noPointer">
+                <input type="checkbox" ng-checked="usuario.Estado == 2"> <!--Estado de Inactividad (bloqueado)-->
+                <span class="checkmark"></span>
+            </label>
+        </td>
+        <td><i class="fa fa-times-circle deleteHover" ng-click=""></i></td>
     </tr>
 </table>
