@@ -360,15 +360,13 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
         };
 
         function cargarReporte(objReporteParam) {
-            log(objReporteParam);
             if ($scope.tipoReporte == 'movReact') {
                 $rootScope.solicitudHttp(rootHost + "API/VerMovimientosReactivos.php", objReporteParam, function () {
                     $rootScope.agregarAlerta("Ha ocurrido un Error");
                 }, function (listaDatos) {
                     $scope.listaMovimientosReactivos = listaDatos;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
-            }
-            else if ($scope.tipoReporte == 'movCrist') {
+            } else if ($scope.tipoReporte == 'movCrist') {
                 $rootScope.solicitudHttp(rootHost + "API/VerMovimientosCristaleria.php", objReporteParam, function () {
                     $rootScope.agregarAlerta("Ha ocurrido un Error");
                 }, function (listaDatos) {
