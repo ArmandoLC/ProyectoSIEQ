@@ -227,10 +227,28 @@ app.controller("adminInventarioCristaleria", function ($scope, $rootScope, $loca
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
         window.location.pathname = host + "login.html";
     } else {
-        log("adminGiras");
-        /*
-            Codigo aquí
-        */
+        $scope.cargarListaCristaleria = function () {
+            cargarListaCristaleria();
+        }
+        function cargarListaCristaleria() {
+            $rootScope.solicitudHttp(rootHost + "API/VerListaCristaleria.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.listaCristaleria = listaDatos;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        $scope.agregarCristaleria = function () {
+            $scope.objCristaleria.UsuarioID=$rootScope.idUsuarioActivo;
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/AgregarCristaleria.php", $scope.objCristaleria, function () {
+                $rootScope.agregarAlerta("No se ha podido ingresar el activo de cristalería");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha agregado el activo de cristalería");
+                $scope.popupCrearCristaleria = false;
+                cargarListaCristaleria();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        $scope.cargarListaCristaleria();
     }
 });
 /* ADMINSITIOS CONTROLLER */
