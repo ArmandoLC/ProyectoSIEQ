@@ -140,13 +140,10 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-
-
-        /*
         $scope.actualizarEstadoUsuario = function (usuarioID, tipo) {
             var obj = {}
             obj.EstadoID = tipo;
-            obj.UsuarioID = usuarioID
+            obj.UsuarioID = usuarioID;
             $rootScope.solicitudHttp(rootHost + "API/ActualizarEstadoUsuario.php", obj, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
             }, function (listaDatos) {
@@ -155,12 +152,36 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
                 } else {
                     log("Lista con datos");
                     log(listaDatos);
-                    $scope.verUsuariosPendientes();
+                    $scope.verListaUsuarios($rootScope.idUsuarioActivo);
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        */
+        $scope.cambiarEstadoBloqueo = function (UsuarioID, Estado){
+            if(Estado == "1"){
+                $scope.actualizarEstadoUsuario(UsuarioID, 2);
+            }
+            else{
+                $scope.actualizarEstadoUsuario(UsuarioID, 1);
+            }
+        };
+
+        $scope.actualizarRolUsuario = function(UsuarioID, rolSeleccionado){
+            var obj = {}
+            obj.UsuarioID = UsuarioID;
+            obj.RolID = rolSeleccionado;
+            $rootScope.solicitudHttp(rootHost + "API/ActualizarRolUsuario.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de datos)");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("Lista Tamaño 0");
+                } else {
+                    log("Lista con datos - cambiando rol de usuario");
+                    log(listaDatos);
+                    $scope.verListaUsuarios($rootScope.idUsuarioActivo);
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
 
         $scope.verListaUsuarios($rootScope.idUsuarioActivo);
         $scope.verRolesUsuario();
@@ -192,7 +213,7 @@ app.controller("adminSolicitudes", function ($scope, $rootScope, $location, $htt
         $scope.actualizarEstadoUsuario = function (usuarioID, tipo) {
             var obj = {}
             obj.EstadoID = tipo;
-            obj.UsuarioID = usuarioID
+            obj.UsuarioID = usuarioID;
             $rootScope.solicitudHttp(rootHost + "API/ActualizarEstadoUsuario.php", obj, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
             }, function (listaDatos) {
