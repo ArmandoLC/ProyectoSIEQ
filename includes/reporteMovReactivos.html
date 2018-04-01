@@ -1,62 +1,62 @@
 <h1>Reportes Del Sistema</h1>
 <ul class="ulMenu">
-  <li class="liMenu dropdown">
-       <a href="#!reporteMovReactivos" class="aMenu activeMenu dropbtn">Reportes de Reactivos</a>
-       <div class="dropdown-contentMenu">
-          <a href="#!reporteMovReactivos">Ver Movimientos</a>
-          <a href="#!reporteMovReactivos">Ver Bajos del Mínimo</a>
-       </div>
-   </li>
-   <li class="liMenu dropdown">
-       <a href="#!reporteMovCristaleria" class="aMenu dropbtn">Reportes de Cristalería</a>
-       <div class="dropdown-contentMenu">
-          <a href="#!reporteMovCristaleria">Ver Movimientos</a>
-          <a href="#!reporteMovCristaleria">Ver Bajos del Mínimo</a>
-       </div>
-   </li>
+    <li class="liMenu dropdown">
+        <a href="#!reporteMovReactivos" class="aMenu activeMenu dropbtn">Reportes de Reactivos</a>
+        <div class="dropdown-contentMenu">
+            <a href="#!reporteMovReactivos">Ver Movimientos</a>
+            <a href="#!reporteReactBajos">Ver Bajos del Mínimo</a>
+        </div>
+    </li>
+    <li class="liMenu dropdown">
+        <a href="#!reporteMovCristaleria" class="aMenu dropbtn">Reportes de Cristalería</a>
+        <div class="dropdown-contentMenu">
+            <a href="#!reporteMovCristaleria">Ver Movimientos</a>
+            <a href="#!reporteCristBaja">Ver Bajos del Mínimo</a>
+        </div>
+    </li>
 </ul>
+<h2>Reporte de movimientos en reactivos</h2>
 <br>
-<div class="flex aCentro bgCelestillo" ng-init="objReporteParam = {}">
-    <form ng-submit="buscarReporteReactivos(opcion)">
-        <table class="inline">
-            <tr>
-                <td>Consultar:</td>
-                <td>
-                    <select ng-model="opcion" ng-init="opcion = opciones[0]" ng-options="opcion as opcion.nombre for opcion in opciones"></select>
-                </td>
-            </tr>
-            <tr ng-show="opcion.seleccionarFecha">
-                <td>Fecha Inicial:</td>
-                <td>
-                    <input ng-model="objReporte.fechaIni" type="date"> </td>
-            </tr>
-            <tr ng-show="opcion.seleccionarFecha">
-                <td>Fecha Final:</td>
-                <td>
-                    <input ng-model="objReporte.fechaFin" type="date"> </td>
-            </tr>
-            <tr ng-show="opcion.seleccionarCantidad">
-                <td>Cantidad:</td>
-                <td>
-                    <input ng-model="objReporte.cantidad" type="number"> </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <input type="submit" value="Buscar"> </td>
-            </tr>
+<div class="flex" ng-init="objReporteParam = {}; tipoReporte = 'movReact'">
+    <div style="flex-grow: 1">
+        <table style="display: inline">
+            <form ng-submit="buscarReporteReactivos(opcion)">
+                <tr>
+                    <td>Consultar:</td>
+                    <td>
+                        <select ng-model="opcion" ng-init="opcion = opciones[0]" ng-options="opcion as opcion.nombre for opcion in opciones"></select>
+                    </td>
+                </tr>
+                <tr ng-show="opcion.seleccionarFecha">
+                    <td>Fecha Inicial:</td>
+                    <td>
+                        <input ng-model="objReporteParam.FechaDesde" type="date"> </td>
+                </tr>
+                <tr ng-show="opcion.seleccionarFecha">
+                    <td>Fecha Final:</td>
+                    <td>
+                        <input ng-model="objReporteParam.FechaHasta" type="date"> </td>
+                </tr>
+                <tr ng-show="opcion.seleccionarCantidad">
+                    <td>Cantidad:</td>
+                    <td>
+                        <input ng-model="objReporteParam.cantidad" type="number"> </td>
+                </tr>
+                <tr>
+                    <td>Categoría</td>
+                    <td>
+                        <select class="w100pc" ng-model="objReporteParam.CategoriaID" ng-init="objReporteParam.CategoriaID = categorias[0].CategoriaReactivoID" ng-options="c.CategoriaReactivoID as c.Nombre for c in categorias"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button class="w100pc" ng-click="buscarReporte(opcion,tipoReporte)">Buscar</button>
+                    </td>
+                </tr>
+            </form>
         </table>
-    </form>
-    <table class="inline" >
-        <tr>
-            <td>Categoría:</td>
-            <td>
-                <select ng-model="objReporteParam.CategoriaID">
-                    <option ng-value="c.CategoriaReactivoID" ng-repeat="c in categorias" ng-selected="objReactivo.CategoriaID==c.CategoriaReactivoID">{{c.Nombre}}</option>
-                </select>
-            </td>
-        </tr>
-    </table>
+
+    </div>
 </div>
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
@@ -80,14 +80,14 @@
     </tr>
     <tr class="aCentro" ng-repeat="m in listaMovimientosReactivos | filter:filtroMovReact">
         <td>{{m.Reactivo}}</td>
-        <td class="mW200px">{{c.Descripcion}}</td>
-        <td>{{c.Ubicacion}}</td>
-        <td>{{c.CantidadActual}}</td>
-        <td> {{c.PuntoReorden}}</td>
-        <td>
-            <div class="flex noWrap">
-                <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
-            </div>
-        </td>
+        <td class="mW200px">{{m["Tipo de Movimiento"]}}</td>
+        <td>{{m.Antes}}</td>
+        <td>{{m.Despues}}</td>
+        <td>{{m.Movido}}</td>
+        <td>{{m.Categoria}}</td>
+        <td>{{m.Fecha}}</td>
+        <td>{{m.Destino}}</td>
+        <td>{{m.Observaciones}}</td>
+        <td>{{m.Firma}}</td>
     </tr>
 </table>

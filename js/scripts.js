@@ -244,67 +244,72 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
         }
 
         function hoy() {
-            var objReporteParam = {};
-            objReporteParam.FechaDesde = formatearFecha(new Date());
-            objReporteParam.FechaHasta = objReporte.FechaDesde;
-            objReporteParam.cantidad = 0;
-            cargarReporte(objReporteParam);
+            var objReporteP = {
+                FechaDesde: formatearFecha(new Date()),
+                FechaHasta: formatearFecha(new Date()),
+                CategoriaID: $scope.objReporteParam.CategoriaID
+            }
+            cargarReporte(objReporteP);
         }
 
         function ayer() {
-            var objReporteParam = {};
             var fecha = new Date();
             fecha.setDate(fecha.getDate() - 1);
-            objReporteParam.FechaDesde = formatearFecha(fecha);
-            objReporteParam.FechaHasta = objReporte.FechaDesde;
-            objReporteParam.cantidad = 0;
-            cargarReporte(objReporteParam);
+            var objReporteP = {
+                FechaDesde: formatearFecha(fecha),
+                FechaHasta: formatearFecha(fecha),
+                CategoriaID: $scope.objReporteParam.CategoriaID
+            }
+            cargarReporte(objReporteP);
         }
 
         function u7Dias() {
-            var objReporteParam = {};
             var fecha1 = new Date();
             fecha1.setDate(fecha1.getDate() - 7);
             var fecha2 = new Date();
             fecha2.setDate(fecha2.getDate() - 1);
-            objReporteParam.FechaDesde = formatearFecha(fecha1);
-            objReporteParam.FechaHasta = formatearFecha(fecha2);;
-            objReporteParam.cantidad = 0;
-            cargarReporte(objReporteParam);
+            var objReporteP = {
+                FechaDesde: formatearFecha(fecha1),
+                FechaHasta: formatearFecha(fecha2),
+                CategoriaID: $scope.objReporteParam.CategoriaID
+            }
+            cargarReporte(objReporteP);
         }
 
         function u30Dias() {
-            var objReporteParam = {};
             var fecha1 = new Date();
             fecha1.setDate(fecha1.getDate() - 30);
             var fecha2 = new Date();
             fecha2.setDate(fecha2.getDate() - 1);
-            objReporteParam.FechaDesde = formatearFecha(fecha1);
-            objReporteParam.FechaHasta = formatearFecha(fecha2);;
-            objReporteParam.cantidad = 0;
-            cargarReporte(objReporteParam);
+            var objReporteP = {
+                FechaDesde: formatearFecha(fecha1),
+                FechaHasta: formatearFecha(fecha2),
+                CategoriaID: $scope.objReporteParam.CategoriaID
+            }
+            cargarReporte(objReporteP);
         }
 
         function personalizado() {
             if ($scope.objReporteParam.FechaDesde && $scope.objReporteParam.FechaHasta) {
-                var objReporteParam = {};
-                var fecha = new Date();
-                objReporteParam.FechaDesde = formatearFecha($scope.objReporteParam.FechaDesde);
-                objReporteParam.FechaHasta = formatearFecha($scope.objReporteParam.FechaHasta);
-                objReporteParam.cantidad = 0;
-                cargarReporte(objReporteParam);
+                var objReporteP = {
+                    FechaDesde: formatearFecha($scope.objReporteParam.FechaDesde),
+                    FechaHasta: formatearFecha($scope.objReporteParam.FechaHasta),
+                    CategoriaID: $scope.objReporteParam.CategoriaID
+                }
+                cargarReporte(objReporteP);
             } else {
                 $rootScope.agregarAlerta("Debe seleccionar una fecha válida");
             }
         }
 
         function allRegistros() {
-            var objReporteParam = {};
             /* solicitamos las registros desde el año 2000 */
-            objReporteParam.FechaDesde = formatearFecha(new Date("2000-01-02"));
-            objReporteParam.FechaHasta = formatearFecha(new Date());
-            objReporteParam.cantidad = 0;
-            cargarReporte(objReporteParam);
+            var objReporteP = {
+                FechaDesde: formatearFecha(new Date("2000-01-02")),
+                FechaHasta: formatearFecha(new Date()),
+                CategoriaID: $scope.objReporteParam.CategoriaID
+            }
+            cargarReporte(objReporteP);
         }
         $scope.opciones = [
             {
@@ -344,23 +349,31 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
                 funcion: allRegistros
             }
             ];
-        $scope.buscarReporteReactivos = function (opcion) {
+        $scope.buscarReporte = function (opcion, tipoReporte) {
             if (opcion) {
                 opcion.funcion();
+                $scope.tipoReporte = tipoReporte;
             } else {
                 $rootScope.agregarAlerta("Debe seleccionar una opción");
             }
             $scope.filtroFacturas = "";
         };
 
-        function agregarAlerta(objReporteParam) {
-            $rootScope.solicitudHttp(rootHost + "API/VerMovimientosReactivos.php", objReporteParam, function () {
-                $rootScope.agregarAlerta("Ha ocurrido un Error");
-            }, function (listaDatos) {
-                log("exito")
-                $scope.listaMovimientosReactivos = false;
-                log($scope.listaMovimientos)
-            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        function cargarReporte(objReporteParam) {
+            if ($scope.tipoReporte == 'movReact') {
+                $rootScope.solicitudHttp(rootHost + "API/VerMovimientosReactivos.php", objReporteParam, function () {
+                    $rootScope.agregarAlerta("Ha ocurrido un Error");
+                }, function (listaDatos) {
+                    $scope.listaMovimientosReactivos = listaDatos;
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            } else if ($scope.tipoReporte == 'movCrist') {
+                $rootScope.solicitudHttp(rootHost + "API/VerMovimientosCristaleria.php", objReporteParam, function () {
+                    $rootScope.agregarAlerta("Ha ocurrido un Error");
+                }, function (listaDatos) {
+                    $scope.listaMovimientosCristaleria = listaDatos;
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            }
+
         }
         /*FIN REPORTE CRACK*/
         function cargarCategorias() {
@@ -372,7 +385,11 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
                 $scope.categorias.forEach(function (c) {
                     c.CategoriaReactivoID = parseInt(c.CategoriaReactivoID);
                 })
-                $scope.preCategorias = listaDatos;
+                $scope.categorias.unshift({
+                    CategoriaReactivoID: 0,
+                    Nombre: "Todas"
+                });
+                $scope.objReporteParam.CategoriaID = $scope.categorias[0].CategoriaReactivoID;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         if (!$scope.categorias) {
