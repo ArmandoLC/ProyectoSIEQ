@@ -157,16 +157,15 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        $scope.cambiarEstadoBloqueo = function (UsuarioID, Estado){
-            if(Estado == "1"){
+        $scope.cambiarEstadoBloqueo = function (UsuarioID, Estado) {
+            if (Estado == "1") {
                 $scope.actualizarEstadoUsuario(UsuarioID, 2);
-            }
-            else{
+            } else {
                 $scope.actualizarEstadoUsuario(UsuarioID, 1);
             }
         };
 
-        $scope.actualizarRolUsuario = function(UsuarioID, rolSeleccionado){
+        $scope.actualizarRolUsuario = function (UsuarioID, rolSeleccionado) {
             var obj = {}
             obj.UsuarioID = UsuarioID;
             obj.RolID = rolSeleccionado;
@@ -238,9 +237,147 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
         window.location.pathname = host + "login.html";
     } else {
         log("reportes");
-        /*
-            Codigo aquí
-        */
+
+        /*INICIO REPORTE CRACK*/
+        function formatearFecha(fecha) {
+            return fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+        }
+
+        function hoy() {
+            var objReporteParam = {};
+            objReporteParam.FechaDesde = formatearFecha(new Date());
+            objReporteParam.FechaHasta = objReporte.FechaDesde;
+            objReporteParam.cantidad = 0;
+            cargarReporte(objReporteParam);
+        }
+
+        function ayer() {
+            var objReporteParam = {};
+            var fecha = new Date();
+            fecha.setDate(fecha.getDate() - 1);
+            objReporteParam.FechaDesde = formatearFecha(fecha);
+            objReporteParam.FechaHasta = objReporte.FechaDesde;
+            objReporteParam.cantidad = 0;
+            cargarReporte(objReporteParam);
+        }
+
+        function u7Dias() {
+            var objReporteParam = {};
+            var fecha1 = new Date();
+            fecha1.setDate(fecha1.getDate() - 7);
+            var fecha2 = new Date();
+            fecha2.setDate(fecha2.getDate() - 1);
+            objReporteParam.FechaDesde = formatearFecha(fecha1);
+            objReporteParam.FechaHasta = formatearFecha(fecha2);;
+            objReporteParam.cantidad = 0;
+            cargarReporte(objReporteParam);
+        }
+
+        function u30Dias() {
+            var objReporteParam = {};
+            var fecha1 = new Date();
+            fecha1.setDate(fecha1.getDate() - 30);
+            var fecha2 = new Date();
+            fecha2.setDate(fecha2.getDate() - 1);
+            objReporteParam.FechaDesde = formatearFecha(fecha1);
+            objReporteParam.FechaHasta = formatearFecha(fecha2);;
+            objReporteParam.cantidad = 0;
+            cargarReporte(objReporteParam);
+        }
+
+        function personalizado() {
+            if ($scope.objReporteParam.FechaDesde && $scope.objReporteParam.FechaHasta) {
+                var objReporteParam = {};
+                var fecha = new Date();
+                objReporteParam.FechaDesde = formatearFecha($scope.objReporteParam.FechaDesde);
+                objReporteParam.FechaHasta = formatearFecha($scope.objReporteParam.FechaHasta);
+                objReporteParam.cantidad = 0;
+                cargarReporte(objReporteParam);
+            } else {
+                $rootScope.agregarAlerta("Debe seleccionar una fecha válida");
+            }
+        }
+
+        function allRegistros() {
+            var objReporteParam = {};
+            /* solicitamos las registros desde el año 2000 */
+            objReporteParam.FechaDesde = formatearFecha(new Date("2000-01-02"));
+            objReporteParam.FechaHasta = formatearFecha(new Date());
+            objReporteParam.cantidad = 0;
+            cargarReporte(objReporteParam);
+        }
+        $scope.opciones = [
+            {
+                nombre: "Hoy",
+                seleccionarCantidad: false,
+                seleccionarFecha: false,
+                funcion: hoy
+            }
+            , {
+                nombre: "Ayer",
+                seleccionarCantidad: false,
+                seleccionarFecha: false,
+                funcion: ayer
+            }
+            , {
+                nombre: "Últimos 7 dias",
+                seleccionarCantidad: false,
+                seleccionarFecha: false,
+                funcion: u7Dias
+            }
+            , {
+                nombre: "Últimos 30 dias",
+                seleccionarCantidad: false,
+                seleccionarFecha: false,
+                funcion: u30Dias
+            }
+            , {
+                nombre: "Fecha personalizada",
+                seleccionarCantidad: false,
+                seleccionarFecha: true,
+                funcion: personalizado
+            }
+            , {
+                nombre: "Todos los registros",
+                seleccionarCantidad: false,
+                seleccionarFecha: false,
+                funcion: allRegistros
+            }
+            ];
+        $scope.buscarReporteReactivos = function (opcion) {
+            if (opcion) {
+                opcion.funcion();
+            } else {
+                $rootScope.agregarAlerta("Debe seleccionar una opción");
+            }
+            $scope.filtroFacturas = "";
+        };
+
+        function agregarAlerta(objReporteParam) {
+            $rootScope.solicitudHttp(rootHost + "API/VerMovimientosReactivos.php", objReporteParam, function () {
+                $rootScope.agregarAlerta("Ha ocurrido un Error");
+            }, function (listaDatos) {
+                log("exito")
+                $scope.listaMovimientosReactivos = false;
+                log($scope.listaMovimientos)
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+        /*FIN REPORTE CRACK*/
+        function cargarCategorias() {
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/VerCategorias.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.categorias = listaDatos;
+                $scope.categorias.forEach(function (c) {
+                    c.CategoriaReactivoID = parseInt(c.CategoriaReactivoID);
+                })
+                $scope.preCategorias = listaDatos;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        if (!$scope.categorias) {
+            cargarCategorias();
+        };
     }
 });
 /* ADMINGIRAS CONTROLLER */
@@ -693,7 +830,7 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
 window.onkeydown = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
     if (key == 122) {
-            pantallaCompleta();
+        pantallaCompleta();
         e.preventDefault();
     } else if (key == 116) {
         // si se pesiona f5 no hace nada
