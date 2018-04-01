@@ -33,7 +33,7 @@
         <td> {{c.PuntoReorden}}</td>
         <td>
             <div class="flex noWrap">
-                <i class="fa fa-pencil" ng-click="preEditarReactivo(r)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarReactivo(r)" title="Borrar"></i>
+                <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
             </div>
         </td>
     </tr>
@@ -49,7 +49,7 @@
                 <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="objCristaleria.Descripcion"></textarea> </p>
                 <p>Ubicación<input type="text" ng-model="objCristaleria.Ubicacion" required></p>
                 <p>Cantidad Inicial<input type="number" ng-model="objCristaleria.CantidadActual" step="1" required></p>
-                <p>Cantidad alerta<input type="number" ng-model="objCristaleria.PuntoReorden" step="1" required></p>
+                <p>Cantidad Alerta<input type="number" ng-model="objCristaleria.PuntoReorden" step="1" required></p>
             </div>
             <div class="buttonContainer aDer">
                 <input type="submit" value="Agregar">
@@ -58,97 +58,23 @@
     </form>
 </div>
 
-<div ng-show="popupEditarReactivo" ng-init="reactivoEditar = {}" class="popup">
-    <form ng-submit="editarReactivo()">
+<div  ng-show="popupEditarCristaleria" ng-init="cristaleriaEditar = {}" class="popup">
+    <form ng-submit="editarCristaleria()">
         <div class="popContenido">
-            <h2>Crear Nuevo Reactivo <span class="pointer" ng-click="popupEditarReactivo=false">X</span></h2>
+            <h2 style="padding-left: 30px">Modificar Artículo de Cristalería &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="pointer" ng-click="popupEditarCristaleria=false">X</span></h2>
             <div>
                 <p><b class="f22">Detalles del Reactivo</b></p>
-                <p>Nombre<input type="text" ng-model="reactivoEditar.nombreReactivo"></p>
-                <p>Descripción <textarea name="" id="" cols="40" rows="3" ng-model="reactivoEditar.Descripcion"></textarea> </p>
-                <p>Ubicación<input type="text" ng-model="reactivoEditar.Ubicacion"></p>
-                <!--<p>Cantidad Actual<input type="number" ng-model="reactivoEditar.CantidadActual" step="0.1" readonly></p>-->
-                <p>Unidad Métrica
-                    <select ng-model="reactivoEditar.UnidadMetricaID">
-                        <option ng-value="u.UnidadMetricaID" ng-selected="reactivoEditar.UnidadMetricaID == u.UnidadMetricaID" ng-repeat="u in unidades">{{u.Nombre}}</option>
-                    </select>
-                </p>
-                <p>Categoria del Reactivo
-                    <select ng-model="reactivoEditar.CategoriaID">
-                        <option ng-value="c.CategoriaReactivoID" ng-selected="reactivoEditar.CategoriaID == c.CategoriaReactivoID" ng-repeat="c in categorias">{{c.Nombre}}</option>
-                    </select>
-                </p>
-                <p>Cantidad alerta<input type="number" ng-model="reactivoEditar.PuntoReorden" step="0.1"></p>
-                <p>Enlace de Hoja de Seguridad<input type="text" ng-model="reactivoEditar.URLHojaSeguridad"></p>
-                <p>¿Es Precursor?
-                    <label class="checkContainer paddingLeft0">
-                    <input type="checkbox" ng-checked="precursor" ng-model="precursor">
-                    <span class="checkmark"></span>
-                </label>
-                </p>
+                <p>Nombre<input type="text" ng-model="cristaleriaEditar.Nombre" required></p>
+                <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="cristaleriaEditar.Descripcion"></textarea> </p>
+                <p>Ubicación<input type="text" ng-model="cristaleriaEditar.Ubicacion" required></p>
+                <p>Cantidad Alerta<input type="number" ng-model="cristaleriaEditar.PuntoReorden" step="1" required></p>
             </div>
             <div class="buttonContainer aDer">
-                <button>Modificar</button>
+                <input type="submit" value="Modificar">
             </div>
         </div>
     </form>
 </div>
-
-<div ng-show="panelUnidades" class="popup" ng-init="preUnidades = []; unidadAgregar = {}">
-    <div class="popContenido">
-        <h2>Unidades de Medida <span class="pointer" ng-click="panelUnidades=false">X</span></h2>
-        <div>
-            <table class="marginAuto w100pc tbLista">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Siglas</th>
-                    <th class="aCentro">Borrar</th>
-                    <th class="aCentro">Actualizar</th>
-                </tr>
-                <tr ng-repeat="u in preUnidades">
-                    <td><input readonly ondblclick="setEditable(this)" type="text" ng-model="u.Nombre"></td>
-                    <td><input readonly ondblclick="setEditable(this)" type="text" ng-model="u.Siglas"></td>
-                    <td class="aCentro"><span ng-click="borrarUnidad(u)"><i class="fa fa-trash bordesLados pointer"></i></span></td>
-                    <td class="aCentro"><span ng-click="editarUnidad(u)"><i class="fa fa-check-circle bordesLados pointer"></i></span></td>
-                </tr>
-                <tr>
-                    <td><input readonly ondblclick="setEditable(this)" type="text" title="Nombre" ng-init="unidadAgregar.Nombre =''" ng-model="unidadAgregar.Nombre"></td>
-                    <td><input readonly ondblclick="setEditable(this)" type="text" title="Siglas" ng-init="unidadAgregar.Siglas =''" ng-model="unidadAgregar.Siglas"></td>
-                    <td colspan="2"><div class="w100pc aCentro">
-                        <button title="Agregar nueva unidad" ng-click="agregarUnidad(unidadAgregar)">Agregar Nueva</button>
-                    </div></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div ng-show="panelCategorias" class="popup" ng-init="preCategorias = []; categoriaAgregar = {}">
-    <div class="popContenido">
-        <h2>Categorías de Reactivos<span class="pointer" ng-click="panelCategorias=false">X</span></h2>
-        <div>
-            <table class="marginAuto w100pc tbLista">
-                <tr>
-                    <th>Nombre</th>
-                    <th class="aCentro">Borrar</th>
-                    <th class="aCentro">Actualizar</th>
-                </tr>
-                <tr ng-repeat="c in preCategorias">
-                    <td><input readonly ondblclick="setEditable(this)" type="text" ng-model="c.Nombre"></td>
-                    <td class="aCentro"><span ng-click="borrarCategoria(c)"><i class="fa fa-trash bordesLados pointer"></i></span></td>
-                    <td class="aCentro"><span ng-click="editarCategoria(c)"><i class="fa fa-check-circle bordesLados pointer"></i></span></td>
-                </tr>
-                <tr>
-                    <td><input readonly ondblclick="setEditable(this)" type="text" title="Nombre" ng-init="categoriaAgregar.Nombre =''" ng-model="categoriaAgregar.Nombre"></td>
-                    <td colspan="2"><div class="w100pc aCentro">
-                        <button title="Agregar nueva categoria" ng-click="agregarCategoria(categoriaAgregar)">Agregar Nueva</button>
-                    </div></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
-
 <div ng-init="panelPregunta" ng-show="panelPregunta" class="popup">
     <div class="popContenido mW30pc">
         <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>
@@ -156,7 +82,7 @@
             <b>{{mensaje}}</b>
         </div>
         <div class="buttonContainer aDer">
-            <button ng-click="borrarReactivo()" >Borrar</button>
+            <button ng-click="borrarCristaleria()" >Borrar</button>
             <button ng-click="panelPregunta=false">Cancelar</button>
         </div>
     </div>

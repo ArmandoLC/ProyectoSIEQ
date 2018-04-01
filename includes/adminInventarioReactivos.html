@@ -70,7 +70,7 @@
                         <option ng-value="c.CategoriaReactivoID" ng-repeat="c in categorias" ng-selected="objReactivo.CategoriaID==c.CategoriaReactivoID">{{c.Nombre}}</option>
                     </select>
                 </p>
-                <p>Cantidad alerta<input type="number" ng-model="objReactivo.PuntoReorden" step="0.1" required></p>
+                <p>Cantidad Alerta<input type="number" ng-model="objReactivo.PuntoReorden" step="0.1" required></p>
                 <p>Enlace de Hoja de Seguridad<input type="text" ng-model="objReactivo.URLHojaSeguridad"></p>
                 <p>¿Es Precursor?
                     <label class="checkContainer paddingLeft0">
@@ -106,7 +106,7 @@
                         <option ng-value="c.CategoriaReactivoID" ng-selected="reactivoEditar.CategoriaID == c.CategoriaReactivoID" ng-repeat="c in categorias">{{c.Nombre}}</option>
                     </select>
                 </p>
-                <p>Cantidad alerta<input type="number" ng-model="reactivoEditar.PuntoReorden" step="0.1"></p>
+                <p>Cantidad Alerta<input type="number" ng-model="reactivoEditar.PuntoReorden" step="0.1"></p>
                 <p>Enlace de Hoja de Seguridad<input type="text" ng-model="reactivoEditar.URLHojaSeguridad"></p>
                 <p>¿Es Precursor?
                     <label class="checkContainer paddingLeft0">

@@ -230,6 +230,7 @@ app.controller("adminInventarioCristaleria", function ($scope, $rootScope, $loca
         $scope.cargarListaCristaleria = function () {
             cargarListaCristaleria();
         }
+
         function cargarListaCristaleria() {
             $rootScope.solicitudHttp(rootHost + "API/VerListaCristaleria.php", null, function () {
                 $rootScope.agregarAlerta("Error Desconocido");
@@ -238,16 +239,53 @@ app.controller("adminInventarioCristaleria", function ($scope, $rootScope, $loca
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         $scope.agregarCristaleria = function () {
-            $scope.objCristaleria.UsuarioID=$rootScope.idUsuarioActivo;
+            $scope.objCristaleria.UsuarioID = $rootScope.idUsuarioActivo;
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
             $rootScope.solicitudHttp(rootHost + "API/AgregarCristaleria.php", $scope.objCristaleria, function () {
                 $rootScope.agregarAlerta("No se ha podido ingresar el activo de cristalería");
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha agregado el activo de cristalería");
-                $scope.popupCrearCristaleria = false;
                 cargarListaCristaleria();
+                $scope.popupCrearCristaleria = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
+
+        $scope.preEditarCristaleria = function (c) {
+            $scope.cristaleriaEditar.ArticuloID = c.ArticuloID;
+            $scope.cristaleriaEditar.Nombre = c.NombreArticulo;
+            $scope.cristaleriaEditar.Ubicacion = c.Ubicacion;
+            $scope.cristaleriaEditar.PuntoReorden = parseFloat(c.PuntoReorden);
+            $scope.cristaleriaEditar.Descripcion = c.Descripcion;
+            $scope.popupEditarCristaleria = true;
+            log($scope.cristaleriaEditar);
+        }
+
+        $scope.editarCristaleria = function () {
+            log($scope.cristaleriaEditar);
+            $rootScope.solicitudHttp(rootHost + "API/ActualizarCristaleria.php", $scope.cristaleriaEditar, function () {
+                $rootScope.agregarAlerta("No se ha podido actualizar el activo de cristalería");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha modificado el activo de cristalería");
+                cargarListaCristaleria();
+                $scope.popupEditarCristaleria = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+        $scope.preBorrarCristaleria = function (c) {
+            $scope.panelPregunta = true;
+            $scope.mensaje = "¿Está seguro que desea borrar el activo: " + c.NombreArticulo + "?"
+            $scope.cristaleriaABorrar = {
+                ArticuloID: c.ArticuloID
+            }
+        }
+        $scope.borrarCristaleria = function () {
+            $rootScope.solicitudHttp(rootHost + "API/EliminarCristaleria.php", $scope.cristaleriaABorrar, function () {
+                $rootScope.agregarAlerta("No se ha podido borrar el activo de cristalería");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha eliminado el activo de cristalería");
+                cargarListaCristaleria();
+                $scope.panelPregunta = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
         $scope.cargarListaCristaleria();
     }
 });
@@ -256,7 +294,6 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
         window.location.pathname = host + "login.html";
     } else {
-        log("adminSitios");
         $scope.editarReactivo = function (r) {
             $scope.reactivoEditar = JSON.clone(r);
             $scope.popupEditarReactivo = true;
