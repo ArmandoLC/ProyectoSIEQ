@@ -9,8 +9,11 @@ app.config(function ($routeProvider) {
     }).when("/adminUsuarios",{
         templateUrl: "includes/adminUsuarios.html",
         controller: "adminUsuarios"
-    }).when("/reportes",{
-        templateUrl: "includes/reportes.html",
+    }).when("/reporteMovReactivos",{
+        templateUrl: "includes/reporteMovReactivos.html",
+        controller: "reportes"
+    }).when("/reporteMovCristaleria",{
+        templateUrl: "includes/reporteMovCristaleria.html",
         controller: "reportes"
     }).when("/adminSolicitudes",{
         templateUrl: "includes/adminSolicitudes.html",
