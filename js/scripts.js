@@ -212,11 +212,11 @@ app.controller("adminSolicitudes", function ($scope, $rootScope, $location, $htt
 });
 
 /* ADMINFLOTILLAS CONTROLLER */
-app.controller("adminFlotillas", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+app.controller("reportes", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
         window.location.pathname = host + "login.html";
     } else {
-        log("adminFlotillas");
+        log("reportes");
         /*
             Codigo aquí
         */
@@ -515,8 +515,6 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-
-
         /*Variables definidas del Scope y llamados a funciones */
         if (!$scope.categorias) {
             cargarCategorias();
@@ -527,18 +525,6 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
         if (!$scope.listaReactivos) {
             cargarListaReactivos();
         };
-    }
-});
-/* ADMINRESERVACIONES CONTROLLER */
-app.controller("adminReservaciones", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
-    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        window.location.pathname = host + "login.html";
-    } else {
-        log("adminReservaciones");
-        /*
-            Codigo aquí
-        */
-
     }
 });
 
@@ -686,7 +672,7 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
 window.onkeydown = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
     if (key == 122) {
-        pantallaCompleta();
+            pantallaCompleta();
         e.preventDefault();
     } else if (key == 116) {
         // si se pesiona f5 no hace nada
