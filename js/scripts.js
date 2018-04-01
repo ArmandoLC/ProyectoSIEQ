@@ -245,50 +245,158 @@ app.controller("adminSitios", function ($scope, $rootScope, $location, $http, $c
         }
 
         $scope.cargarListaReactivos = function () {
-            if (!$scope.listaReactivos) {
-                cargarListaReactivos();
-            }
+            cargarListaReactivos();
         }
 
         $scope.preEditarReactivo = function (r) {
-            $scope.popupEditarReactivo = true;
             $scope.reactivoEditar = JSON.clone(r);
             $scope.reactivoEditar.CantidadActual = parseFloat($scope.reactivoEditar.CantidadActual);
             $scope.reactivoEditar.PuntoReorden = parseFloat($scope.reactivoEditar.PuntoReorden);
+            $scope.reactivoEditar.CategoriaID = parseInt($scope.reactivoEditar.CategoriaReactivoID);
+            $scope.reactivoEditar.UnidadMetricaID = parseInt($scope.reactivoEditar.UnidadMetricaID);
+            $scope.reactivoEditar.TipoArticulo = parseInt($scope.reactivoEditar.TipoArticulo);
+            $scope.popupEditarReactivo = true;
+            if ($scope.precursor) {
+                $scope.reactivoEditar.EsPrecursor = 1
+            } else {
+                $scope.reactivoEditar.EsPrecursor = 0
+            }
             log($scope.reactivoEditar);
         }
 
         $scope.editarReactivo = function () {
-            var objReactivocrear = {
+            var objEnviar = {
+                ReactivoID: parseInt($scope.reactivoEditar.ReactivoID),
                 Nombre: $scope.reactivoEditar.nombreReactivo,
                 Ubicacion: $scope.reactivoEditar.Ubicacion,
-                CantidadActual: $scope.reactivoEditar.CantidadActual,
-                PuntoReorden: $scope.reactivoEditar.PuntoReorden,
+                PuntoReorden: parseFloat($scope.reactivoEditar.PuntoReorden),
                 Descripcion: $scope.reactivoEditar.Descripcion,
-                EsPrecursor: $scope.reactivoEditar.EsPrecursor,
-                UnidadMetricaID: $scope.reactivoEditar.UnidadMetricaID,
-                CategoriaID: $scope.reactivoEditar.CategoriaReactivoID,
+                EsPrecursor: parseInt($scope.reactivoEditar.EsPrecursor),
+                UnidadMetricaID: parseInt($scope.reactivoEditar.UnidadMetricaID),
+                CategoriaID: parseInt($scope.reactivoEditar.CategoriaID),
                 URLHojaSeguridad: $scope.reactivoEditar.URLHojaSeguridad,
-                UsuarioID: $rootScope.idUsuarioActivo
-            };
+                TipoArticuloID: parseInt($scope.reactivoEditar.TipoArticulo),
+            }
+            if ($scope.precursor) {
+                objEnviar.EsPrecursor = 1
+            } else {
+                objEnviar.EsPrecursor = 0
+            }
+            log(objEnviar);
+            $rootScope.solicitudHttp(rootHost + "API/ActualizarReactivo.php", objEnviar, function () {
+                $rootScope.agregarAlerta("No se ha podido actualizar el reactivo");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha modificado el reactivo");
+                $scope.popupEditarReactivo = false;
+                cargarListaReactivos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
 
+        $scope.preBorrarReactivo = function (r) {
+            $scope.panelPregunta = true;
+            $scope.mensaje = "¿Está seguro que desea borrar el reactivo " + r.nombreReactivo + "?"
+            $scope.reactivoABorrar = {
+                ReactivoID: r.ReactivoID
+            }
+        }
+        $scope.borrarReactivo = function () {
+            $rootScope.solicitudHttp(rootHost + "API/EliminarReactivo.php", $scope.reactivoABorrar, function () {
+                $rootScope.agregarAlerta("No se ha podido borrar el reactivo");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha eliminado el reactivo");
+                $scope.panelPregunta = false;
+                cargarListaReactivos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
         $scope.agregarReactivo = function () {
-            log($scope.objReactivo);
             if ($scope.objReactivo.EsPrecursor == false) {
                 $scope.objReactivo.EsPrecursor = 0;
             };
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
             $rootScope.solicitudHttp(rootHost + "API/AgregarReactivo.php", $scope.objReactivo, function () {
                 $rootScope.agregarAlerta("No se ha podido ingresar el reactivo");
-                log("ya existía")
             }, function (listaDatos) {
-                log("Se metió")
                 $rootScope.agregarAlerta("Se ha agregado el reactivo");
                 $scope.popupCrearReactivo = false;
                 cargarListaReactivos();
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
+
+
+        $scope.editarUnidad = function (u) {
+            if (u.Nombre != "" && u.Siglas != "") {
+
+                $rootScope.solicitudHttp(rootHost + "API/ActualizarUnidad.php", u, function () {
+                    $rootScope.agregarAlerta("No se ha podido modificar la unidad");
+                }, function (listaDatos) {
+                    $rootScope.agregarAlerta("Se ha modificado la unidad");
+                    cargarUnidades();
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+            } else {
+                $rootScope.agregarAlerta("No deben haber parámetros vacíos");
+            }
+        }
+
+        $scope.agregarUnidad = function (u) {
+            log(u);
+            if (u.Nombre != "" && u.Siglas != "") {
+
+                $rootScope.solicitudHttp(rootHost + "API/AgregarUnidadMetrica.php", u, function () {
+                    $rootScope.agregarAlerta("La unidad no puede tener valores idénticos a otras unidades");
+                }, function (listaDatos) {
+                    $rootScope.agregarAlerta("Se ha agregado la unidad");
+                    u.Nombre = "";
+                    u.Siglas = "";
+                    cargarUnidades();
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+            } else {
+                $rootScope.agregarAlerta("No deben haber parámetros vacíos");
+            }
+        }
+        $scope.agregarCategoria = function (c) {
+            log(c);
+            if (c.Nombre != "") {
+
+                $rootScope.solicitudHttp(rootHost + "API/agregarCategoria.php", c, function () {
+                    $rootScope.agregarAlerta("La categoría no puede tener valores idénticos a otras unidades");
+                }, function (listaDatos) {
+                    $rootScope.agregarAlerta("Se ha agregado la categoría");
+                    c.Nombre = "";
+                    cargarCategorias();
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+            } else {
+                $rootScope.agregarAlerta("No deben haber parámetros vacíos");
+            }
+        }
+        $scope.borrarUnidad = function (u) {
+            var obj = {
+                UnidadMetricaID: u.UnidadMetricaID
+            }
+            log(obj)
+            $rootScope.solicitudHttp(rootHost + "API/borrarUnidadMetrica.php", obj, function () {
+                $rootScope.agregarAlerta("No se puede borrar la unidad ya que está siendo utilizada");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha borrado la unidad");
+                cargarUnidades();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+
+        $scope.editarCategoria = function (c) {
+            if (c.Nombre != "") {
+                $rootScope.solicitudHttp(rootHost + "API/ActualizarCategoria.php", c, function () {
+                    $rootScope.agregarAlerta("No se ha podido modificar la categoría");
+                }, function (listaDatos) {
+                    $rootScope.agregarAlerta("Se ha modificado la categoría");
+                    cargarCategorias();
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+            } else {
+                $rootScope.agregarAlerta("No deben haber parámetros vacíos");
+            }
+        }
 
         function cargarListaReactivos() {
             $rootScope.solicitudHttp(rootHost + "API/VerListaReactivos.php", null, function () {
@@ -362,12 +470,12 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
         };
         alerta.eliminarAlerta = function () {
             $rootScope.listaAlerts.splice($rootScope.listaAlerts.indexOf(alerta), 1);
-            log("Alerta eliminada");
+            //log("Alerta eliminada");
         }
         alerta.ocultarAlerta = function () {
             alerta.classAlert = "ocultarAlert";
             setTimeout(alerta.eliminarAlerta, 1100);
-            log("Alerta ocultada");
+            //log("Alerta ocultada");
         }
         setTimeout(alerta.ocultarAlerta, 2000);
         $rootScope.listaAlerts.push(alerta);
