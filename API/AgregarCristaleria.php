@@ -16,33 +16,21 @@ $Ubicacion = $obj["Ubicacion"];
 $CantidadActual = $obj["CantidadActual"];
 $PuntoReorden = $obj["PuntoReorden"];
 $Descripcion = $obj["Descripcion"];
-$EsPrecursor = $obj["EsPrecursor"];
-$UnidadMetricaID = $obj["UnidadMetricaID"];
-$CategoriaID = $obj["CategoriaID"];
-$URLHojaSeguridad = $obj["URLHojaSeguridad"];
 $UsuarioID = $obj["UsuarioID"];
 
-// $Nombre = 'Acetona';
-// $Ubicacion = 'I - 4';
+// $Nombre = 'Cristal 1';
+// $Ubicacion = 'F - 4';
 // $CantidadActual = 36;
-// $PuntoReorden = 10;
-// $Descripcion = 'Probando ingreso de reactivos';
-// $EsPrecursor = 0;
-// $UnidadMetricaID = 2;
-// $CategoriaID = 3;
-// $URLHojaSeguridad = 'www.sieq.000webhost.com';
+// $PuntoReorden = 5;
+// $Descripcion = 'Probando ingreso de cristaleria';
 // $UsuarioID = 7;
 
 if($conexion){
-    $consulta = "CALL AgregarReactivo('".mysqli_real_escape_string($conexion, $Nombre)."', 
+    $consulta = "CALL AgregarCristaleria('".mysqli_real_escape_string($conexion, $Nombre)."', 
 					'".mysqli_real_escape_string($conexion, $Ubicacion)."',
 					".mysqli_real_escape_string($conexion, $CantidadActual).",
 					".mysqli_real_escape_string($conexion, $PuntoReorden).",
-					'".mysqli_real_escape_string($conexion, $Descripcion)."',
-					".mysqli_real_escape_string($conexion, $EsPrecursor).",
-					".mysqli_real_escape_string($conexion, $UnidadMetricaID).",
-					".mysqli_real_escape_string($conexion, $CategoriaID).",
-					'".mysqli_real_escape_string($conexion, $URLHojaSeguridad)."', 
+					'".mysqli_real_escape_string($conexion, $Descripcion)."', 
 					".mysqli_real_escape_string($conexion, $UsuarioID).")";
 					
     $resultado = consultar($consulta,$conexion);

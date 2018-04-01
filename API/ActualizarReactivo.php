@@ -7,43 +7,41 @@ if(!@include("funciones/funciones.php")){
     die("Error fatal!!");
 }
 
-$conexion = mysqli_connect($host, $user, $pw, $db);
+ $conexion = mysqli_connect($host, $user, $pw, $db);
 
 $obj = cargarObjPost();
 
+$ReactivoID = $obj["ReactivoID"];
 $Nombre = $obj["Nombre"];
 $Ubicacion = $obj["Ubicacion"];
-$CantidadActual = $obj["CantidadActual"];
 $PuntoReorden = $obj["PuntoReorden"];
 $Descripcion = $obj["Descripcion"];
 $EsPrecursor = $obj["EsPrecursor"];
 $UnidadMetricaID = $obj["UnidadMetricaID"];
 $CategoriaID = $obj["CategoriaID"];
 $URLHojaSeguridad = $obj["URLHojaSeguridad"];
-$UsuarioID = $obj["UsuarioID"];
 
-// $Nombre = 'Acetona';
-// $Ubicacion = 'I - 4';
-// $CantidadActual = 36;
-// $PuntoReorden = 10;
-// $Descripcion = 'Probando ingreso de reactivos';
-// $EsPrecursor = 0;
+// $ReactivoID = 28;
+// $Nombre = 'Actualizar';
+// $Ubicacion = 'Ubicacion de Prueba';
+// $PuntoReorden = 101;
+// $Descripcion = 'Modificacion de reactivos';
+// $EsPrecursor = 1;
 // $UnidadMetricaID = 2;
-// $CategoriaID = 3;
-// $URLHojaSeguridad = 'www.sieq.000webhost.com';
-// $UsuarioID = 7;
+// $CategoriaID = 2;
+// $URLHojaSeguridad = 'prueba.com';
 
 if($conexion){
-    $consulta = "CALL AgregarReactivo('".mysqli_real_escape_string($conexion, $Nombre)."', 
+    $consulta = "CALL ActualizarReactivo(
+					".mysqli_real_escape_string($conexion, $ReactivoID).",
+					'".mysqli_real_escape_string($conexion, $Nombre)."', 
 					'".mysqli_real_escape_string($conexion, $Ubicacion)."',
-					".mysqli_real_escape_string($conexion, $CantidadActual).",
 					".mysqli_real_escape_string($conexion, $PuntoReorden).",
 					'".mysqli_real_escape_string($conexion, $Descripcion)."',
 					".mysqli_real_escape_string($conexion, $EsPrecursor).",
 					".mysqli_real_escape_string($conexion, $UnidadMetricaID).",
 					".mysqli_real_escape_string($conexion, $CategoriaID).",
-					'".mysqli_real_escape_string($conexion, $URLHojaSeguridad)."', 
-					".mysqli_real_escape_string($conexion, $UsuarioID).")";
+					'".mysqli_real_escape_string($conexion, $URLHojaSeguridad)."')"; 
 					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
