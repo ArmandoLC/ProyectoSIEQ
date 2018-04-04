@@ -114,7 +114,7 @@ button {
 /* alerts, prompt y confirm personalizados */
 
 .alertContainer {
-    position: absolute;
+    position: fixed;
     z-index: 0;
     bottom: 0;
     right: 0;
