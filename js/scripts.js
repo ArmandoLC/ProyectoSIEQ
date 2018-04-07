@@ -23,7 +23,7 @@ var app = angular.module('app', ['ngRoute', 'ngCookies']);
 
 }
 // host localhost (xampp)
-host = "localhost/";
+host = "/ProyectoSIEQ/";
 rootHost = "https://sieq.000webhostapp.com/"
 
 /*
