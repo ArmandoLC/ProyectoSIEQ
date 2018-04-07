@@ -22,10 +22,19 @@ var app = angular.module('app', ['ngRoute', 'ngCookies']);
     }
 
 }
-// host
-host = "ProyectoSIEQ/";
+// host localhost (xampp)
+host = "localhost/";
 rootHost = "https://sieq.000webhostapp.com/"
 
+/*
+//host webHost
+host = "";
+rootHost = "/"
+
+// host pinacr
+host = "sieq/";
+rootHost = "https://sieq.000webhostapp.com/"
+*/
 /* LOGIN CONTROLLER */
 app.controller("login", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
