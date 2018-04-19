@@ -1,0 +1,28 @@
+<h1>Administración de Préstamos</h1>
+<ul class="ulMenu">
+    <li class="liMenu"><a class="activeMenu aMenu pointer" href="#!nuevoPrestamo">Solicitud Nueva</a></li>
+    <li class="liMenu"><a class="aMenu pointer" href="#!adminSoliPrestamos">Administración de Solicitudes</a></li>
+</ul>
+<br>
+
+<h2>Registrar un nuevo préstamo de activos</h2>
+<form ng-submit="agregarCristaleria()" ng-init="objNuevoPrestamo = {}">
+    <div class="popContenido">
+        <div>
+            <p>Tipo de Activo
+                <select ng-model="objNuevoPrestamo.tipoPrestamo">
+                    <option ng-value="0" ng-model="objNuevoPrestamo.tipoPrestamo">Reactivos</option>
+                    <option ng-value="1" ng-model="objNuevoPrestamo.tipoPrestamo">Cristalería</option>
+                </select>
+            </p>
+            <p>Nombre<input type="text" ng-model="objCristaleria.Nombre" required></p>
+            <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="objCristaleria.Descripcion"></textarea> </p>
+            <p>Ubicación<input type="text" ng-model="objCristaleria.Ubicacion" required></p>
+            <p>Cantidad Inicial<input type="number" ng-model="objCristaleria.CantidadActual" step="1" required></p>
+            <p>Cantidad Alerta<input type="number" ng-model="objCristaleria.PuntoReorden" step="1" required></p>
+        </div>
+        <div class="buttonContainer aDer">
+            <input type="submit" value="Agregar">
+        </div>
+    </div>
+</form>
