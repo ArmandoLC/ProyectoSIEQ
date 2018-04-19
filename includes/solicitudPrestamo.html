@@ -7,21 +7,21 @@
 
 <div class="flex jcCenter">
     <div class="maxW50pc aCentro miniSombra fullPadding">
-        <h2>Registrar un nuevo préstamo de activos</h2>
+        <h2>Registrar Un Nuevo Préstamo De Activos</h2>
         <form ng-submit="solicitarPrestamo(objNuevoPrestamo)" ng-init="objNuevoPrestamo = {}">
             <div class="popContenido">
                 <div>
                     <p>Tipo de Activo
-                        <select ng-change="cargarListaActivos()" ng-init="objNuevoPrestamo.tipoPrestamo = 0" ng-model="objNuevoPrestamo.tipoPrestamo">
+                        <select class="f17" id="idSelectTipoPrestamo" ng-change="cargarListaActivos()" ng-init="objNuevoPrestamo.tipoPrestamo = 0" ng-model="objNuevoPrestamo.tipoPrestamo">
                             <option ng-value="0" >Reactivos</option>
                             <option ng-value="1">Cristalería</option>
                         </select>
                     </p>
                     <p>Activo: <br>
-                        <input style="max-width: 50%;" type="text" readonly ng-value="objNuevoPrestamo.nombreActivo==undefined?'Seleccione un Activo':objNuevoPrestamo.nombreActivo"> <span title="Buscar Activo" ng-click="panelEscogerActivo = true" class="bgfff marginLN  pointer miniSombra brAll fullPadding efectoPresionar"><i class="fa fa-search"></i></span>
+                        <input style="max-width: 50%;" type="text" readonly ng-value="objNuevoPrestamo.nombreActivo==undefined?'Seleccione un Activo':objNuevoPrestamo.nombreActivo"> <span title="Buscar Activo" ng-click="mostrarPanelEscogerActivo()" class="bgfff marginLN  pointer miniSombra brAll fullPadding efectoPresionar"><i class="fa fa-search"></i></span>
                     </p>
                     <p>Cantidad a Prestar<input type="number" ng-model="objNuevoPrestamo.CantidadSolicitada" step="1" required></p>
-                    <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="objNuevoPrestamo.descripcion"></textarea> </p>
+                    <p>Descripción <textarea class="f16" name="" id="" cols="30" rows="3" ng-model="objNuevoPrestamo.descripcion"></textarea> </p>
                     <p class="aDer"><input type="submit" value="Solicitar Préstamo"></p>
                 </div>
             </div>
@@ -30,9 +30,9 @@
 </div>
 <div ng-show="panelEscogerActivo" class="popup">
     <div class="popContenido">
-        <h2>Escoger Activo<span class="pointer" ng-click="panelEscogerActivo=false">X</span></h2>
+        <h2>Escoger Activo<span class="pointer" ng-click="panelEscogerActivo=false;filtroActivosPrestamos = ''">X</span></h2>
         <div>
-            <input class="fullMargin" type="text" ng-model="filtroActivosPrestamos" placeholder="Buscar" id="txtBusqueda">
+            <input onclick="this.select()" id="idFiltroActivoPrest" class="fullMargin" type="text" ng-model="filtroActivosPrestamos" placeholder="Buscar" id="txtBusqueda" style="padding-right: 25px;"><i title="Filtra los activos" class="fa fa-search" style="margin-left: -25px; margin-top: 10px;"></i>
             <table class="marginAuto w100pc tbLista">
                 <tr>
                     <th>Nombre</th>

@@ -247,7 +247,8 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
     } else {
         log("adminPrestamos");
         $scope.objNuevoPrestamo = {
-            tipoPrestamo: 0
+            tipoPrestamo: 0,
+            descripcion: ''
         }
         $scope.cargarListaActivos = function () {
             var tipoActivo;
@@ -267,17 +268,32 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             $scope.objNuevoPrestamo.idActivo = a.ArticuloID;
             log($scope.objNuevoPrestamo)
             $scope.panelEscogerActivo = false;
+            $scope.filtroActivosPrestamos = '';
+        }
+        $scope.mostrarPanelEscogerActivo = function () {
+            $scope.panelEscogerActivo = true;
+            focus('idFiltroActivoPrest');
         }
         $scope.solicitarPrestamo = function (prestamo) {
-            prestamo.UsuarioSolicitanteID = $rootScope.idUsuarioActivo;
-            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
-            $rootScope.solicitudHttp(rootHost + "API/AgregarCristaleria.php", prestamo, function () {
-                $rootScope.agregarAlerta("No se ha podido ingresar el activo de cristalería");
-            }, function (listaDatos) {
-                $rootScope.agregarAlerta("Se ha agregado el activo de cristalería");
-                cargarListaCristaleria();
-                $scope.popupCrearCristaleria = false;
-            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            if ($scope.objNuevoPrestamo.idActivo == undefined) {
+                $rootScope.agregarAlerta("Seleccione un reactivo");
+            } else {
+                prestamo.UsuarioSolicitanteID = $rootScope.idUsuarioActivo;
+                //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+                $rootScope.solicitudHttp(rootHost + "API/AgregarCristaleria.php", prestamo, function () {
+                    $rootScope.agregarAlerta("No se ha podido ingresar el activo de cristalería");
+                }, function (listaDatos) {
+                    $rootScope.agregarAlerta("Se ha registrado el préstamo correctamente");
+                    limpiarCamposPrestamo();
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            }
+        };
+
+        function limpiarCamposPrestamo() {
+            $scope.objNuevoPrestamo = {
+                tipoPrestamo: 0,
+                descripcion: ''
+            }
         }
         if (!$scope.listaActivos) {
             $scope.cargarListaActivos();
@@ -895,6 +911,10 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
     $rootScope.formatearFecha = function (fecha) {
         return $filter('date')(new Date(fecha), "dd/MM/yyyy hh:mm:ss a", "-0600")
     };
+    function actualizarFechaHora() {
+        $rootScope.fechaHora = $filter('date')(new Date(), "dd/MM/yyyy hh:mm:ss a", "-0600");
+    }
+    $interval(actualizarFechaHora, 1000);
 });
 
 /* Eventos */
