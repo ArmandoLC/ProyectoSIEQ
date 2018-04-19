@@ -268,6 +268,17 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             log($scope.objNuevoPrestamo)
             $scope.panelEscogerActivo = false;
         }
+        $scope.solicitarPrestamo = function (prestamo) {
+            prestamo.UsuarioSolicitanteID = $rootScope.idUsuarioActivo;
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/AgregarCristaleria.php", prestamo, function () {
+                $rootScope.agregarAlerta("No se ha podido ingresar el activo de cristalería");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha agregado el activo de cristalería");
+                cargarListaCristaleria();
+                $scope.popupCrearCristaleria = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
         if (!$scope.listaActivos) {
             $scope.cargarListaActivos();
         };

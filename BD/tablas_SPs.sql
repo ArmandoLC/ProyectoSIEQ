@@ -167,11 +167,10 @@ CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
 # ---------- Tabla paradaXGira ------------
-DROP TABLE IF EXISTS paradaXGira ;
-create table paradaXGira (
-  Fk_Gira smallint not null,
-  nombreParada VARCHAR(100),
-  FOREIGN KEY (Fk_Gira) references gira(id)
+DROP TABLE IF EXISTS EstadoPrestamo ;
+create table EstadoPrestamo (
+  EstadoPrestamoID INT auto_increment not null primary key,
+  Nombre VARCHAR(100)
 )
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
@@ -239,18 +238,49 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- Procedure insertarFlotilla
 -- -----------------------------------------------------
-DROP procedure IF EXISTS insertarFlotilla;
+DROP procedure IF EXISTS AgregarPrestamo;
 DELIMITER $$
-CREATE  PROCEDURE insertarFlotilla (
+CREATE  PROCEDURE AgregarPrestamo (
   pPlaca VARCHAR(100),
   pCapacidad int
 )
 BEGIN
-    IF NOT EXISTS((SELECT 1 FROM flotilla f where f.placa = pPlaca)) THEN
-      INSERT INTO flotilla(placa,capacidad)
-        VALUES (pPlaca,pCapacidad);
-      SELECT 1;
+	DECLARE ArticuloID  INT;
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+		-- ERROR
+        ROLLBACK;
+	END;
+
+	DECLARE EXIT HANDLER FOR SQLWARNING
+	 BEGIN
+		-- WARNING
+	 ROLLBACK;
+	END;
+
+	START TRANSACTION;
+
+		IF NOT EXISTS((SELECT 1 FROM Articulo a WHERE a.Nombre = Nombre)) THEN
+				INSERT INTO Articulo(Nombre, Ubicacion, CantidadActual, PuntoReorden, Descripcion, TipoArticulo, Visible)
+				VALUES (Nombre, Ubicacion, CantidadActual, PuntoReorden, Descripcion, 1, 1);
+
+				SET ArticuloID = (	SELECT AUTO_INCREMENT - 1 AS UltimoID
+									FROM information_schema.tables
+                                    WHERE TABLE_SCHEMA LIKE '%SIEQ%'
+                                    AND TABLE_NAME = 'Articulo');
+
+				INSERT INTO Reactivo(ArticuloID, EsPrecursor, UnidadMetricaID, Categoria, URLHojaSeguridad)
+					VALUES (ArticuloID, EsPrecursor, UnidadMetricaID, CategoriaID, URLHojaSeguridad);
+
+				INSERT INTO Movimiento(TipoMovimientoID, UsuarioAutorizadorID, ArticuloID, CantidadAntes, CantidadDespues, Destino, Observaciones)
+					VALUES (1, UsuarioID, ArticuloID, 0, CantidadActual, Ubicacion, 'Ingreso del reactivo al sistema.');
+
+				SELECT 1;
+
+		COMMIT;
     END IF;
+
 END $$
 DELIMITER ;
 #CALL insertarFlotilla('106044',10);

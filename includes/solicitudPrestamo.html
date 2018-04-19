@@ -5,10 +5,10 @@
 </ul>
 <br>
 
-<h2>Registrar un nuevo préstamo de activos</h2>
 <div class="flex jcCenter">
-    <div class="maxW50pc aCentro">
-        <form ng-submit="agregarCristaleria()" ng-init="objNuevoPrestamo = {}">
+    <div class="maxW50pc aCentro miniSombra fullPadding">
+        <h2>Registrar un nuevo préstamo de activos</h2>
+        <form ng-submit="solicitarPrestamo(objNuevoPrestamo)" ng-init="objNuevoPrestamo = {}">
             <div class="popContenido">
                 <div>
                     <p>Tipo de Activo
@@ -20,8 +20,7 @@
                     <p>Activo: <br>
                         <input style="max-width: 50%;" type="text" readonly ng-value="objNuevoPrestamo.nombreActivo==undefined?'Seleccione un Activo':objNuevoPrestamo.nombreActivo"> <span title="Buscar Activo" ng-click="panelEscogerActivo = true" class="bgfff marginLN  pointer miniSombra brAll fullPadding efectoPresionar"><i class="fa fa-search"></i></span>
                     </p>
-                    <p>Cantidad a Prestar<input type="number" ng-model="objNuevoPrestamo.cantPrestamo" step="1" required></p>
-                    <p>Nombre de Solicitante<input type="text" ng-model="objNuevoPrestamo.nombreSolicitante" required></p>
+                    <p>Cantidad a Prestar<input type="number" ng-model="objNuevoPrestamo.CantidadSolicitada" step="1" required></p>
                     <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="objNuevoPrestamo.descripcion"></textarea> </p>
                     <p class="aDer"><input type="submit" value="Solicitar Préstamo"></p>
                 </div>
@@ -47,8 +46,8 @@
                     <td class="aCentro">{{a.CantidadActual}}</td>
                     <td class="aCentro"><i ng-click="elegirActivo(a)" class="fa fa-download"></i></td>
                 </tr>
-                <tr ng-show="!listaReactivos || filteredAc.length<1">
-                    <td colspan="4">No hay reactivos que escoger</td>
+                <tr ng-show="!listaActivos || filteredAc.length<1">
+                    <td colspan="4">No hay activos que escoger</td>
                 </tr>
             </table>
         </div>
