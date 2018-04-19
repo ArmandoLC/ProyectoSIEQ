@@ -240,6 +240,40 @@ app.controller("adminSolicitudes", function ($scope, $rootScope, $location, $htt
     }
 });
 
+/* ADMIN DE PRÉSTAMOS DE ACTIVOS */
+app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = host + "login.html";
+    } else {
+        log("adminPrestamos");
+        $scope.objNuevoPrestamo = {
+            tipoPrestamo: 0
+        }
+        $scope.cargarListaActivos = function () {
+            var tipoActivo;
+            if ($scope.objNuevoPrestamo.tipoPrestamo == 0) {
+                tipoActivo = "VerListaReactivos";
+            } else {
+                tipoActivo = "VerListaCristaleria";
+            }
+            $rootScope.solicitudHttp(rootHost + "API/" + tipoActivo + ".php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.listaActivos = listaDatos;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        $scope.elegirActivo = function (a) {
+            $scope.objNuevoPrestamo.nombreActivo = (a.nombreReactivo == undefined ? a.NombreArticulo : a.nombreReactivo);
+            $scope.objNuevoPrestamo.idActivo = a.ArticuloID;
+            log($scope.objNuevoPrestamo)
+            $scope.panelEscogerActivo = false;
+        }
+        if (!$scope.listaActivos) {
+            $scope.cargarListaActivos();
+        };
+    }
+});
+
 /* ADMINFLOTILLAS CONTROLLER */
 app.controller("reportes", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada

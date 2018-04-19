@@ -26,7 +26,7 @@ app.config(function ($routeProvider) {
         controller: "adminSolicitudes"
     }).when("/nuevoPrestamo",{
         templateUrl: "includes/solicitudPrestamo.html",
-        controller: "adminSolicitudes"
+        controller: "adminPrestamos"
     }).when("/adminSoliPrestamos",{
         templateUrl: "includes/adminSoliPrestamos.html",
         controller: "adminSolicitudes"
