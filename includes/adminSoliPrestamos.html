@@ -1,7 +1,7 @@
 <h1>Administración de Préstamos</h1>
 <ul class="ulMenu">
-  <li class="liMenu"><a class="aMenu pointer" href="#!nuevoPrestamo">Solicitud Nueva</a></li>
-  <li class="liMenu"><a class="activeMenu aMenu pointer" href="#!adminSoliPrestamos">Administración de Solicitudes</a></li>
+    <li class="liMenu"><a class="aMenu pointer" href="#!nuevoPrestamo">Solicitud Nueva</a></li>
+    <li class="liMenu"><a class="activeMenu aMenu pointer" href="#!adminSoliPrestamos">Administración de Solicitudes</a></li>
 </ul>
 <br>
 <!--<h2>Inventario de Reactivos Químicos</h2> -->
@@ -27,13 +27,27 @@
         <th>Opciones</th>
     </tr>
     <tr class="aCentro" ng-repeat="p in listaPrestamos | filter:filtroPrestamos">
-        <td>{{c.NombreArticulo}}</td>
+        <td> {{p.FechaSolicitud}}</td>
+        <td>{{p.UsuarioSolicitante}}</td>
+        <td>{{p.Articulo}}</td>
+        <td> {{p.CantidadSolicitada}}</td>
         <td class="mW200px">{{c.Descripcion}}</td>
-        <td>{{c.Ubicacion}}</td>
-        <td>{{c.CantidadActual}}</td>
-        <td> {{c.PuntoReorden}}</td>
-        <td> {{c.PuntoReorden}}</td>
-        <td> {{c.PuntoReorden}}</td>
+        <td>{{p.UsuarioAutorizador}}</td>
+        <td> {{p.FechaAutorizacion}}</td>
+        <td>
+            <div class="flex noWrap">
+                <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>22/01/1996</td>
         <td>
             <div class="flex noWrap">
                 <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
@@ -61,7 +75,7 @@
     </form>
 </div>
 
-<div  ng-show="popupEditarCristaleria" ng-init="cristaleriaEditar = {}" class="popup">
+<div ng-show="popupEditarCristaleria" ng-init="cristaleriaEditar = {}" class="popup">
     <form ng-submit="editarCristaleria()">
         <div class="popContenido">
             <h2 style="padding-left: 30px">Modificar Artículo de Cristalería &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="pointer" ng-click="popupEditarCristaleria=false">X</span></h2>
@@ -81,11 +95,11 @@
 <div ng-init="panelPregunta" ng-show="panelPregunta" class="popup">
     <div class="popContenido mW30pc">
         <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>
-        <div class="fullPadding"style="font-size: 18px;">
+        <div class="fullPadding" style="font-size: 18px;">
             <b>{{mensaje}}</b>
         </div>
         <div class="buttonContainer aDer">
-            <button ng-click="borrarCristaleria()" >Borrar</button>
+            <button ng-click="borrarCristaleria()">Borrar</button>
             <button ng-click="panelPregunta=false">Cancelar</button>
         </div>
     </div>
