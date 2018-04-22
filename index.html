@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>SIEQ</title>
-    <link rel="icon" href="img/logo.png" >
+    <link rel="icon" href="img/logo.png">
     <link rel="stylesheet" href="css/menuAdmin.css">
     <link rel="stylesheet" href="css/panelAdmin.css">
     <link rel="stylesheet" href="css/globales.css">
     <link rel="stylesheet" href="css/estilosWeb.css">
     <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/png" href="img/favicon.png" />
 </head>
 
 <body>
@@ -22,30 +23,32 @@
                 <a href="#!reporteMovReactivos"><i class="marginDer10 fa fa-line-chart" aria-hidden="true"></i>Reportes</a>
                 <a href="#!pedidos"><i class="marginDer10 fa fa-pencil-square-o" aria-hidden="true"></i>Pedidos</a>
                 <a href="#!pedidos"><i class="marginDer10 fa fa-exclamation-triangle" aria-hidden="true"></i>Alertas</a>
-                <a href="#!prestamos"><i class="marginDer10 fa fa-handshake-o" aria-hidden="true"></i>Préstamos</a>
+                <a href="#!nuevoPrestamo"><i class="marginDer10 fa fa-handshake-o" aria-hidden="true"></i>Préstamos</a>
                 <a href="#!precursores"><i class="marginDer10 fa fa-exclamation" aria-hidden="true"></i>Precursores</a>
                 <a href="#!adminSolicitudes" ng-show="esCoordinador()"><i class="marginDer10 fa fa-users" aria-hidden="true"></i>Usuarios</a>
                 <a href="#!precursores"><i class="marginDer10 fa fa-comments-o" aria-hidden="true"></i>Chat</a>
                 <a ng-click="cerrarSesion()"><i class="marginDer10 fa fa-sign-out" aria-hidden="true"></i>Cerrar Sesión</a>
             </div>
+            <div style="visibility: hidden">{{fechaHora}}</div>
         </div>
-        <div ng-include="templateUrl"></div>
+        <!-- <div ng-include="templateUrl"></div> -->
         <div class="main">
             <div class="headerPrincipal headerHeight">
                 <div class="aCentro f26">
-                    Sistema de Invetario de la Escuela de Química (SIEQ)
+                    Sistema de Inventario de la Escuela de Química (SIEQ)
                 </div>
                 <div class="usuarioActivo">
                     <a href="#">{{nombreUsuarioActivo}} | {{rolUsuarioActivo}}</a>
                 </div>
             </div>
 
-            <div ng-view class="mc aCentro"></div>
+            <div ng-view class="mc aCentro">
+            </div>
 
             <!-- alerts, prompt y confirm personalizado -->
             <div class="alertContainer">
                 <div class="alert" ng-class="a.classAlert" ng-repeat="a in listaAlerts">
-                    <div><span ng-click="a.ocultarAlerta()">X</span><i class="fa fa-info-circle" aria-hidden="true"></i> {{a.texto}} </div>
+                    <div><span ng-click="a.ocultarAlerta(a)">X</span><i class="fa fa-info-circle" aria-hidden="true"></i> {{a.texto}}</div>
                 </div>
             </div>
         </div>

@@ -14,9 +14,9 @@
 
 .mc {
     background: #fbfbfb;
-    /*min-height: 100vh;*/
+    flex-grow: 1;
     width: 90%;
-    margin-left: 5%;
+    margin: auto;
 }
 
 .mc h1 {

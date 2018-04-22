@@ -72,6 +72,12 @@
     transform: translateX(-100%);
 }
 
+.main{
+/*    background: #000;*/
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 #chkMenu:not(checked) ~ .main {
     margin-left: 280px;
 }
