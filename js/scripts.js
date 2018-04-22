@@ -263,6 +263,13 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
                 $scope.listaActivos = listaDatos;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
+        $scope.cargarlistaPrestamos = function () {
+            $rootScope.solicitudHttp(rootHost + "API/verListaPrestamos.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.listaPrestamos = listaDatos;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
         $scope.elegirActivo = function (a) {
             $scope.objNuevoPrestamo.nombreActivo = (a.nombreReactivo == undefined ? a.NombreArticulo : a.nombreReactivo);
             $scope.objNuevoPrestamo.idActivo = a.ArticuloID;
@@ -298,6 +305,9 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
         if (!$scope.listaActivos) {
             $scope.cargarListaActivos();
         };
+//        if (!$scope.listaPrestamos) {             // NO hay APi aún
+//            $scope.cargarlistaPrestamos();
+//        };
     }
 });
 
