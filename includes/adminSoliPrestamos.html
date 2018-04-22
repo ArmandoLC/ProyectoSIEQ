@@ -24,6 +24,7 @@
         <th>Descripción</th>
         <th>Usuario Autorizador</th>
         <th>Fecha de Autorización</th>
+        <th>Estado</th>
         <th>Opciones</th>
     </tr>
     <tr class="aCentro" ng-repeat="p in listaPrestamos | filter:filtroPrestamos">
@@ -34,6 +35,7 @@
         <td class="mW200px">{{c.Descripcion}}</td>
         <td>{{p.UsuarioAutorizador}}</td>
         <td> {{p.FechaAutorizacion}}</td>
+        <td>{{p.Estado}}</td>
         <td>
             <div class="flex noWrap">
                 <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
@@ -47,11 +49,71 @@
         <td>1L</td>
         <td class="mW200px">1 litro de yodo para el profesor Juan</td>
         <td>Silvia</td>
-        <td>22/01/1996</td>
+        <td>---</td>
+        <td>Pendiente</td>
         <td>
-            <div class="flex noWrap">
-                <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            <div class="flex noWrap jcCenter">
+                <i class="fa fa-check button" ng-click="preEditarCristaleria(c)" title="Aprobar"></i>
+                <i class="fa fa-ban button" title="Rechazar"></i>
             </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>22/01/1996</td>
+        <td>Aprobado</td>
+        <td>
+            <div class="flex noWrap jcCenter aiCenter button">Despachar
+                <i class="fa fa-sign-out" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>22/01/1996</td>
+        <td>Despachado</td>
+        <td>
+            <div class="flex noWrap jcCenter aiCenter button">Devolver
+                <i class="fa fa-caret-square-o-left" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>22/01/1996</td>
+        <td>Tardío</td>
+        <td>
+            <div class="flex noWrap jcCenter aiCenter button">Devolver
+                <i class="fa fa-caret-square-o-left" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>22/01/1996</td>
+        <td>Devuelto</td>
+        <td>
+            ---
         </td>
     </tr>
 </table>
