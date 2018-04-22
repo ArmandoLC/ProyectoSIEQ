@@ -15,11 +15,11 @@ app.config(function ($routeProvider) {
     }).when("/reporteMovCristaleria",{
         templateUrl: "includes/reporteMovCristaleria.html",
         controller: "reportes"
-    }).when("/reporteReactBajos",{
-        templateUrl: "includes/reporteReactBajos.html",
+    }).when("/alertaReactBajos",{
+        templateUrl: "includes/alertaReactBajos.html",
         controller: "reportes"
-    }).when("/reporteCristBaja",{
-        templateUrl: "includes/reporteCristBaja.html",
+    }).when("/alertaCristBaja",{
+        templateUrl: "includes/alertaCristBaja.html",
         controller: "reportes"
     }).when("/reportePrestamos",{
         templateUrl: "includes/reportePrestamos.html",

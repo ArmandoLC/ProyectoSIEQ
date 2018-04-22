@@ -283,7 +283,7 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
         }
         $scope.solicitarPrestamo = function (prestamo) {
             if ($scope.objNuevoPrestamo.idActivo == undefined) {
-                $rootScope.agregarAlerta("Seleccione un reactivo");
+                $rootScope.agregarAlerta("Seleccione un activo");
             } else if ($scope.objNuevoPrestamo.fechaLimite == undefined) {
                 $rootScope.agregarAlerta("Seleccione una fecha");
             } else {
