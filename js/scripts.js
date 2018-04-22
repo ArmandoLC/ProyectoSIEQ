@@ -284,6 +284,8 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
         $scope.solicitarPrestamo = function (prestamo) {
             if ($scope.objNuevoPrestamo.idActivo == undefined) {
                 $rootScope.agregarAlerta("Seleccione un reactivo");
+            } else if ($scope.objNuevoPrestamo.fechaLimite == undefined) {
+                $rootScope.agregarAlerta("Seleccione una fecha");
             } else {
                 prestamo.UsuarioSolicitanteID = $rootScope.idUsuarioActivo;
                 //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
@@ -305,9 +307,9 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
         if (!$scope.listaActivos) {
             $scope.cargarListaActivos();
         };
-//        if (!$scope.listaPrestamos) {             // NO hay APi aún
-//            $scope.cargarlistaPrestamos();
-//        };
+        //        if (!$scope.listaPrestamos) {             // NO hay APi aún
+        //            $scope.cargarlistaPrestamos();
+        //        };
     }
 });
 
@@ -470,6 +472,7 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
                     Nombre: "Todas"
                 });
                 $scope.objReporteParam.CategoriaID = $scope.categorias[0].CategoriaReactivoID;
+                $scope.buscarReporte($scope.opciones[5], $scope.tipoReporte); // carga todos los registros por defecto
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         if (!$scope.categorias) {
@@ -921,6 +924,7 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
     $rootScope.formatearFecha = function (fecha) {
         return $filter('date')(new Date(fecha), "dd/MM/yyyy hh:mm:ss a", "-0600")
     };
+
     function actualizarFechaHora() {
         $rootScope.fechaHora = $filter('date')(new Date(), "dd/MM/yyyy hh:mm:ss a", "-0600");
     }
