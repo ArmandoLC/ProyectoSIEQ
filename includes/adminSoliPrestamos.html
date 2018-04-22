@@ -1,0 +1,168 @@
+<h1>Administración de Préstamos</h1>
+<ul class="ulMenu">
+    <li class="liMenu"><a class="aMenu pointer" href="#!nuevoPrestamo">Solicitud Nueva</a></li>
+    <li class="liMenu"><a class="activeMenu aMenu pointer" href="#!adminSoliPrestamos">Administración de Solicitudes</a></li>
+</ul>
+<br>
+<!--<h2>Inventario de Reactivos Químicos</h2> -->
+
+<div style="display: flex; justify-content: space-between; padding: 10px 0px">
+    <div class="flex">
+        <input class="fullMargin" type="text" ng-model="filtroPrestamos" placeholder="Buscar" id="txtBusqueda">
+        <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
+    </div>
+    <div>
+        <button class="h100pc fullPaddingIzqDer" ng-click="cargarListaCristaleria()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+    </div>
+</div>
+<table class="tbLista">
+    <tr class="aCentro">
+        <th>Fecha de Solicitud</th>
+        <th>Usuario Solicitante</th>
+        <th>Artículo</th>
+        <th>Cant Solicitada</th>
+        <th>Descripción</th>
+        <th>Usuario Autorizador</th>
+        <th>Fecha de Autorización</th>
+        <th>Estado</th>
+        <th>Opciones</th>
+    </tr>
+    <tr class="aCentro" ng-repeat="p in listaPrestamos | filter:filtroPrestamos">
+        <td> {{p.FechaSolicitud}}</td>
+        <td>{{p.UsuarioSolicitante}}</td>
+        <td>{{p.Articulo}}</td>
+        <td> {{p.CantidadSolicitada}}</td>
+        <td class="mW200px">{{c.Descripcion}}</td>
+        <td>{{p.UsuarioAutorizador}}</td>
+        <td> {{p.FechaAutorizacion}}</td>
+        <td>{{p.Estado}}</td>
+        <td>
+            <div class="flex noWrap">
+                <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i><i class="fa fa-retweet" title="Movimientos"></i><i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>---</td>
+        <td>---</td>
+        <td>Pendiente</td>
+        <td>
+            <div class="flex noWrap jcCenter">
+                <i class="fa fa-check button" ng-click="preEditarCristaleria(c)" title="Aprobar"></i>
+                <i class="fa fa-ban button" title="Rechazar"></i>
+            </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>22/01/1996</td>
+        <td>Aprobado</td>
+        <td>
+            <div class="flex noWrap jcCenter aiCenter button">Despachar
+                <i class="fa fa-sign-out" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>22/01/1996</td>
+        <td>Despachado</td>
+        <td>
+            <div class="flex noWrap jcCenter aiCenter button">Devolver
+                <i class="fa fa-caret-square-o-left" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>22/01/1996</td>
+        <td>Tardío</td>
+        <td>
+            <div class="flex noWrap jcCenter aiCenter button">Devolver
+                <i class="fa fa-caret-square-o-left" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>22/01/1996</td>
+        <td>Devuelto</td>
+        <td>
+            ---
+        </td>
+    </tr>
+</table>
+
+<div ng-init="popupCrearCristaleria = false" ng-show="popupCrearCristaleria" class="popup">
+    <form ng-submit="agregarCristaleria()">
+        <div class="popContenido">
+            <h2 style="padding-left: 30px">Crear Activo de Cristaleria &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="pointer" ng-click="popupCrearCristaleria=false; objCristaleria = {}">X</span></h2>
+            <div ng-init="objCristaleria = {}">
+                <p><b class="f22">Detalles del Reactivo</b></p>
+                <p>Nombre<input type="text" ng-model="objCristaleria.Nombre" required></p>
+                <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="objCristaleria.Descripcion"></textarea> </p>
+                <p>Ubicación<input type="text" ng-model="objCristaleria.Ubicacion" required></p>
+                <p>Cantidad Inicial<input type="number" ng-model="objCristaleria.CantidadActual" step="1" required></p>
+                <p>Cantidad Alerta<input type="number" ng-model="objCristaleria.PuntoReorden" step="1" required></p>
+            </div>
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Agregar">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div ng-show="popupEditarCristaleria" ng-init="cristaleriaEditar = {}" class="popup">
+    <form ng-submit="editarCristaleria()">
+        <div class="popContenido">
+            <h2 style="padding-left: 30px">Modificar Artículo de Cristalería &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="pointer" ng-click="popupEditarCristaleria=false">X</span></h2>
+            <div>
+                <p><b class="f22">Detalles del Reactivo</b></p>
+                <p>Nombre<input type="text" ng-model="cristaleriaEditar.Nombre" required></p>
+                <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="cristaleriaEditar.Descripcion"></textarea> </p>
+                <p>Ubicación<input type="text" ng-model="cristaleriaEditar.Ubicacion" required></p>
+                <p>Cantidad Alerta<input type="number" ng-model="cristaleriaEditar.PuntoReorden" step="1" required></p>
+            </div>
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Modificar">
+            </div>
+        </div>
+    </form>
+</div>
+<div ng-init="panelPregunta" ng-show="panelPregunta" class="popup">
+    <div class="popContenido mW30pc">
+        <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>
+        <div class="fullPadding" style="font-size: 18px;">
+            <b>{{mensaje}}</b>
+        </div>
+        <div class="buttonContainer aDer">
+            <button ng-click="borrarCristaleria()">Borrar</button>
+            <button ng-click="panelPregunta=false">Cancelar</button>
+        </div>
+    </div>
+</div>

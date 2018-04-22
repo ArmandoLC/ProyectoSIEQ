@@ -196,27 +196,6 @@ table i {
     margin: auto;
 }
 
-/*Globales*/
-
-.w100pc {
-    width: 100%;
-}
-
-.flex {
-    display: flex;
-}
-
-.noWrap {
-    flex-wrap: nowrap;
-}
-
-.bordesLados {
-    padding: 2px 25px
-}
-
-.noPointer {
-    cursor: default;
-}
 
 /* Efectos al hacer hover*/
 
@@ -250,4 +229,7 @@ table i {
 
 .fullPadding {
     padding: 5px;
+}
+.fullMargin {
+    margin: 5px;
 }

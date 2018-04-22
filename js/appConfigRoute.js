@@ -21,9 +21,18 @@ app.config(function ($routeProvider) {
     }).when("/reporteCristBaja",{
         templateUrl: "includes/reporteCristBaja.html",
         controller: "reportes"
+    }).when("/reportePrestamos",{
+        templateUrl: "includes/reportePrestamos.html",
+        controller: "reportes"
     }).when("/adminSolicitudes",{
         templateUrl: "includes/adminSolicitudes.html",
         controller: "adminSolicitudes"
+    }).when("/nuevoPrestamo",{
+        templateUrl: "includes/solicitudPrestamo.html",
+        controller: "adminPrestamos"
+    }).when("/adminSoliPrestamos",{
+        templateUrl: "includes/adminSoliPrestamos.html",
+        controller: "adminPrestamos"
     }).when("/login",{
         templateUrl: "login.html"
     }).otherwise({
