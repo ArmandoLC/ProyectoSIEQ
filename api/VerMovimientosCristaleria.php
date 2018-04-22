@@ -10,12 +10,17 @@ if(!@include("funciones/funciones.php")){
 $conexion = mysqli_connect($host, $user, $pw, $db);
 
 $obj = cargarObjPost();
-$UsuarioID = $obj["UsuarioID"];
+$FechaDesde = $obj["FechaDesde"];
+$FechaHasta = $obj["FechaHasta"];
+
+// $FechaDesde = '2018-01-01';
+// $FechaHasta = '2018-04-01';
 
 
 if($conexion){
-    $consulta = "CALL VerListaUsuarios(
-					".mysqli_real_escape_string($conexion, $UsuarioID).")";
+    $consulta = "CALL VerMovimientosCristaleria(
+					'".mysqli_real_escape_string($conexion, $FechaDesde)."',	
+					'".mysqli_real_escape_string($conexion, $FechaHasta)."')";
 					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){

@@ -17,7 +17,7 @@ if($conexion){
     $consulta = "CALL ActualizarCategoria(
 					".mysqli_real_escape_string($conexion, $CategoriaID).",
 					'".mysqli_real_escape_string($conexion, $Nombre)."')";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

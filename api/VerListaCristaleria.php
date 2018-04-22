@@ -9,14 +9,9 @@ if(!@include("funciones/funciones.php")){
 
 $conexion = mysqli_connect($host, $user, $pw, $db);
 
-$obj = cargarObjPost();
-$UsuarioID = $obj["UsuarioID"];
-
-
 if($conexion){
-    $consulta = "CALL VerListaUsuarios(
-					".mysqli_real_escape_string($conexion, $UsuarioID).")";
-					
+    $consulta = "CALL VerListaCristaleria()";
+
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

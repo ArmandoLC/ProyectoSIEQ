@@ -16,7 +16,7 @@ $Siglas = $obj["Siglas"];
 if($conexion){
     $consulta = "CALL AgregarUnidadMetrica('".mysqli_real_escape_string($conexion, $Nombre)."',
 					'".mysqli_real_escape_string($conexion, $Siglas)."')";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);
