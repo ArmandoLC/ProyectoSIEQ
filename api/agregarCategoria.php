@@ -14,7 +14,7 @@ $Nombre = $obj["Nombre"];
 
 if($conexion){
     $consulta = "CALL agregarCategoria('".mysqli_real_escape_string($conexion, $Nombre)."')";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

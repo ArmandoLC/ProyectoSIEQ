@@ -11,7 +11,7 @@ $conexion = mysqli_connect($host, $user, $pw, $db);
 
 if($conexion){
     $consulta = "CALL VerUnidadesMetricas()";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

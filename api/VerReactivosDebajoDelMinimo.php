@@ -11,11 +11,16 @@ $conexion = mysqli_connect($host, $user, $pw, $db);
 
 $obj = cargarObjPost();
 $UsuarioID = $obj["UsuarioID"];
+$CategoriaID = $obj["CategoriaID"];
+
+// $UsuarioID = 7;
+// $CategoriaID = 0;
 
 
 if($conexion){
-    $consulta = "CALL VerListaUsuarios(
-					".mysqli_real_escape_string($conexion, $UsuarioID).")";
+    $consulta = "CALL VerReactivosDebajoDelMinimo(
+					".mysqli_real_escape_string($conexion, $UsuarioID).",
+					".mysqli_real_escape_string($conexion, $CategoriaID).")";
 					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){

@@ -20,11 +20,11 @@ if(!@include("funciones/funciones.php")){
 if($conexion){
     $consulta = "CALL ActualizarCristaleria(
 					".mysqli_real_escape_string($conexion, $ArticuloID).",
-					'".mysqli_real_escape_string($conexion, $Nombre)."',
+					'".mysqli_real_escape_string($conexion, $Nombre)."', 
 					'".mysqli_real_escape_string($conexion, $Ubicacion)."',
 					".mysqli_real_escape_string($conexion, $PuntoReorden).",
 					'".mysqli_real_escape_string($conexion, $Descripcion)."')";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

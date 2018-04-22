@@ -15,7 +15,7 @@ $UnidadMetricaID = $obj["UnidadMetricaID"];
 if($conexion){
     $consulta = "CALL borrarUnidadMetrica(
 					".mysqli_real_escape_string($conexion, $UnidadMetricaID).")";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

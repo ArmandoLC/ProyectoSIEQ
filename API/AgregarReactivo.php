@@ -34,7 +34,7 @@ $UsuarioID = $obj["UsuarioID"];
 // $UsuarioID = 7;
 
 if($conexion){
-    $consulta = "CALL AgregarReactivo('".mysqli_real_escape_string($conexion, $Nombre)."',
+    $consulta = "CALL AgregarReactivo('".mysqli_real_escape_string($conexion, $Nombre)."', 
 					'".mysqli_real_escape_string($conexion, $Ubicacion)."',
 					".mysqli_real_escape_string($conexion, $CantidadActual).",
 					".mysqli_real_escape_string($conexion, $PuntoReorden).",
@@ -42,9 +42,9 @@ if($conexion){
 					".mysqli_real_escape_string($conexion, $EsPrecursor).",
 					".mysqli_real_escape_string($conexion, $UnidadMetricaID).",
 					".mysqli_real_escape_string($conexion, $CategoriaID).",
-					'".mysqli_real_escape_string($conexion, $URLHojaSeguridad)."',
+					'".mysqli_real_escape_string($conexion, $URLHojaSeguridad)."', 
 					".mysqli_real_escape_string($conexion, $UsuarioID).")";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);
