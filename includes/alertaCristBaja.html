@@ -1,6 +1,6 @@
 <h1>Reportes Del Sistema</h1>
 <ul class="ulMenu">
-<!--
+    <!--
     <li class="liMenu dropdown">
         <a href="#!reporteMovReactivos" class="aMenu dropbtn">Reportes de Reactivos</a>
         <div class="dropdown-contentMenu">
@@ -23,74 +23,34 @@
         <a href="#!alertaCristBaja" class="aMenu activeMenu">Cristalería debajo del mínimo</a>
     </li>
     <li class="liMenu">
-        <a href="#!reportePrestamos" class="aMenu dropbtn">Lista Negra</a>
+        <a href="#!alertaCristBaja" class="aMenu dropbtn">Lista Negra</a>
     </li>
 </ul>
-<h2>Reporte de cristalería por debajo del punto de re-orden</h2>
-<br>
-<div class="flex" ng-init="objReporteParam = {}; tipoReporte = 'movCrist'">
-    <div style="flex-grow: 1">
-        <table style="display: inline">
-            <form ng-submit="buscarReporteReactivos(opcion)">
-                <tr>
-                    <td>Consultar:</td>
-                    <td>
-                        <select ng-model="opcion" ng-init="opcion = opciones[0]" ng-options="opcion as opcion.nombre for opcion in opciones"></select>
-                    </td>
-                </tr>
-                <tr ng-show="opcion.seleccionarFecha">
-                    <td>Fecha Inicial:</td>
-                    <td>
-                        <input ng-model="objReporteParam.FechaDesde" type="date"> </td>
-                </tr>
-                <tr ng-show="opcion.seleccionarFecha">
-                    <td>Fecha Final:</td>
-                    <td>
-                        <input ng-model="objReporteParam.FechaHasta" type="date"> </td>
-                </tr>
-                <tr ng-show="opcion.seleccionarCantidad">
-                    <td>Cantidad:</td>
-                    <td>
-                        <input ng-model="objReporteParam.cantidad" type="number"> </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button class="w100pc" ng-click="buscarReporte(opcion,tipoReporte)">Buscar</button>
-                    </td>
-                </tr>
-            </form>
-        </table>
-
-    </div>
-</div>
+<h2>Reporte de Cristalería por Debajo del Punto de Re-Orden</h2>
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
-        <input class="fullMargin" type="text" ng-model="filtroMovCrist" placeholder="Buscar" id="txtBusqueda">
+        <input class="fullMargin" type="text" ng-model="filtroMovReact" placeholder="Buscar" id="txtBusqueda">
         <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
     </div>
+    <div>
+        <button class="h100pc fullPaddingIzqDer" ng-click="verActivosBajos({})" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+    </div>
 </div>
-<table class="tbLista">
+
+<table class="tbLista" ng-init="tipoReporte='cristaleriaBaja'">
     <tr class="aCentro">
-        <th>Artículo</th>
-        <th>Tipo de Movimiento</th>
-        <th>Antes</th>
-        <th>Después</th>
-        <th>Movido</th>
-        <th>Fecha</th>
-        <th>Destino</th>
-        <th>Observaciones</th>
-        <th>Firma</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Ubicación</th>
+        <th>Cant Actual</th>
+        <th>Cant de Alerta</th>
     </tr>
-    <tr class="aCentro" ng-repeat="m in listaMovimientosCristaleria | filter:filtroMovCrist">
-        <td>{{m.Articulo}}</td>
-        <td class="mW200px">{{m["Tipo de Movimiento"]}}</td>
-        <td>{{m.Antes}}</td>
-        <td>{{m.Despues}}</td>
-        <td>{{m.Movido}}</td>
-        <td>{{m.Fecha}}</td>
-        <td>{{m.Destino}}</td>
-        <td>{{m.Observaciones}}</td>
-        <td>{{m.Firma}}</td>
+    <tr class="aCentro" ng-repeat="c in listaActivosBajos | filter:filtroCristaleria">
+        <td>{{c.NombreArticulo}}</td>
+        <td class="mW200px">{{c.Descripcion}}</td>
+        <td>{{c.Ubicacion}}</td>
+        <td>{{c.CantidadActual}}</td>
+        <td> {{c.PuntoReorden}}</td>
     </tr>
 </table>

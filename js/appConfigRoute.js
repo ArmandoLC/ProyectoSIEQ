@@ -17,10 +17,10 @@ app.config(function ($routeProvider) {
         controller: "reportes"
     }).when("/alertaReactBajos",{
         templateUrl: "includes/alertaReactBajos.html",
-        controller: "reportes"
+        controller: "alertas"
     }).when("/alertaCristBaja",{
         templateUrl: "includes/alertaCristBaja.html",
-        controller: "reportes"
+        controller: "alertas"
     }).when("/reportePrestamos",{
         templateUrl: "includes/reportePrestamos.html",
         controller: "reportes"

@@ -313,6 +313,51 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
     }
 });
 
+/* Alertas de Activos por debajo del punto de reorden*/
+app.controller("alertas", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = host + "login.html";
+    } else {
+        log("alertas");
+        $scope.verActivosBajos = function (obj,tipoActivo) {
+            obj.UsuarioID = $rootScope.idUsuarioActivo;
+            log(obj);
+            $rootScope.solicitudHttp(rootHost + "API/Ver"+tipoActivo+"DebajoDelMinimo.php", obj, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.listaActivosBajos = listaDatos;
+                log($scope.listaActivosBajos);
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        function cargarCategorias() {
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/VerCategorias.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.categorias = listaDatos;
+                $scope.categorias.forEach(function (c) {
+                    c.CategoriaReactivoID = parseInt(c.CategoriaReactivoID);
+                })
+                $scope.categorias.unshift({
+                    CategoriaReactivoID: 0,
+                    Nombre: "Todas"
+                });
+                $scope.obj.CategoriaID = $scope.categorias[0].CategoriaReactivoID;
+                $scope.verActivosBajos($scope.obj,'Reactivos');
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        setTimeout(function () {
+            if (!$scope.categorias && $scope.tipoReporte == 'reactivosBajos') {
+                cargarCategorias();
+            }else if ($scope.tipoReporte == 'cristaleriaBaja'){
+                $scope.verActivosBajos({},'Cristaleria');
+            }
+        },100);
+    }
+});
+
 /* ADMINFLOTILLAS CONTROLLER */
 app.controller("reportes", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
