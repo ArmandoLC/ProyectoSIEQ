@@ -1,5 +1,6 @@
 <h1>Reportes Del Sistema</h1>
 <ul class="ulMenu">
+<!--
     <li class="liMenu dropdown">
         <a href="#!reporteMovReactivos" class="aMenu dropbtn">Reportes de Reactivos</a>
         <div class="dropdown-contentMenu">
@@ -8,16 +9,26 @@
         </div>
     </li>
     <li class="liMenu dropdown">
-        <a href="#!reporteMovCristaleria" class="aMenu activeMenu dropbtn">Reportes de Cristalería</a>
+        <a href="#!reporteMovCristaleria" class="aMenu dropbtn">Reportes de Cristalería</a>
         <div class="dropdown-contentMenu">
             <a href="#!reporteMovCristaleria">Ver Movimientos</a>
             <a href="#!reporteCristBaja">Ver Bajos del Mínimo</a>
         </div>
     </li>
+-->
+   <li class="liMenu">
+        <a href="#!reporteMovReactivos" class="aMenu">Reportes de Reactivos</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!reporteMovCristaleria" class="aMenu">Reportes de Cristalería</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!reportePrestamos" class="aMenu activeMenu">Reportes de Préstamos</a>
+    </li>
 </ul>
-<h2>Reporte de cristalería por debajo del punto de re-orden</h2>
+<h2>Reporte de Préstamos de Activos</h2>
 <br>
-<div class="flex" ng-init="objReporteParam = {}; tipoReporte = 'movCrist'">
+<div class="flex" ng-init="objReporteParam = {}; tipoReporte = 'movReact'">
     <div style="flex-grow: 1">
         <table style="display: inline">
             <form ng-submit="buscarReporteReactivos(opcion)">
@@ -43,6 +54,12 @@
                         <input ng-model="objReporteParam.cantidad" type="number"> </td>
                 </tr>
                 <tr>
+                    <td>Categoría</td>
+                    <td>
+                        <select class="w100pc" ng-model="objReporteParam.CategoriaID" ng-init="objReporteParam.CategoriaID = categorias[0].CategoriaReactivoID" ng-options="c.CategoriaReactivoID as c.Nombre for c in categorias"></select>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2">
                         <button class="w100pc" ng-click="buscarReporte(opcion,tipoReporte)">Buscar</button>
                     </td>
@@ -55,31 +72,44 @@
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
-        <input class="fullMargin" type="text" ng-model="filtroMovCrist" placeholder="Buscar" id="txtBusqueda">
+        <input class="fullMargin" type="text" ng-model="filtroPrestamosR" placeholder="Buscar" id="txtBusqueda">
         <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
     </div>
 </div>
 <table class="tbLista">
     <tr class="aCentro">
+        <th>Fecha de Solicitud</th>
+        <th>Usuario Solicitante</th>
         <th>Artículo</th>
-        <th>Tipo de Movimiento</th>
-        <th>Antes</th>
-        <th>Después</th>
-        <th>Movido</th>
-        <th>Fecha</th>
-        <th>Destino</th>
-        <th>Observaciones</th>
-        <th>Firma</th>
+        <th>Cant Solicitada</th>
+        <th>Descripción</th>
+        <th>Usuario Autorizador</th>
+        <th>Fecha de Autorización</th>
+        <th>Fecha de Devolución</th>
+        <th>Estado</th>
     </tr>
-    <tr class="aCentro" ng-repeat="m in listaMovimientosCristaleria | filter:filtroMovCrist">
-        <td>{{m.Articulo}}</td>
+    <tr class="aCentro" ng-repeat="p in listaPrestamos | filter:filtroPrestamosR">
+        <td>{{m.Reactivo}}</td>
         <td class="mW200px">{{m["Tipo de Movimiento"]}}</td>
         <td>{{m.Antes}}</td>
         <td>{{m.Despues}}</td>
         <td>{{m.Movido}}</td>
+        <td>{{m.Categoria}}</td>
         <td>{{m.Fecha}}</td>
         <td>{{m.Destino}}</td>
         <td>{{m.Observaciones}}</td>
         <td>{{m.Firma}}</td>
+    </tr>
+    <tr class="aCentro">
+        <td>21/01/1996</td>
+        <td>Marvin</td>
+        <td>Yodo</td>
+        <td>1L</td>
+        <td class="mW200px">1 litro de yodo para el profesor Juan</td>
+        <td>Silvia</td>
+        <td>21/01/1996</td>
+        <td>22/02/1996</td>
+        <td>Aprobado</td>
+
     </tr>
 </table>

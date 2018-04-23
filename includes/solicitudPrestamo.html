@@ -20,8 +20,9 @@
                     <p>Activo: <br>
                         <input style="max-width: 50%;" type="text" readonly ng-value="objNuevoPrestamo.nombreActivo==undefined?'Seleccione un Activo':objNuevoPrestamo.nombreActivo"> <span title="Buscar Activo" ng-click="mostrarPanelEscogerActivo()" class="bgfff marginLN  pointer miniSombra brAll fullPadding efectoPresionar"><i class="fa fa-search"></i></span>
                     </p>
-                    <p>Cantidad a Prestar<input type="number" ng-model="objNuevoPrestamo.CantidadSolicitada" step="1" required></p>
-                    <p>Descripción <textarea class="f16" name="" id="" cols="30" rows="3" ng-model="objNuevoPrestamo.descripcion"></textarea> </p>
+                    <p>Cantidad a Prestar <input type="number" ng-model="objNuevoPrestamo.CantidadSolicitada" step="1" required></p>
+                    <p>Fecha de Devolución <br>  <input type="date" ng-model="objNuevoPrestamo.fechaLimite" required></p>
+                    <p>Descripción <textarea class="f16" name="" rows="2" ng-model="objNuevoPrestamo.descripcion"></textarea> </p>
                     <p class="aDer"><input type="submit" value="Solicitar Préstamo"></p>
                 </div>
             </div>

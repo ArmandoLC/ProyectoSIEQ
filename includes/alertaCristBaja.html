@@ -1,0 +1,56 @@
+<h1>Reportes Del Sistema</h1>
+<ul class="ulMenu">
+    <!--
+    <li class="liMenu dropdown">
+        <a href="#!reporteMovReactivos" class="aMenu dropbtn">Reportes de Reactivos</a>
+        <div class="dropdown-contentMenu">
+            <a href="#!reporteMovReactivos">Ver Movimientos</a>
+            <a href="#!reporteReactBajos">Ver Bajos del Mínimo</a>
+        </div>
+    </li>
+    <li class="liMenu dropdown">
+        <a href="#!reporteMovCristaleria" class="aMenu activeMenu dropbtn">Reportes de Cristalería</a>
+        <div class="dropdown-contentMenu">
+            <a href="#!reporteMovCristaleria">Ver Movimientos</a>
+            <a href="#!reporteCristBaja">Ver Bajos del Mínimo</a>
+        </div>
+    </li>
+-->
+    <li class="liMenu">
+        <a href="#!alertaReactBajos" class="aMenu">Reactivos debajo del mínimo</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!alertaCristBaja" class="aMenu activeMenu">Cristalería debajo del mínimo</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!alertaCristBaja" class="aMenu dropbtn">Lista Negra</a>
+    </li>
+</ul>
+<h2>Reporte de Cristalería por Debajo del Punto de Re-Orden</h2>
+
+<div style="display: flex; justify-content: space-between; padding: 10px 0px">
+    <div class="flex">
+        <input class="fullMargin" type="text" ng-model="filtroMovReact" placeholder="Buscar" id="txtBusqueda">
+        <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
+    </div>
+    <div>
+        <button class="h100pc fullPaddingIzqDer" ng-click="verActivosBajos({})" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+    </div>
+</div>
+
+<table class="tbLista" ng-init="tipoReporte='cristaleriaBaja'">
+    <tr class="aCentro">
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Ubicación</th>
+        <th>Cant Actual</th>
+        <th>Cant de Alerta</th>
+    </tr>
+    <tr class="aCentro" ng-repeat="c in listaActivosBajos | filter:filtroCristaleria">
+        <td>{{c.NombreArticulo}}</td>
+        <td class="mW200px">{{c.Descripcion}}</td>
+        <td>{{c.Ubicacion}}</td>
+        <td>{{c.CantidadActual}}</td>
+        <td> {{c.PuntoReorden}}</td>
+    </tr>
+</table>

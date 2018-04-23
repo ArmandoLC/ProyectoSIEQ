@@ -1,0 +1,85 @@
+<h1>Alertas del Sistema</h1>
+<ul class="ulMenu">
+    <!--
+    <li class="liMenu dropdown">
+        <a href="#!reporteMovReactivos" class="aMenu activeMenu dropbtn">Reportes de Reactivos</a>
+        <div class="dropdown-contentMenu">
+            <a href="#!reporteMovReactivos">Ver Movimientos</a>
+            <a href="#!reporteReactBajos">Ver Bajos del Mínimo</a>
+        </div>
+    </li>
+    <li class="liMenu dropdown">
+        <a href="#!reporteMovCristaleria" class="aMenu dropbtn">Reportes de Cristalería</a>
+        <div class="dropdown-contentMenu">
+            <a href="#!reporteMovCristaleria">Ver Movimientos</a>
+            <a href="#!reporteCristBaja">Ver Bajos del Mínimo</a>
+        </div>
+    </li>
+-->
+    <li class="liMenu">
+        <a href="#!alertaReactBajos" class="aMenu activeMenu">Reactivos debajo del mínimo</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!alertaCristBaja" class="aMenu">Cristalería debajo del mínimo</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!alertaCristBaja" class="aMenu dropbtn">Lista Negra</a>
+    </li>
+</ul>
+<h2>Reporte de Reactivos por Debajo del Punto de Re-Orden</h2>
+
+<div class="flex" ng-init="obj = {};">
+    <div style="flex-grow: 1">
+        <table style="display: inline">
+            <form ng-submit="buscarReporteReactivos(opcion)">
+                <tr>
+                    <td>Categoría</td>
+                    <td>
+                        <select class="w100pc" ng-model="obj.CategoriaID" ng-init="obj.CategoriaID = categorias[0].CategoriaReactivoID" ng-options="c.CategoriaReactivoID as c.Nombre for c in categorias"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button class="w100pc" ng-click="verReactivosBajos(obj)">Buscar</button>
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
+</div>
+
+<div style="display: flex; justify-content: space-between; padding: 10px 0px">
+    <div class="flex">
+        <input class="fullMargin" type="text" ng-model="filtroMovReact" placeholder="Buscar" id="txtBusqueda">
+        <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
+    </div>
+    <div>
+        <button class="h100pc fullPaddingIzqDer" ng-click="verActivosBajos(obj)" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+    </div>
+</div>
+
+<table class="tbLista" ng-init="tipoReporte='reactivosBajos'">
+   <tr class="aCentro">
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Ubicación</th>
+        <th>Cant Actual</th>
+        <th>Cant de Alerta</th>
+        <th>Hoja de Seguridad</th>
+        <th>¿Es Precursor?</th>
+    </tr>
+    <tr class="aCentro" ng-repeat="r in listaActivosBajos | filter:filtroReactivos">
+        <td>{{r.nombreReactivo}}</td>
+        <td class="mW200px">{{r.Descripcion}}</td>
+        <td>{{r.Ubicacion}}</td>
+        <td>{{r.CantidadActual}} {{r.Siglas}}</td>
+        <td> {{r.PuntoReorden}} {{r.Siglas}} </td>
+        <td><a href={{r.URLHojaSeguridad}} target="_blank">Link</a></td>
+        <td>
+            <label class="checkContainer noPointer">
+                <input type="checkbox" ng-checked="r.EsPrecursor==1" disabled>
+                <span class="checkmark"></span>
+            </label>
+        </td>
+    </tr>
+</table>

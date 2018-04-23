@@ -26,13 +26,13 @@ $UsuarioID = $obj["UsuarioID"];
 // $UsuarioID = 7;
 
 if($conexion){
-    $consulta = "CALL AgregarCristaleria('".mysqli_real_escape_string($conexion, $Nombre)."',
+    $consulta = "CALL AgregarCristaleria('".mysqli_real_escape_string($conexion, $Nombre)."', 
 					'".mysqli_real_escape_string($conexion, $Ubicacion)."',
 					".mysqli_real_escape_string($conexion, $CantidadActual).",
 					".mysqli_real_escape_string($conexion, $PuntoReorden).",
-					'".mysqli_real_escape_string($conexion, $Descripcion)."',
+					'".mysqli_real_escape_string($conexion, $Descripcion)."', 
 					".mysqli_real_escape_string($conexion, $UsuarioID).")";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

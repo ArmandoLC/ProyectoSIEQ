@@ -12,9 +12,11 @@ $conexion = mysqli_connect($host, $user, $pw, $db);
 $obj = cargarObjPost();
 $UsuarioID = $obj["UsuarioID"];
 
+// $UsuarioID = 7;
+
 
 if($conexion){
-    $consulta = "CALL VerListaUsuarios(
+    $consulta = "CALL VerCristaleriaDebajoDelMinimo(
 					".mysqli_real_escape_string($conexion, $UsuarioID).")";
 					
     $resultado = consultar($consulta,$conexion);

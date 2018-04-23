@@ -15,11 +15,14 @@ app.config(function ($routeProvider) {
     }).when("/reporteMovCristaleria",{
         templateUrl: "includes/reporteMovCristaleria.html",
         controller: "reportes"
-    }).when("/reporteReactBajos",{
-        templateUrl: "includes/reporteReactBajos.html",
-        controller: "reportes"
-    }).when("/reporteCristBaja",{
-        templateUrl: "includes/reporteCristBaja.html",
+    }).when("/alertaReactBajos",{
+        templateUrl: "includes/alertaReactBajos.html",
+        controller: "alertas"
+    }).when("/alertaCristBaja",{
+        templateUrl: "includes/alertaCristBaja.html",
+        controller: "alertas"
+    }).when("/reportePrestamos",{
+        templateUrl: "includes/reportePrestamos.html",
         controller: "reportes"
     }).when("/adminSolicitudes",{
         templateUrl: "includes/adminSolicitudes.html",
@@ -29,7 +32,7 @@ app.config(function ($routeProvider) {
         controller: "adminPrestamos"
     }).when("/adminSoliPrestamos",{
         templateUrl: "includes/adminSoliPrestamos.html",
-        controller: "adminSolicitudes"
+        controller: "adminPrestamos"
     }).when("/login",{
         templateUrl: "login.html"
     }).otherwise({

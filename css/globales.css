@@ -349,3 +349,7 @@ button {
 .brAll {
     border-radius: 5px;
 }
+
+.aiCenter {
+    align-items: center;
+}

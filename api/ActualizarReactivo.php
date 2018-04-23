@@ -9,40 +9,40 @@ if(!@include("funciones/funciones.php")){
 
  $conexion = mysqli_connect($host, $user, $pw, $db);
 
-// $obj = cargarObjPost();
+$obj = cargarObjPost();
 
-// $ReactivoID = $obj["ReactivoID"];
-// $Nombre = $obj["Nombre"];
-// $Ubicacion = $obj["Ubicacion"];
-// $PuntoReorden = $obj["PuntoReorden"];
-// $Descripcion = $obj["Descripcion"];
-// $EsPrecursor = $obj["EsPrecursor"];
-// $UnidadMetricaID = $obj["UnidadMetricaID"];
-// $CategoriaID = $obj["CategoriaID"];
-// $URLHojaSeguridad = $obj["URLHojaSeguridad"];
+$ReactivoID = $obj["ReactivoID"];
+$Nombre = $obj["Nombre"];
+$Ubicacion = $obj["Ubicacion"];
+$PuntoReorden = $obj["PuntoReorden"];
+$Descripcion = $obj["Descripcion"];
+$EsPrecursor = $obj["EsPrecursor"];
+$UnidadMetricaID = $obj["UnidadMetricaID"];
+$CategoriaID = $obj["CategoriaID"];
+$URLHojaSeguridad = $obj["URLHojaSeguridad"];
 
-$ReactivoID = 32;
-$Nombre = 'Actualizar';
-$Ubicacion = 'Ubicacion de Prueba';
-$PuntoReorden = 101;
-$Descripcion = 'Modificacion de reactivos';
-$EsPrecursor = 1;
-$UnidadMetricaID = 2;
-$CategoriaID = 2;
-$URLHojaSeguridad = 'prueba.com';
+// $ReactivoID = 28;
+// $Nombre = 'Actualizar';
+// $Ubicacion = 'Ubicacion de Prueba';
+// $PuntoReorden = 101;
+// $Descripcion = 'Modificacion de reactivos';
+// $EsPrecursor = 1;
+// $UnidadMetricaID = 2;
+// $CategoriaID = 2;
+// $URLHojaSeguridad = 'prueba.com';
 
 if($conexion){
     $consulta = "CALL ActualizarReactivo(
 					".mysqli_real_escape_string($conexion, $ReactivoID).",
-					'".mysqli_real_escape_string($conexion, $Nombre)."',
+					'".mysqli_real_escape_string($conexion, $Nombre)."', 
 					'".mysqli_real_escape_string($conexion, $Ubicacion)."',
 					".mysqli_real_escape_string($conexion, $PuntoReorden).",
 					'".mysqli_real_escape_string($conexion, $Descripcion)."',
 					".mysqli_real_escape_string($conexion, $EsPrecursor).",
 					".mysqli_real_escape_string($conexion, $UnidadMetricaID).",
 					".mysqli_real_escape_string($conexion, $CategoriaID).",
-					'".mysqli_real_escape_string($conexion, $URLHojaSeguridad)."')";
-
+					'".mysqli_real_escape_string($conexion, $URLHojaSeguridad)."')"; 
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

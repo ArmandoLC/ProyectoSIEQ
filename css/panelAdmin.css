@@ -45,23 +45,21 @@
 .tbLista th, td {
     padding: 8px;
 }
-.tbLista tr:nth-child(even){background-color: #f2f2f2}
+.tbLista tr:nth-child(even){background-color: #e8e8e8}
 .tbLista th {
     background-color: #106d5f;
     color: white;
 }
 
 .button {
-
   padding: 5px 5px;
-  font-size: 20px;
+  font-size: 17px;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
   outline: none;
   color: #fff;
   background-color: #747a90;
-
   border-radius: 4px;
   box-shadow: 0 2px #999;
 }
@@ -69,7 +67,7 @@
 .button:hover {background-color: #696e81}
 
 .button:active {
-  background-color: #2e3d76;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+  background-color: #656a7d;
+  box-shadow: 0 3px #666;
+  transform: translateY(2px);
 }

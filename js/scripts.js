@@ -263,6 +263,13 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
                 $scope.listaActivos = listaDatos;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
+        $scope.cargarlistaPrestamos = function () {
+            $rootScope.solicitudHttp(rootHost + "API/verListaPrestamos.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.listaPrestamos = listaDatos;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
         $scope.elegirActivo = function (a) {
             $scope.objNuevoPrestamo.nombreActivo = (a.nombreReactivo == undefined ? a.NombreArticulo : a.nombreReactivo);
             $scope.objNuevoPrestamo.idActivo = a.ArticuloID;
@@ -276,7 +283,9 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
         }
         $scope.solicitarPrestamo = function (prestamo) {
             if ($scope.objNuevoPrestamo.idActivo == undefined) {
-                $rootScope.agregarAlerta("Seleccione un reactivo");
+                $rootScope.agregarAlerta("Seleccione un activo");
+            } else if ($scope.objNuevoPrestamo.fechaLimite == undefined) {
+                $rootScope.agregarAlerta("Seleccione una fecha");
             } else {
                 prestamo.UsuarioSolicitanteID = $rootScope.idUsuarioActivo;
                 //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
@@ -298,6 +307,54 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
         if (!$scope.listaActivos) {
             $scope.cargarListaActivos();
         };
+        //        if (!$scope.listaPrestamos) {             // NO hay APi aún
+        //            $scope.cargarlistaPrestamos();
+        //        };
+    }
+});
+
+/* Alertas de Activos por debajo del punto de reorden*/
+app.controller("alertas", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = host + "login.html";
+    } else {
+        log("alertas");
+        $scope.verActivosBajos = function (obj,tipoActivo) {
+            obj.UsuarioID = $rootScope.idUsuarioActivo;
+            log(obj);
+            $rootScope.solicitudHttp(rootHost + "API/Ver"+tipoActivo+"DebajoDelMinimo.php", obj, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.listaActivosBajos = listaDatos;
+                log($scope.listaActivosBajos);
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        function cargarCategorias() {
+            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.solicitudHttp(rootHost + "API/VerCategorias.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.categorias = listaDatos;
+                $scope.categorias.forEach(function (c) {
+                    c.CategoriaReactivoID = parseInt(c.CategoriaReactivoID);
+                })
+                $scope.categorias.unshift({
+                    CategoriaReactivoID: 0,
+                    Nombre: "Todas"
+                });
+                $scope.obj.CategoriaID = $scope.categorias[0].CategoriaReactivoID;
+                $scope.verActivosBajos($scope.obj,'Reactivos');
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        setTimeout(function () {
+            if (!$scope.categorias && $scope.tipoReporte == 'reactivosBajos') {
+                cargarCategorias();
+            }else if ($scope.tipoReporte == 'cristaleriaBaja'){
+                $scope.verActivosBajos({},'Cristaleria');
+            }
+        },100);
     }
 });
 
@@ -460,6 +517,7 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
                     Nombre: "Todas"
                 });
                 $scope.objReporteParam.CategoriaID = $scope.categorias[0].CategoriaReactivoID;
+                $scope.buscarReporte($scope.opciones[5], $scope.tipoReporte); // carga todos los registros por defecto
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         if (!$scope.categorias) {
@@ -911,6 +969,7 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
     $rootScope.formatearFecha = function (fecha) {
         return $filter('date')(new Date(fecha), "dd/MM/yyyy hh:mm:ss a", "-0600")
     };
+
     function actualizarFechaHora() {
         $rootScope.fechaHora = $filter('date')(new Date(), "dd/MM/yyyy hh:mm:ss a", "-0600");
     }
