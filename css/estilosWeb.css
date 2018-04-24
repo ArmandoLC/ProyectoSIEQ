@@ -218,6 +218,10 @@ table i {
 .h100pc {
     height: 100%
 }
+.h100pc.selectClass{
+    background-color: #140e39;
+    color: #fff;
+}
 
 .fullPaddingIzqDer {
     padding: 0px 10px

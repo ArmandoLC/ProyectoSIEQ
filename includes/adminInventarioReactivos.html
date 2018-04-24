@@ -14,6 +14,7 @@
         <div class="unidadesMedida" ng-click="mostrarPanelCategorias()" title="Administrar Categorias"><i class="fa fa-cog"></i><span>Categorías</span></div>
     </div>
     <div>
+        <button class="h100pc" ng-class="selectClass" ng-click="filtrarPrecursores()" title="Filtrar según precursor"><i class="fa fa-eye"></i> Ver Precursores</button>
         <button class="h100pc" ng-click="mostrarPanelCrearReactivo()" title="Agregar Nuevo Reactivo"> <i class="fa fa-plus"></i> Agregar Nuevo</button>
         <button class="h100pc fullPaddingIzqDer" ng-click="cargarListaReactivos()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
     </div>
@@ -29,7 +30,7 @@
         <th>¿Es Precursor?</th>
         <th>Opciones</th>
     </tr>
-    <tr class="aCentro" ng-repeat="r in listaReactivos | filter:filtroReactivos">
+    <tr class="aCentro" ng-repeat="r in listaReactivos | filter:filtroReactivos" ng-hide="filtrarSegunPrecursor(r)">
         <td>{{r.nombreReactivo}}</td>
         <td class="mW200px">{{r.Descripcion}}</td>
         <td>{{r.Ubicacion}}</td>

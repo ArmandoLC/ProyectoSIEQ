@@ -111,6 +111,16 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
     }
 });
 
+
+/* REPORTEPRECURSORES CONTROLLER */
+app.controller("reportePrecursores", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = "login.html";
+    } else {
+        log("reportePrecursores");
+    }
+});
+
 /* ADMIN USUARIOS CONTROLLER */
 app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
@@ -597,6 +607,25 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
         window.location.pathname = host + "login.html";
     } else {
+        $scope.filtroPrecursores = false;
+
+        $scope.filtrarPrecursores = function(){
+            if($scope.filtroPrecursores){
+                $scope.filtroPrecursores = false;
+                $scope.selectClass = '';
+            }else{
+                $scope.filtroPrecursores = true;
+                $scope.selectClass = 'selectClass';
+            }
+        };
+
+        $scope.filtrarSegunPrecursor = function(r){
+            if(r.EsPrecursor == 0 & $scope.filtroPrecursores){
+                return true;
+            }
+            return false;
+        };
+
         $scope.editarReactivo = function (r) {
             $scope.reactivoEditar = JSON.clone(r);
             $scope.popupEditarReactivo = true;
