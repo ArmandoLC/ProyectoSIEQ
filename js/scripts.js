@@ -114,10 +114,102 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
 
 /* REPORTEPRECURSORES CONTROLLER */
 app.controller("reportePrecursores", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
-    if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
         //window.location.pathname = "login.html";
     } else {
         log("reportePrecursores");
+    }
+});
+
+
+/* ADMINPEDIDOS CONTROLLER */
+app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = "login.html";
+    } else {
+        log("adminPedidos");
+
+        $scope.filtroPedido = false;
+        $scope.listaPedidos = [];
+        $scope.popupCrearPedido = false;
+
+        $scope.filtrarPedidos = function () {
+            if ($scope.filtroPedido) {
+                $scope.filtroPedido = false;
+                $scope.selectClass = '';
+            } else {
+                $scope.filtroPedido = true;
+                $scope.selectClass = 'selectClass';
+            }
+        };
+
+        $scope.filtrarSegunPropietario = function (pedido) {
+            if (pedido.IDPropietario != $rootScope.idUsuarioActivo & $scope.filtroPedido) {
+                return true;
+            }
+            return false;
+        };
+
+        $scope.cargarListaPedidos = function(){
+            var obj = {};
+            obj.UsuarioID = $rootScope.idUsuarioActivo;
+
+            $rootScope.solicitudHttp(rootHost + "API/VerPedidosDeUsuario.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida, se esperaba una lista de pedidos");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("No se encontraron pedidos personales");
+                } else {
+                    log("Pedidos consultados con éxito");
+                    $scope.listaPedidos = listaDatos;
+                    $rootScope.agregarAlerta("Pedidos consultados con éxito");
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        $scope.agregarPedido = function(obj){
+            obj.UsuarioID = $rootScope.idUsuarioActivo;
+
+            log("Agregando pedido");
+            log(obj);
+
+            $rootScope.solicitudHttp(rootHost + "API/AgregarPedido.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Pedido Creado y listo para editarse");
+                $scope.cargarListaPedidos();
+                $scope.popupCrearPedido = false;
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+         $scope.preBorrarPedido = function (pedido) {
+            $scope.panelPregunta = true;
+            $scope.mensaje = "¿Está seguro que desea borrar el pedido: '" + pedido.Titulo + "'?"
+            $scope.pedidoABorrar = {
+                PedidoAEliminarID: pedido.PedidoID
+            }
+        };
+
+        $scope.borrarPedido = function () {
+            $rootScope.solicitudHttp(rootHost + "API/EliminarPedido.php", $scope.pedidoABorrar, function () {
+                $rootScope.agregarAlerta("No se ha podido borrar el pedido");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha eliminado el pedido");
+                $scope.cargarListaPedidos();
+                $scope.panelPregunta = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        $scope.mostrarPanelCrearPedido = function(){
+            $scope.popupCrearPedido = true;
+            log("Listo el popup");
+        };
+
+        if ($scope.listaPedidos.length == 0) {
+            $scope.cargarListaPedidos();
+        };
+
+
     }
 });
 
