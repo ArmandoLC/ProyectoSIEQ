@@ -26,7 +26,7 @@
         <a href="#!listaNegraReactivos" class="aMenu dropbtn activeMenu">Lista Negra</a>
         <div class="dropdown-contentMenu">
             <a href="#!listaNegraReactivos">Reactivos</a>
-            <a href="#!listaNegraCristaleria" class="activeSubMenu" >Cristalería</a>
+            <a href="#!listaNegraCristaleria" class="activeSubMenu">Cristalería</a>
         </div>
     </li>
 </ul>
@@ -34,11 +34,11 @@
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
-        <input class="fullMargin" type="text" ng-model="filtroMovReact" placeholder="Buscar" id="txtBusqueda">
+        <input class="fullMargin" type="text" ng-model="filtroCristaleria" placeholder="Buscar" id="txtBusqueda">
         <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
     </div>
     <div>
-        <button class="h100pc fullPaddingIzqDer" ng-click="verActivosBajos(obj)" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+        <button class="h100pc fullPaddingIzqDer" ng-click="cargarLista(1)" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
     </div>
 </div>
 
@@ -50,21 +50,15 @@
         <th>Cant de Alerta</th>
         <th>Ver Notificaciones</th>
     </tr>
-    <tr class="aCentro" ng-repeat="c in listaCristaleria | filter:filtroReactivos">
+    <tr class="aCentro" ng-repeat="c in listaCristaleria | filter:filtroCristaleria">
         <td>{{c.NombreArticulo}}</td>
         <td class="mW200px">{{c.Descripcion}}</td>
         <td>{{c.CantidadActual}}</td>
         <td> {{c.PuntoReorden}}</td>
         <td>
             <div class="flex jcCenter">
-                <label class="checkContainer noPointer">
-                    <input type="checkbox" ng-checked="c.enListaNegra==0" >
-                    <span class="checkmark checkBoxSiNo">SÍ</span>
-                </label>
-                <label class="checkContainer noPointer marginL30">
-                    <input type="checkbox" ng-checked="c.enListaNegra==1" >
-                    <span class="checkmark checkBoxSiNo" >NO</span>
-                </label>
+                <div class="yesNoButton" ng-class="!c.enListaNegra?'fondoActivo':''" ng-click="removerDeListaNegra(c)"><span>SÍ</span></div>
+                <div class="yesNoButton" ng-class="c.enListaNegra?'fondoActivo':''" ng-click="agregarAListaNegra(c)"><span>NO</span></div>
             </div>
         </td>
     </tr>
