@@ -34,17 +34,16 @@
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
-        <input class="fullMargin" type="text" ng-model="filtroMovReact" placeholder="Buscar" id="txtBusqueda">
+        <input class="fullMargin" type="text" ng-model="filtroReactivos" placeholder="Buscar" id="txtBusqueda">
         <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
     </div>
     <div>
-        <button class="h100pc fullPaddingIzqDer" ng-click="verActivosBajos(obj)" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+        <button class="h100pc fullPaddingIzqDer" ng-click="cargarLista(1)" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
     </div>
 </div>
 
 <table class="tbLista" ng-init="tipoLista='reactivos'">
     <tr class="aCentro">
-        <th>ID</th>
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Categoría</th>
@@ -54,7 +53,6 @@
         <th>Ver Notificaciones</th>
     </tr>
     <tr class="aCentro" ng-repeat="r in listaReactivos | filter:filtroReactivos">
-        <td>{{r.ArticuloID}}</td>
         <td>{{r.nombreReactivo}}</td>
         <td class="mW200px">{{r.Descripcion}}</td>
         <td>{{r.NombreCategoria}}</td>
@@ -71,18 +69,6 @@
                <div class="yesNoButton" ng-class="!r.enListaNegra?'fondoActivo':''" ng-click="removerDeListaNegra(r)" ><span>SÍ</span></div>
                <div class="yesNoButton" ng-class="r.enListaNegra?'fondoActivo':''" ng-click="agregarAListaNegra(r)"><span>NO</span></div>
            </div>
-            <!--
-            <div class="flex jcCenter">
-                <label class="checkContainer noPointer">
-                    <input type="checkbox" ng-checked="r.enListaNegra==false" ng-model="r.enListaNegra" ng-click="removerDeListaNegra(r)" ng-disabled="r.enListaNegra==0">
-                    <span class="checkmark checkBoxSiNo">SÍ</span>
-                </label>
-                <label class="checkContainer noPointer marginL30">
-                    <input type="checkbox" ng-checked="r.enListaNegra==true" ng-model="r.enListaNegra" ng-click="agregarAListaNegra(r)" ng-disabled="r.enListaNegra==1">
-                    <span class="checkmark checkBoxSiNo" >NO</span>
-                </label>
-            </div>
--->
         </td>
     </tr>
 </table>

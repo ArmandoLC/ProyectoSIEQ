@@ -336,7 +336,6 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                 $rootScope.agregarAlerta("Error Desconocido");
             }, function (listaDatos) {
                 $scope.listaActivosBajos = listaDatos;
-                log($scope.listaActivosBajos);
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
@@ -394,6 +393,7 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                         $scope.listaNegra.forEach(function (activoNegro) {
                             if (reactivo.ArticuloID == activoNegro.ArticuloID) {
                                 reactivo.enListaNegra = 1;
+                                reactivo.ListaNegraID = activoNegro.ListaNegraID;
                             }
                         });
                     });
@@ -411,21 +411,8 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        setTimeout(function () {
-            if (!$scope.listaReactivos && $scope.tipoLista == 'reactivos') {
-                $scope.listaReactivos = [];
-                cargarLista(0, 'Reactivos');
-            };
-            if (!$scope.listaCristaleria && $scope.tipoLista == 'cristaleria') {
-                $scope.listaCristaleria = [];
-                cargarLista(1, 'Cristaleria');
-            };
-        }, 100);
-
         $scope.agregarAListaNegra = function (a) {
             if (a.enListaNegra != 1) {
-                log("Metiendo a lista Negra");
-
                 obj = {
                     UsuarioID: $rootScope.idUsuarioActivo,
                     ArticuloID: a.ArticuloID
@@ -433,32 +420,43 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                 $rootScope.solicitudHttp(rootHost + "API/AgregarArticuloAListaNegra.php", obj, function () {
                     $rootScope.agregarAlerta("Error Desconocido");
                 }, function (listaDatos) {
-                    log(listaDatos);
                     a.enListaNegra = 1;
+                    a.ListaNegraID = listaDatos[0].ListaNegraID;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
-
-                log(a);
             }
-
         };
         $scope.removerDeListaNegra = function (a) {
             if (a.enListaNegra != 0) {
-                log("Sacando de Lista Negra ");
-
                 obj = {
-                    ListaNegraID : a.ListaNegraID
+                    ListaNegraID: a.ListaNegraID
                 };
                 $rootScope.solicitudHttp(rootHost + "API/EliminarArticuloListaNegra.php", obj, function () {
                     $rootScope.agregarAlerta("Error Desconocido");
                 }, function (listaDatos) {
-                    log(listaDatos);
                     a.enListaNegra = 0;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
-
-
-                log(a);
             }
         };
+
+        $scope.cargarLista = function (modo) {
+            setTimeout(function () {
+                if (!$scope.listaReactivos && $scope.tipoLista == 'reactivos') {
+                    $scope.listaReactivos = [];
+                    cargarLista(0, 'Reactivos');
+                };
+                if (!$scope.listaCristaleria && $scope.tipoLista == 'cristaleria') {
+                    $scope.listaCristaleria = [];
+                    cargarLista(1, 'Cristaleria');
+                };
+                if (modo==1 && $scope.tipoLista == 'reactivos') {
+                    cargarLista(0, 'Reactivos');
+                }
+                if (modo==1 && $scope.tipoLista == 'cristaleria') {
+                    cargarLista(1, 'Cristaleria');
+                }
+            }, 100);
+        }
+        $scope.cargarLista();
     }
 });
 
