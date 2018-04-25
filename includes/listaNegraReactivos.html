@@ -44,6 +44,7 @@
 
 <table class="tbLista" ng-init="tipoLista='reactivos'">
     <tr class="aCentro">
+        <th>ID</th>
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Categoría</th>
@@ -53,6 +54,7 @@
         <th>Ver Notificaciones</th>
     </tr>
     <tr class="aCentro" ng-repeat="r in listaReactivos | filter:filtroReactivos">
+        <td>{{r.ArticuloID}}</td>
         <td>{{r.nombreReactivo}}</td>
         <td class="mW200px">{{r.Descripcion}}</td>
         <td>{{r.NombreCategoria}}</td>

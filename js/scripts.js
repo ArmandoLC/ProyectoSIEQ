@@ -382,7 +382,7 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
 
         function cargarListaNegra(modo) {
             obj = {
-                UsuarioID: 7
+                UsuarioID: $rootScope.idUsuarioActivo
             }
             $rootScope.solicitudHttp(rootHost + "API/VerListaNegraDeUsuario.php", obj, function () {
                 $rootScope.agregarAlerta("Error Desconocido");
@@ -446,9 +446,9 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                 log("Sacando de Lista Negra ");
 
                 obj = {
-                    ListaNegraID: a.ListaNegraID
+                    ListaNegraID : a.ListaNegraID
                 };
-                $rootScope.solicitudHttp(rootHost + "API/EliminarArticuloListaNegra", obj, function () {
+                $rootScope.solicitudHttp(rootHost + "API/EliminarArticuloListaNegra.php", obj, function () {
                     $rootScope.agregarAlerta("Error Desconocido");
                 }, function (listaDatos) {
                     log(listaDatos);
