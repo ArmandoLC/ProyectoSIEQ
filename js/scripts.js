@@ -329,10 +329,10 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
         //window.location.pathname = host + "login.html";
     } else {
         log("alertas");
-        $scope.verActivosBajos = function (obj,tipoActivo) {
+        $scope.verActivosBajos = function (obj, tipoActivo) {
             obj.UsuarioID = $rootScope.idUsuarioActivo;
             log(obj);
-            $rootScope.solicitudHttp(rootHost + "API/Ver"+tipoActivo+"DebajoDelMinimo.php", obj, function () {
+            $rootScope.solicitudHttp(rootHost + "API/Ver" + tipoActivo + "DebajoDelMinimo.php", obj, function () {
                 $rootScope.agregarAlerta("Error Desconocido");
             }, function (listaDatos) {
                 $scope.listaActivosBajos = listaDatos;
@@ -354,17 +354,111 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                     Nombre: "Todas"
                 });
                 $scope.obj.CategoriaID = $scope.categorias[0].CategoriaReactivoID;
-                $scope.verActivosBajos($scope.obj,'Reactivos');
+                $scope.verActivosBajos($scope.obj, 'Reactivos');
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
         setTimeout(function () {
             if (!$scope.categorias && $scope.tipoReporte == 'reactivosBajos') {
                 cargarCategorias();
-            }else if ($scope.tipoReporte == 'cristaleriaBaja'){
-                $scope.verActivosBajos({},'Cristaleria');
+            } else if ($scope.tipoReporte == 'cristaleriaBaja') {
+                $scope.verActivosBajos({}, 'Cristaleria');
             }
-        },100);
+        }, 100);
+
+        function cargarLista(lista, tipoActivo) {
+            $rootScope.solicitudHttp(rootHost + "API/VerLista" + tipoActivo + ".php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                if (lista == 0) {
+                    $scope.listaReactivos = listaDatos;
+                    cargarListaNegra(lista);
+                } else if (lista == 1) {
+                    $scope.listaCristaleria = listaDatos;
+                    cargarListaNegra(lista);
+                }
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        function cargarListaNegra(modo) {
+            obj = {
+                UsuarioID: 7
+            }
+            $rootScope.solicitudHttp(rootHost + "API/VerListaNegraDeUsuario.php", obj, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.listaNegra = listaDatos;
+                if (modo == 0) {
+                    $scope.listaReactivos.forEach(function (reactivo) {
+                        reactivo.enListaNegra = 0;
+                        $scope.listaNegra.forEach(function (activoNegro) {
+                            if (reactivo.ArticuloID == activoNegro.ArticuloID) {
+                                reactivo.enListaNegra = 1;
+                            }
+                        });
+                    });
+                } else if (modo == 1) {
+                    $scope.listaCristaleria.forEach(function (e) {
+                        e.enListaNegra = 0
+                        $scope.listaNegra.forEach(function (n) {
+                            if (e.ArticuloID == n.ArticuloID) {
+                                e.enListaNegra = 1;
+                                e.ListaNegraID = n.ListaNegraID;
+                            }
+                        });
+                    });
+                }
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        setTimeout(function () {
+            if (!$scope.listaReactivos && $scope.tipoLista == 'reactivos') {
+                $scope.listaReactivos = [];
+                cargarLista(0, 'Reactivos');
+            };
+            if (!$scope.listaCristaleria && $scope.tipoLista == 'cristaleria') {
+                $scope.listaCristaleria = [];
+                cargarLista(1, 'Cristaleria');
+            };
+        }, 100);
+
+        $scope.agregarAListaNegra = function (a) {
+            if (a.enListaNegra != 1) {
+                log("Metiendo a lista Negra");
+
+                obj = {
+                    UsuarioID: $rootScope.idUsuarioActivo,
+                    ArticuloID: a.ArticuloID
+                };
+                $rootScope.solicitudHttp(rootHost + "API/AgregarArticuloAListaNegra.php", obj, function () {
+                    $rootScope.agregarAlerta("Error Desconocido");
+                }, function (listaDatos) {
+                    log(listaDatos);
+                    a.enListaNegra = 1;
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+                log(a);
+            }
+
+        };
+        $scope.removerDeListaNegra = function (a) {
+            if (a.enListaNegra != 0) {
+                log("Sacando de Lista Negra ");
+
+                obj = {
+                    ListaNegraID: a.ListaNegraID
+                };
+                $rootScope.solicitudHttp(rootHost + "API/EliminarArticuloListaNegra", obj, function () {
+                    $rootScope.agregarAlerta("Error Desconocido");
+                }, function (listaDatos) {
+                    log(listaDatos);
+                    a.enListaNegra = 0;
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+
+                log(a);
+            }
+        };
     }
 });
 
@@ -609,18 +703,18 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
     } else {
         $scope.filtroPrecursores = false;
 
-        $scope.filtrarPrecursores = function(){
-            if($scope.filtroPrecursores){
+        $scope.filtrarPrecursores = function () {
+            if ($scope.filtroPrecursores) {
                 $scope.filtroPrecursores = false;
                 $scope.selectClass = '';
-            }else{
+            } else {
                 $scope.filtroPrecursores = true;
                 $scope.selectClass = 'selectClass';
             }
         };
 
-        $scope.filtrarSegunPrecursor = function(r){
-            if(r.EsPrecursor == 0 & $scope.filtroPrecursores){
+        $scope.filtrarSegunPrecursor = function (r) {
+            if (r.EsPrecursor == 0 & $scope.filtroPrecursores) {
                 return true;
             }
             return false;

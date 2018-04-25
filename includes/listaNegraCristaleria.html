@@ -2,14 +2,14 @@
 <ul class="ulMenu">
     <!--
     <li class="liMenu dropdown">
-        <a href="#!reporteMovReactivos" class="aMenu dropbtn">Reportes de Reactivos</a>
+        <a href="#!reporteMovReactivos" class="aMenu activeMenu dropbtn">Reportes de Reactivos</a>
         <div class="dropdown-contentMenu">
             <a href="#!reporteMovReactivos">Ver Movimientos</a>
             <a href="#!reporteReactBajos">Ver Bajos del Mínimo</a>
         </div>
     </li>
     <li class="liMenu dropdown">
-        <a href="#!reporteMovCristaleria" class="aMenu activeMenu dropbtn">Reportes de Cristalería</a>
+        <a href="#!reporteMovCristaleria" class="aMenu dropbtn">Reportes de Cristalería</a>
         <div class="dropdown-contentMenu">
             <a href="#!reporteMovCristaleria">Ver Movimientos</a>
             <a href="#!reporteCristBaja">Ver Bajos del Mínimo</a>
@@ -20,17 +20,17 @@
         <a href="#!alertaReactBajos" class="aMenu">Reactivos debajo del mínimo</a>
     </li>
     <li class="liMenu">
-        <a href="#!alertaCristBaja" class="aMenu activeMenu">Cristalería debajo del mínimo</a>
+        <a href="#!alertaCristBaja" class="aMenu">Cristalería debajo del mínimo</a>
     </li>
     <li class="liMenu dropdown">
-        <a href="#!listaNegraReactivos" class="aMenu dropbtn">Lista Negra</a>
+        <a href="#!listaNegraReactivos" class="aMenu dropbtn activeMenu">Lista Negra</a>
         <div class="dropdown-contentMenu">
             <a href="#!listaNegraReactivos">Reactivos</a>
-            <a href="#!listaNegraCristaleria">Cristalería</a>
+            <a href="#!listaNegraCristaleria" class="activeSubMenu" >Cristalería</a>
         </div>
     </li>
 </ul>
-<h2>Reporte de Cristalería por Debajo del Punto de Re-Orden</h2>
+<h2>Lista Personalizada de Notificaciones de Cristalería</h2>
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
@@ -38,23 +38,34 @@
         <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
     </div>
     <div>
-        <button class="h100pc fullPaddingIzqDer" ng-click="verActivosBajos({})" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+        <button class="h100pc fullPaddingIzqDer" ng-click="verActivosBajos(obj)" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
     </div>
 </div>
 
-<table class="tbLista" ng-init="tipoReporte='cristaleriaBaja'">
+<table class="tbLista" ng-init="tipoLista='cristaleria'">
     <tr class="aCentro">
         <th>Nombre</th>
         <th>Descripción</th>
-        <th>Ubicación</th>
         <th>Cant Actual</th>
         <th>Cant de Alerta</th>
+        <th>Ver Notificaciones</th>
     </tr>
-    <tr class="aCentro" ng-repeat="c in listaActivosBajos | filter:filtroCristaleria">
+    <tr class="aCentro" ng-repeat="c in listaCristaleria | filter:filtroReactivos">
         <td>{{c.NombreArticulo}}</td>
         <td class="mW200px">{{c.Descripcion}}</td>
-        <td>{{c.Ubicacion}}</td>
         <td>{{c.CantidadActual}}</td>
         <td> {{c.PuntoReorden}}</td>
+        <td>
+            <div class="flex jcCenter">
+                <label class="checkContainer noPointer">
+                    <input type="checkbox" ng-checked="c.enListaNegra==0" >
+                    <span class="checkmark checkBoxSiNo">SÍ</span>
+                </label>
+                <label class="checkContainer noPointer marginL30">
+                    <input type="checkbox" ng-checked="c.enListaNegra==1" >
+                    <span class="checkmark checkBoxSiNo" >NO</span>
+                </label>
+            </div>
+        </td>
     </tr>
 </table>

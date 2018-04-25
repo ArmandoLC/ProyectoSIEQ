@@ -17,40 +17,20 @@
     </li>
 -->
     <li class="liMenu">
-        <a href="#!alertaReactBajos" class="aMenu activeMenu">Reactivos debajo del mínimo</a>
+        <a href="#!alertaReactBajos" class="aMenu">Reactivos debajo del mínimo</a>
     </li>
     <li class="liMenu">
         <a href="#!alertaCristBaja" class="aMenu">Cristalería debajo del mínimo</a>
     </li>
     <li class="liMenu dropdown">
-        <a href="#!listaNegraReactivos" class="aMenu dropbtn">Lista Negra</a>
+        <a href="#!listaNegraReactivos" class="aMenu dropbtn activeMenu">Lista Negra</a>
         <div class="dropdown-contentMenu">
-            <a href="#!listaNegraReactivos">Reactivos</a>
+            <a href="#!listaNegraReactivos" class="activeSubMenu">Reactivos</a>
             <a href="#!listaNegraCristaleria">Cristalería</a>
         </div>
     </li>
 </ul>
-<h2>Reporte de Reactivos por Debajo del Punto de Re-Orden</h2>
-
-<div class="flex" ng-init="obj = {};">
-    <div style="flex-grow: 1">
-        <table style="display: inline">
-            <form ng-submit="buscarReporteReactivos(opcion)">
-                <tr>
-                    <td>Categoría</td>
-                    <td>
-                        <select class="w100pc" ng-model="obj.CategoriaID" ng-init="obj.CategoriaID = categorias[0].CategoriaReactivoID" ng-options="c.CategoriaReactivoID as c.Nombre for c in categorias"></select>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button class="w100pc" ng-click="verReactivosBajos(obj)">Buscar</button>
-                    </td>
-                </tr>
-            </form>
-        </table>
-    </div>
-</div>
+<h2>Lista Personalizada de Notificaciones de Reactivos</h2>
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
@@ -62,28 +42,45 @@
     </div>
 </div>
 
-<table class="tbLista" ng-init="tipoReporte='reactivosBajos'">
-   <tr class="aCentro">
+<table class="tbLista" ng-init="tipoLista='reactivos'">
+    <tr class="aCentro">
         <th>Nombre</th>
         <th>Descripción</th>
-        <th>Ubicación</th>
+        <th>Categoría</th>
         <th>Cant Actual</th>
         <th>Cant de Alerta</th>
-        <th>Hoja de Seguridad</th>
         <th>¿Es Precursor?</th>
+        <th>Ver Notificaciones</th>
     </tr>
-    <tr class="aCentro" ng-repeat="r in listaActivosBajos | filter:filtroReactivos">
+    <tr class="aCentro" ng-repeat="r in listaReactivos | filter:filtroReactivos">
         <td>{{r.nombreReactivo}}</td>
         <td class="mW200px">{{r.Descripcion}}</td>
-        <td>{{r.Ubicacion}}</td>
+        <td>{{r.NombreCategoria}}</td>
         <td>{{r.CantidadActual}} {{r.Siglas}}</td>
         <td> {{r.PuntoReorden}} {{r.Siglas}} </td>
-        <td><a href={{r.URLHojaSeguridad}} target="_blank">Link</a></td>
         <td>
             <label class="checkContainer noPointer">
                 <input type="checkbox" ng-checked="r.EsPrecursor==1" disabled>
                 <span class="checkmark"></span>
             </label>
+        </td>
+        <td>
+           <div class="flex jcCenter">
+               <div class="yesNoButton" ng-class="!r.enListaNegra?'fondoActivo':''" ng-click="removerDeListaNegra(r)" ><span>SÍ</span></div>
+               <div class="yesNoButton" ng-class="r.enListaNegra?'fondoActivo':''" ng-click="agregarAListaNegra(r)"><span>NO</span></div>
+           </div>
+            <!--
+            <div class="flex jcCenter">
+                <label class="checkContainer noPointer">
+                    <input type="checkbox" ng-checked="r.enListaNegra==false" ng-model="r.enListaNegra" ng-click="removerDeListaNegra(r)" ng-disabled="r.enListaNegra==0">
+                    <span class="checkmark checkBoxSiNo">SÍ</span>
+                </label>
+                <label class="checkContainer noPointer marginL30">
+                    <input type="checkbox" ng-checked="r.enListaNegra==true" ng-model="r.enListaNegra" ng-click="agregarAListaNegra(r)" ng-disabled="r.enListaNegra==1">
+                    <span class="checkmark checkBoxSiNo" >NO</span>
+                </label>
+            </div>
+-->
         </td>
     </tr>
 </table>

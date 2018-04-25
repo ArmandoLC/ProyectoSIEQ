@@ -21,6 +21,12 @@ app.config(function ($routeProvider) {
     }).when("/alertaCristBaja",{
         templateUrl: "includes/alertaCristBaja.html",
         controller: "alertas"
+    }).when("/listaNegraReactivos",{
+        templateUrl: "includes/listaNegraReactivos.html",
+        controller: "alertas"
+    }).when("/listaNegraCristaleria",{
+        templateUrl: "includes/listaNegraCristaleria.html",
+        controller: "alertas"
     }).when("/reportePrestamos",{
         templateUrl: "includes/reportePrestamos.html",
         controller: "reportes"
