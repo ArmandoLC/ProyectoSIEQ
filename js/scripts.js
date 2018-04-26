@@ -875,6 +875,12 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
                 }, function (listaDatos) {
                     $scope.listaMovimientosCristaleria = listaDatos;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            } else if($scope.tipoReporte == 'movPrecursores'){
+                $rootScope.solicitudHttp(rootHost + "API/VerMovimientosPrecursores.php", objReporteParam, function () {
+                    $rootScope.agregarAlerta("Consulta fallida al cargar movimientos");
+                }, function (listaDatos) {
+                    $scope.listaMovimientosPrecursores = listaDatos;
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
             }
 
         }
