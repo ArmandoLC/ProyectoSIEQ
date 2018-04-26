@@ -18,4 +18,78 @@
 <h2>Reporte de Precursores</h2>
 <br>
 
-Loading-...
+<div class="flex" ng-init="objReporteParam = {}; tipoReporte = 'movPrecursores'">
+    <div style="flex-grow: 1">
+        <table style="display: inline">
+            <form>
+                <tr>
+                    <td>Consultar:</td>
+                    <td>
+                        <select ng-model="opcion" ng-init="opcion = opciones[5]" ng-options="opcion as opcion.nombre for opcion in opciones"></select>
+                    </td>
+                </tr>
+                <tr ng-show="opcion.seleccionarFecha">
+                    <td>Fecha Inicial:</td>
+                    <td>
+                        <input ng-model="objReporteParam.FechaDesde" type="date"> </td>
+                </tr>
+                <tr ng-show="opcion.seleccionarFecha">
+                    <td>Fecha Final:</td>
+                    <td>
+                        <input ng-model="objReporteParam.FechaHasta" type="date"> </td>
+                </tr>
+                <tr ng-show="opcion.seleccionarCantidad">
+                    <td>Cantidad:</td>
+                    <td>
+                        <input ng-model="objReporteParam.cantidad" type="number"> </td>
+                </tr>
+                <tr>
+                    <td>Categoría</td>
+                    <td>
+                        <select class="w100pc" ng-model="objReporteParam.CategoriaID" ng-init="objReporteParam.CategoriaID = categorias[0].CategoriaReactivoID" ng-options="c.CategoriaReactivoID as c.Nombre for c in categorias"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button class="w100pc" ng-click="buscarReporte(opcion,tipoReporte)">Buscar</button>
+                    </td>
+                </tr>
+            </form>
+        </table>
+
+    </div>
+</div>
+
+<div style="display: flex; justify-content: space-between; padding: 10px 0px">
+    <div class="flex">
+        <input class="fullMargin" type="text" ng-model="filtroMovPrec" placeholder="Buscar" id="txtBusqueda">
+        <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
+    </div>
+</div>
+<table class="tbLista">
+    <tr class="aCentro">
+        <th>Reactivo</th>
+        <th>Tipo de Movimiento</th>
+        <th>Antes</th>
+        <th>Después</th>
+        <th>Movido</th>
+        <th>Categoría</th>
+        <th>Fecha</th>
+        <th>Destino</th>
+        <th>Observaciones</th>
+        <th>Firma</th>
+    </tr>
+    <tr class="aCentro" ng-repeat="movimiento in listaMovimientosPrecursores | filter:filtroMovPrec">
+        <td>{{movimiento.Reactivo}}</td>
+        <td class="mW200px">{{movimiento["Tipo de Movimiento"]}}</td>
+        <td>{{movimiento.Antes}}</td>
+        <td>{{movimiento.Despues}}</td>
+        <td>{{movimiento.Movido}}</td>
+        <td>{{movimiento.Categoria}}</td>
+        <td>{{movimiento.Fecha}}</td>
+        <td>{{movimiento.Destino}}</td>
+        <td>{{movimiento.Observaciones}}</td>
+        <td>{{movimiento.Firma}}</td>
+    </tr>
+</table>
+
