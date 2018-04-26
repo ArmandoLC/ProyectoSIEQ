@@ -1,10 +1,11 @@
 <h1>Administración de Pedidos</h1>
 <ul class="ulMenu">
   <li class="liMenu"><a class="activeMenu aMenu" href="#!adminPedidos">Gestionar Pedidos</a></li>
-  <li class="liMenu"><a class="aMenu" href="#!verProductosSugeridos">Productos Sugeridos</a></li>
 </ul>
 <br>
-
+<h2>Gestión de Pedidos</h2>
+<br>
+<hr>
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
         <input class="fullMargin" type="text" ng-model="filtroBusqueda" placeholder="Buscar" id="txtBusqueda">
@@ -19,12 +20,14 @@
 <table class="tbLista">
     <tr class="aCentro">
         <th>Titulo</th>
-        <th>Descripción</th>
+        <th>Líneas Registradas</th>
+        <th>Propietario</th>
         <th>Opciones</th>
     </tr>
     <tr class="aCentro" ng-repeat="pedido in listaPedidos | filter:filtroBusqueda" ng-hide="filtrarSegunPropietario(pedido)">
         <td>{{pedido.Titulo}}</td>
-        <td class="mW200px">{{pedido.Descripcion}}</td>
+        <td>{{pedido.CantidadLineas}}</td>
+        <td>{{pedido.NombrePropietario}}</td>
         <td>
             <div class="flex noWrap jcCenter">
                 <i class="fa fa-pencil" ng-click="editarPedido(pedido)" title="Editar"></i>

@@ -122,6 +122,174 @@ app.controller("reportePrecursores", function ($scope, $rootScope, $location, $h
 });
 
 
+/* EDITARPEDIDO CONTROLLER */
+app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = "login.html";
+    } else {
+        log("editarPedidos");
+        var urlParams = $location.search();
+        $scope.listaArticulos= [];
+        $scope.listaActivos = [];
+        $scope.popupAgregarArticulo = false;
+        $scope.activoSeleccionado = {};
+        $scope.activoXAgregar = {};
+
+        $scope.pedidoID = urlParams.PedidoID;
+        $scope.tituloPedido = urlParams.Titulo;
+        $scope.descripcionPedido = urlParams.Descripcion;
+
+        $scope.cargarArticulosPedido = function(){
+            var obj = {'PedidoID': $scope.pedidoID};
+            log("Cargando Articulos del pedido");
+            log(obj);
+
+            $rootScope.solicitudHttp(rootHost + "API/VerArticulosDelPedido.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida, se esperaba una lista de articulos");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("Pedido sin artículos");
+                } else {
+                    log("Artículos consultados con éxito");
+                    $scope.listaArticulos = listaDatos;
+                    $rootScope.agregarAlerta("Artículos consultados con éxito");
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+        };
+
+        $scope.cargarActivos = function(){
+
+            $rootScope.solicitudHttp(rootHost + "API/VerListaArticulos.php", {}, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida, se esperaba una lista de activos");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("No existen Activos");
+                } else {
+                    log("Activos consultados con éxito");
+                    $scope.listaActivos = listaDatos;
+                    $rootScope.agregarAlerta("Activos consultados con éxito");
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+        };
+
+
+        $scope.mostrarPanelAgregarArticulo = function(){
+            $scope.cargarActivos();
+
+            $scope.activoSeleccionado = {};
+            $scope.activoXAgregar = {};
+            $scope.popupAgregarArticulo = true;
+        };
+
+        $scope.seleccionarActivo = function(activo){
+            $scope.activoSeleccionado = activo;
+            $scope.activoXAgregar = {
+                "PedidoID": $scope.pedidoID,
+                "ArticuloID": activo.ArticuloID,
+            };
+
+        };
+
+        $scope.agregarArticuloPedido = function(obj){
+            log(obj);
+            log($scope.activoXAgregar);
+
+            if($scope.activoXAgregar.ArticuloID == undefined){
+                $rootScope.agregarAlerta("Seleccione un artículo");
+            }else{
+                obj.PedidoID = $scope.activoXAgregar.PedidoID;
+                obj.ArticuloID = $scope.activoXAgregar.ArticuloID;
+
+                log("Agregando artículo");
+                log(obj);
+
+                $rootScope.solicitudHttp(rootHost + "API/AgregarArticuloAPedido.php", obj, function () {
+                    $rootScope.agregarAlerta("Respuesta desconocida");
+                }, function (listaDatos) {
+                    if (listaDatos.length == 0) {
+                        $rootScope.agregarAlerta("Lista vacía");
+                    } else {
+                        $rootScope.agregarAlerta("Artículo agregado con éxito");
+
+                        $scope.cargarArticulosPedido();
+                        $scope.activoSeleccionado = {};
+                        $scope.activoAgregar = {};
+                        $scope.activoXAgregar = {};
+                    }
+                }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            }
+        };
+
+        $scope.preBorrarArticulo = function (articulo) {
+            $scope.panelPregunta = true;
+            $scope.mensaje = "¿Está seguro que desea borrar el artículo: '" + articulo.Articulo + "'?"
+            $scope.articuloABorrar = {
+                ArticuloPedidoID : articulo.ArticuloPedidoID
+            }
+        };
+
+        $scope.borrarArticulo = function () {
+            $rootScope.solicitudHttp(rootHost + "API/EliminarArticuloDelPedido.php", $scope.articuloABorrar, function () {
+                $rootScope.agregarAlerta("No se ha podido borrar el artículo");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha eliminado el artículo");
+                $scope.cargarArticulosPedido();
+                $scope.panelPregunta = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        $scope.verArticulo = function(articulo){
+            var obj = {
+                "ArticuloPedidoID": articulo.ArticuloPedidoID
+            };
+            log(obj);
+
+            $rootScope.solicitudHttp(rootHost + "API/VerArticuloDelPedido.php", obj , function () {
+                $rootScope.agregarAlerta("No se ha podido consultar el artículo");
+            }, function (listaDatos) {
+                log("Artículo consultado con éxito");
+                $scope.articuloVisualizado = listaDatos[0];
+
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+            $scope.popupVerArticulo = true;
+        };
+
+        $scope.preActualizarArticulo = function(articulo){
+            log("Actualizando Articulo");
+            $scope.articuloXActualizar = articulo;
+            log($scope.articuloXActualizar);
+            $scope.popupActualizarArticulo = true;
+        };
+
+        $scope.actualizarArticulo = function(articuloActualizado){
+            log(articuloActualizado);
+
+            $rootScope.solicitudHttp(rootHost + "API/ActualizarArticuloDelPedido.php", articuloActualizado, function () {
+                    $rootScope.agregarAlerta("Respuesta desconocida");
+                }, function (listaDatos) {
+                    if (listaDatos.length == 0) {
+                        $rootScope.agregarAlerta("Lista vacía");
+                    } else {
+                        $rootScope.agregarAlerta("Artículo actualizado con éxito");
+
+                        $scope.cargarArticulosPedido();
+                        $scope.popupActualizarArticulo = false;
+
+                    }
+                }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        if($scope.listaArticulos.length == 0){
+            $scope.cargarArticulosPedido();
+        };
+
+    }
+});
+
+
 /* ADMINPEDIDOS CONTROLLER */
 app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
@@ -144,21 +312,19 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
         };
 
         $scope.filtrarSegunPropietario = function (pedido) {
-            if (pedido.IDPropietario != $rootScope.idUsuarioActivo & $scope.filtroPedido) {
+            if (pedido.PropietarioID != $rootScope.idUsuarioActivo & $scope.filtroPedido) {
                 return true;
             }
             return false;
         };
 
         $scope.cargarListaPedidos = function(){
-            var obj = {};
-            obj.UsuarioID = $rootScope.idUsuarioActivo;
 
-            $rootScope.solicitudHttp(rootHost + "API/VerPedidosDeUsuario.php", obj, function () {
+            $rootScope.solicitudHttp(rootHost + "API/VerPedidos.php", {}, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida, se esperaba una lista de pedidos");
             }, function (listaDatos) {
                 if (listaDatos.length == 0) {
-                    $rootScope.agregarAlerta("No se encontraron pedidos personales");
+                    $rootScope.agregarAlerta("No se encontraron pedidos");
                 } else {
                     log("Pedidos consultados con éxito");
                     $scope.listaPedidos = listaDatos;
@@ -182,7 +348,15 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-         $scope.preBorrarPedido = function (pedido) {
+        $scope.editarPedido = function (pedido) {
+            log("Editando el pedido");
+            log(pedido);
+
+            $location.path("editarPedidos").search(pedido);
+
+        };
+
+        $scope.preBorrarPedido = function (pedido) {
             $scope.panelPregunta = true;
             $scope.mensaje = "¿Está seguro que desea borrar el pedido: '" + pedido.Titulo + "'?"
             $scope.pedidoABorrar = {
@@ -202,7 +376,6 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
 
         $scope.mostrarPanelCrearPedido = function(){
             $scope.popupCrearPedido = true;
-            log("Listo el popup");
         };
 
         if ($scope.listaPedidos.length == 0) {

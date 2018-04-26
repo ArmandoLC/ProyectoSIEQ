@@ -1,5 +1,14 @@
 /* Popups*/
 
+.table_outer {
+    max-height: 15em;
+    overflow: auto;
+}
+
+.readonlyStyle{
+    background: #eee;
+}
+
 .popup {
     position: fixed;
     top: 0;
