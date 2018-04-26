@@ -135,7 +135,7 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
     } else {
         log("editarPedidos");
         var urlParams = $location.search();
-        $scope.listaArticulos= [];
+        $scope.listaArticulos = [];
         $scope.listaActivos = [];
         $scope.popupAgregarArticulo = false;
         $scope.activoSeleccionado = {};
@@ -145,8 +145,10 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
         $scope.tituloPedido = urlParams.Titulo;
         $scope.descripcionPedido = urlParams.Descripcion;
 
-        $scope.cargarArticulosPedido = function(){
-            var obj = {'PedidoID': $scope.pedidoID};
+        $scope.cargarArticulosPedido = function () {
+            var obj = {
+                'PedidoID': $scope.pedidoID
+            };
             log("Cargando Articulos del pedido");
             log(obj);
 
@@ -164,7 +166,7 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
 
         };
 
-        $scope.cargarActivos = function(){
+        $scope.cargarActivos = function () {
 
             $rootScope.solicitudHttp(rootHost + "API/VerListaArticulos.php", {}, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida, se esperaba una lista de activos");
@@ -181,7 +183,7 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
         };
 
 
-        $scope.mostrarPanelAgregarArticulo = function(){
+        $scope.mostrarPanelAgregarArticulo = function () {
             $scope.cargarActivos();
 
             $scope.activoSeleccionado = {};
@@ -189,7 +191,7 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
             $scope.popupAgregarArticulo = true;
         };
 
-        $scope.seleccionarActivo = function(activo){
+        $scope.seleccionarActivo = function (activo) {
             $scope.activoSeleccionado = activo;
             $scope.activoXAgregar = {
                 "PedidoID": $scope.pedidoID,
@@ -198,13 +200,13 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
 
         };
 
-        $scope.agregarArticuloPedido = function(obj){
+        $scope.agregarArticuloPedido = function (obj) {
             log(obj);
             log($scope.activoXAgregar);
 
-            if($scope.activoXAgregar.ArticuloID == undefined){
+            if ($scope.activoXAgregar.ArticuloID == undefined) {
                 $rootScope.agregarAlerta("Seleccione un artículo");
-            }else{
+            } else {
                 obj.PedidoID = $scope.activoXAgregar.PedidoID;
                 obj.ArticuloID = $scope.activoXAgregar.ArticuloID;
 
@@ -232,7 +234,7 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
             $scope.panelPregunta = true;
             $scope.mensaje = "¿Está seguro que desea borrar el artículo: '" + articulo.Articulo + "'?"
             $scope.articuloABorrar = {
-                ArticuloPedidoID : articulo.ArticuloPedidoID
+                ArticuloPedidoID: articulo.ArticuloPedidoID
             }
         };
 
@@ -246,13 +248,13 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        $scope.verArticulo = function(articulo){
+        $scope.verArticulo = function (articulo) {
             var obj = {
                 "ArticuloPedidoID": articulo.ArticuloPedidoID
             };
             log(obj);
 
-            $rootScope.solicitudHttp(rootHost + "API/VerArticuloDelPedido.php", obj , function () {
+            $rootScope.solicitudHttp(rootHost + "API/VerArticuloDelPedido.php", obj, function () {
                 $rootScope.agregarAlerta("No se ha podido consultar el artículo");
             }, function (listaDatos) {
                 log("Artículo consultado con éxito");
@@ -263,32 +265,32 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
             $scope.popupVerArticulo = true;
         };
 
-        $scope.preActualizarArticulo = function(articulo){
+        $scope.preActualizarArticulo = function (articulo) {
             log("Actualizando Articulo");
             $scope.articuloXActualizar = articulo;
             log($scope.articuloXActualizar);
             $scope.popupActualizarArticulo = true;
         };
 
-        $scope.actualizarArticulo = function(articuloActualizado){
+        $scope.actualizarArticulo = function (articuloActualizado) {
             log(articuloActualizado);
 
             $rootScope.solicitudHttp(rootHost + "API/ActualizarArticuloDelPedido.php", articuloActualizado, function () {
-                    $rootScope.agregarAlerta("Respuesta desconocida");
-                }, function (listaDatos) {
-                    if (listaDatos.length == 0) {
-                        $rootScope.agregarAlerta("Lista vacía");
-                    } else {
-                        $rootScope.agregarAlerta("Artículo actualizado con éxito");
+                $rootScope.agregarAlerta("Respuesta desconocida");
+            }, function (listaDatos) {
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("Lista vacía");
+                } else {
+                    $rootScope.agregarAlerta("Artículo actualizado con éxito");
 
-                        $scope.cargarArticulosPedido();
-                        $scope.popupActualizarArticulo = false;
+                    $scope.cargarArticulosPedido();
+                    $scope.popupActualizarArticulo = false;
 
-                    }
-                }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        if($scope.listaArticulos.length == 0){
+        if ($scope.listaArticulos.length == 0) {
             $scope.cargarArticulosPedido();
         };
 
@@ -324,7 +326,7 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
             return false;
         };
 
-        $scope.cargarListaPedidos = function(){
+        $scope.cargarListaPedidos = function () {
 
             $rootScope.solicitudHttp(rootHost + "API/VerPedidos.php", {}, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida, se esperaba una lista de pedidos");
@@ -339,7 +341,7 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        $scope.agregarPedido = function(obj){
+        $scope.agregarPedido = function (obj) {
             obj.UsuarioID = $rootScope.idUsuarioActivo;
 
             log("Agregando pedido");
@@ -380,7 +382,7 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        $scope.mostrarPanelCrearPedido = function(){
+        $scope.mostrarPanelCrearPedido = function () {
             $scope.popupCrearPedido = true;
         };
 
@@ -580,7 +582,14 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             }
         };
 
-        $scope.aprobarPrestamo
+        $scope.aprobarPrestamo(p) {
+            $rootScope.solicitudHttp(rootHost + "API/AgregarPrestamo.php", p, function () {
+                $rootScope.agregarAlerta("No se ha podido aprobar el préstamo");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha aprobado el préstamo");
+                $scope.cargarlistaPrestamos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
 
         function limpiarCamposPrestamo() {
             $scope.objNuevoPrestamo = {
