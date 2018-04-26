@@ -582,11 +582,56 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             }
         };
 
-        $scope.aprobarPrestamo = function(p) {
-            $rootScope.solicitudHttp(rootHost + "API/AgregarPrestamo.php", p, function () {
+        $scope.aprobarPrestamo = function (p) {
+            obj = {
+                UsuarioAutorizadorID: $rootScope.idUsuarioActivo,
+                PrestamoID: p.PrestamoID,
+                Comentario: ''
+            };
+            $rootScope.solicitudHttp(rootHost + "API/AprobarPrestamo.php", obj, function () {
                 $rootScope.agregarAlerta("No se ha podido aprobar el préstamo");
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha aprobado el préstamo");
+                $scope.cargarlistaPrestamos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+        $scope.despacharPrestamo = function (p) {
+            obj = {
+                UsuarioAutorizadorID: $rootScope.idUsuarioActivo,
+                PrestamoID: p.PrestamoID,
+                Comentario: ''
+            };
+            $rootScope.solicitudHttp(rootHost + "API/DespacharPrestamo.php", obj, function () {
+                $rootScope.agregarAlerta("No se ha podido despachar el préstamo, revise que hayan suficientes existencias en el inventario");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha despachado el préstamo");
+                $scope.cargarlistaPrestamos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+        $scope.rechazarPrestamo = function (p) {
+            obj = {
+                UsuarioAutorizadorID: $rootScope.idUsuarioActivo,
+                PrestamoID: p.PrestamoID,
+                Comentario: ''
+            };
+            $rootScope.solicitudHttp(rootHost + "API/RechazarPrestamo.php", obj, function () {
+                $rootScope.agregarAlerta("No se ha podido rechazado el préstamo");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha rechazado el préstamo");
+                $scope.cargarlistaPrestamos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+        $scope.devolverPrestamo = function (p) {
+            obj = {
+                UsuarioAutorizadorID: $rootScope.idUsuarioActivo,
+                PrestamoID: p.PrestamoID,
+                Comentario: '',
+                CantidadDevuelta: p.CantidadSolicitada
+            };
+            $rootScope.solicitudHttp(rootHost + "API/DevolverPrestamo.php", obj, function () {
+                $rootScope.agregarAlerta("No se ha podido devolver el préstamo");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha registrado la devolución del préstamo");
                 $scope.cargarlistaPrestamos();
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }

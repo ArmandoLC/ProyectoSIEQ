@@ -37,15 +37,15 @@
         <td> {{p.FechaAutorizacion}}</td>
         <td>{{p.Estado}}</td>
         <td>
-            <div  ng-show="p.Estado=='Pendiente'" class="flex noWrap jcCenter">
-                <i class="fa fa-check button" ng-click="aprobarPrestamo(c)" title="Aprobar"></i>
-                <i class="fa fa-ban button" title="Rechazar"></i>
+            <div ng-show="p.Estado=='Pendiente'" class="flex noWrap jcCenter">
+                <i class="fa fa-check button" ng-click="aprobarPrestamo(p)" title="Aprobar"></i>
+                <i class="fa fa-ban button" ng-click="rechazarPrestamo(p)" title="Rechazar"></i>
             </div>
-            <div ng-show="p.Estado=='Aprobado'" class="flex noWrap jcCenter aiCenter button">Despachar
-                <i class="fa fa-sign-out" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            <div ng-click="despacharPrestamo(p)" ng-show="p.Estado=='Aprobado'" class="flex noWrap jcCenter aiCenter button">Despachar
+                <i class="fa fa-sign-out" title="Despachar Activo"></i>
             </div>
-            <div ng-show="p.Estado=='Despachado' || p.Estado=='Tardío'" class="flex noWrap jcCenter aiCenter button">Devolver
-                <i class="fa fa-caret-square-o-left" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
+            <div  ng-click="devolverPrestamo(p)" ng-show="p.Estado=='Despachado' || p.Estado=='Tardío'" class="flex noWrap jcCenter aiCenter button">Devolver
+                <i class="fa fa-caret-square-o-left" title="Devolver"></i>
             </div>
         </td>
     </tr>
