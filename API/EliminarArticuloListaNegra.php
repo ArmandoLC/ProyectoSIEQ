@@ -19,7 +19,7 @@ $ListaNegraID = $obj["ListaNegraID"];
 if($conexion){
     $consulta = "CALL EliminarArticuloListaNegra(
 					".mysqli_real_escape_string($conexion, $ListaNegraID).")";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);
