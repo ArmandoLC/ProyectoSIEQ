@@ -582,7 +582,7 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             }
         };
 
-        $scope.aprobarPrestamo(p) {
+        $scope.aprobarPrestamo = function(p) {
             $rootScope.solicitudHttp(rootHost + "API/AgregarPrestamo.php", p, function () {
                 $rootScope.agregarAlerta("No se ha podido aprobar el préstamo");
             }, function (listaDatos) {
