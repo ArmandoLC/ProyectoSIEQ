@@ -35,6 +35,12 @@ rootHost = "/"
 host = "sieq/";
 rootHost = "https://sieq.000webhostapp.com/"
 */
+
+//hostSieq
+/*
+host = "";
+rootHost = "/"
+*/
 /* LOGIN CONTROLLER */
 app.controller("login", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
@@ -274,7 +280,7 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         $scope.cargarlistaPrestamos = function () {
-            $rootScope.solicitudHttp(rootHost + "API/verListaPrestamos.php", null, function () {
+            $rootScope.solicitudHttp(rootHost + "API/VerPrestamos.php", null, function () {
                 $rootScope.agregarAlerta("Error Desconocido");
             }, function (listaDatos) {
                 $scope.listaPrestamos = listaDatos;
@@ -282,7 +288,7 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
         };
         $scope.elegirActivo = function (a) {
             $scope.objNuevoPrestamo.nombreActivo = (a.nombreReactivo == undefined ? a.NombreArticulo : a.nombreReactivo);
-            $scope.objNuevoPrestamo.idActivo = a.ArticuloID;
+            $scope.objNuevoPrestamo.ArticuloID = a.ArticuloID;
             log($scope.objNuevoPrestamo)
             $scope.panelEscogerActivo = false;
             $scope.filtroActivosPrestamos = '';
@@ -292,14 +298,15 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             focus('idFiltroActivoPrest');
         }
         $scope.solicitarPrestamo = function (prestamo) {
-            if ($scope.objNuevoPrestamo.idActivo == undefined) {
+            prestamo.EstadoPrestamoID = 1;
+            if ($scope.objNuevoPrestamo.ArticuloID == undefined) {
                 $rootScope.agregarAlerta("Seleccione un activo");
-            } else if ($scope.objNuevoPrestamo.fechaLimite == undefined) {
+            } else if ($scope.objNuevoPrestamo.FechaLimiteDevolucion == undefined) {
                 $rootScope.agregarAlerta("Seleccione una fecha");
             } else {
                 prestamo.UsuarioSolicitanteID = $rootScope.idUsuarioActivo;
                 //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
-                $rootScope.solicitudHttp(rootHost + "API/AgregarCristaleria.php", prestamo, function () {
+                $rootScope.solicitudHttp(rootHost + "API/AgregarPrestamo.php", prestamo, function () {
                     $rootScope.agregarAlerta("No se ha podido ingresar el activo de cristalería");
                 }, function (listaDatos) {
                     $rootScope.agregarAlerta("Se ha registrado el préstamo correctamente");
@@ -307,6 +314,8 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
             }
         };
+
+        $scope.aprobarPrestamo
 
         function limpiarCamposPrestamo() {
             $scope.objNuevoPrestamo = {
@@ -317,9 +326,9 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
         if (!$scope.listaActivos) {
             $scope.cargarListaActivos();
         };
-        //        if (!$scope.listaPrestamos) {             // NO hay APi aún
-        //            $scope.cargarlistaPrestamos();
-        //        };
+        if (!$scope.listaPrestamos) { // NO hay APi aún
+            $scope.cargarlistaPrestamos();
+        };
     }
 });
 
@@ -448,10 +457,10 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                     $scope.listaCristaleria = [];
                     cargarLista(1, 'Cristaleria');
                 };
-                if (modo==1 && $scope.tipoLista == 'reactivos') {
+                if (modo == 1 && $scope.tipoLista == 'reactivos') {
                     cargarLista(0, 'Reactivos');
                 }
-                if (modo==1 && $scope.tipoLista == 'cristaleria') {
+                if (modo == 1 && $scope.tipoLista == 'cristaleria') {
                     cargarLista(1, 'Cristaleria');
                 }
             }, 100);
