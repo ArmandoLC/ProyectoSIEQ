@@ -34,7 +34,7 @@ if($conexion){
 					'".mysqli_real_escape_string($conexion, $FechaLimiteDevolucion)."',
 					".mysqli_real_escape_string($conexion, $EstadoPrestamoID).",
 					'".mysqli_real_escape_string($conexion, $Descripcion)."')";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

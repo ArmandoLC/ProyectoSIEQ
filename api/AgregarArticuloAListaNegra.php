@@ -10,15 +10,18 @@ if(!@include("funciones/funciones.php")){
 $conexion = mysqli_connect($host, $user, $pw, $db);
 
 $obj = cargarObjPost();
-$ListaNegraID = $obj["ListaNegraID"];
+$UsuarioID = $obj["UsuarioID"];
+$ArticuloID = $obj["ArticuloID"];
 
 
-// $ListaNegraID = 2;
+// $UsuarioID = 7;
+// $ArticuloID = 31;
 
 
 if($conexion){
-    $consulta = "CALL EliminarArticuloListaNegra(
-					".mysqli_real_escape_string($conexion, $ListaNegraID).")";
+    $consulta = "CALL AgregarArticuloAListaNegra(
+					".mysqli_real_escape_string($conexion, $UsuarioID).",
+					".mysqli_real_escape_string($conexion, $ArticuloID).")";
 					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){

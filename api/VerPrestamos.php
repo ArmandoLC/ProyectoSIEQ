@@ -9,16 +9,9 @@ if(!@include("funciones/funciones.php")){
 
 $conexion = mysqli_connect($host, $user, $pw, $db);
 
-$obj = cargarObjPost();
-$ListaNegraID = $obj["ListaNegraID"];
-
-
-// $ListaNegraID = 2;
-
 
 if($conexion){
-    $consulta = "CALL EliminarArticuloListaNegra(
-					".mysqli_real_escape_string($conexion, $ListaNegraID).")";
+    $consulta = "CALL VerPrestamos()";
 					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){

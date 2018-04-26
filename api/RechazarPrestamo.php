@@ -10,15 +10,21 @@ if(!@include("funciones/funciones.php")){
 $conexion = mysqli_connect($host, $user, $pw, $db);
 
 $obj = cargarObjPost();
-$ListaNegraID = $obj["ListaNegraID"];
+
+$UsuarioAutorizadorID = $obj["UsuarioAutorizadorID"];
+$PrestamoID = $obj["PrestamoID"];
+$Comentario = $obj["Comentario"];
 
 
-// $ListaNegraID = 2;
-
+// $UsuarioAutorizadorID = 12;
+// $PrestamoID = 2;
+// $Comentario = 'No cumpe con los permisos';
 
 if($conexion){
-    $consulta = "CALL EliminarArticuloListaNegra(
-					".mysqli_real_escape_string($conexion, $ListaNegraID).")";
+    $consulta = "CALL RechazarPrestamo(
+					".mysqli_real_escape_string($conexion, $UsuarioAutorizadorID).",
+					".mysqli_real_escape_string($conexion, $PrestamoID).",
+					'".mysqli_real_escape_string($conexion, $Comentario)."')";
 					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
