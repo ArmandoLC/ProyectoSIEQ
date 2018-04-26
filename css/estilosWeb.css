@@ -1,5 +1,14 @@
 /* Popups*/
 
+.table_outer {
+    max-height: 15em;
+    overflow: auto;
+}
+
+.readonlyStyle{
+    background: #eee;
+}
+
 .popup {
     position: fixed;
     top: 0;
@@ -77,14 +86,11 @@ h2 span {
 }
 
 .checkContainer {
-    display: inline-block;
-    position: relative;
+    background: #ff0000;
     margin-left: -20px;
     margin-bottom: 20px;
     cursor: pointer;
-    font-size: 22px;
-    user-select: none;
-    background-color: #ece;
+    color: #fff;
 }
 
 /* Hide the browser's default checkbox */
@@ -99,11 +105,9 @@ h2 span {
 
 .checkmark {
     position: absolute;
-    top: 0;
-    left: 0;
     height: 25px;
     width: 25px;
-    background-color: #e6e6e6;
+    background-color: #c1c1c1;
     border-radius: 5px;
 }
 
@@ -144,6 +148,11 @@ h2 span {
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
 }
+.checkBoxSiNo:after{
+    padding-top: 50px;
+    border: none!important;
+}
+
 
 /*Botones del Pop Up*/
 
@@ -217,6 +226,10 @@ table i {
 
 .h100pc {
     height: 100%
+}
+.h100pc.selectClass{
+    background-color: #140e39;
+    color: #fff;
 }
 
 .fullPaddingIzqDer {

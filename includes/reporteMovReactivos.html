@@ -1,5 +1,6 @@
 <h1>Reportes Del Sistema</h1>
 <ul class="ulMenu">
+    <!--
     <li class="liMenu dropdown">
         <a href="#!reporteMovReactivos" class="aMenu activeMenu dropbtn">Reportes de Reactivos</a>
         <div class="dropdown-contentMenu">
@@ -14,20 +15,30 @@
             <a href="#!reporteCristBaja">Ver Bajos del Mínimo</a>
         </div>
     </li>
-    <li class="liMenu dropdown">
+-->
+    <li class="liMenu">
+        <a href="#!reporteMovReactivos" class="aMenu activeMenu">Reportes de Reactivos</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!reporteMovCristaleria" class="aMenu">Reportes de Cristalería</a>
+    </li>
+    <li class="liMenu">
         <a href="#!reportePrestamos" class="aMenu dropbtn">Reportes de Préstamos</a>
     </li>
+    <li class="liMenu">
+        <a href="#!reportePrecursores" class="aMenu">Reportes de Precursores</a>
+    </li>
 </ul>
-<h2>Reporte de movimientos en reactivos</h2>
+<h2>Reporte de Movimientos en Reactivos</h2>
 <br>
 <div class="flex" ng-init="objReporteParam = {}; tipoReporte = 'movReact'">
     <div style="flex-grow: 1">
         <table style="display: inline">
-            <form ng-submit="buscarReporteReactivos(opcion)">
+            <form>
                 <tr>
                     <td>Consultar:</td>
                     <td>
-                        <select ng-model="opcion" ng-init="opcion = opciones[0]" ng-options="opcion as opcion.nombre for opcion in opciones"></select>
+                        <select ng-model="opcion" ng-init="opcion = opciones[5]" ng-options="opcion as opcion.nombre for opcion in opciones"></select>
                     </td>
                 </tr>
                 <tr ng-show="opcion.seleccionarFecha">

@@ -1,0 +1,67 @@
+<h1>Administración de Pedidos</h1>
+<ul class="ulMenu">
+  <li class="liMenu"><a class="activeMenu aMenu" href="#!adminPedidos">Gestionar Pedidos</a></li>
+</ul>
+<br>
+<h2>Gestión de Pedidos</h2>
+<br>
+<hr>
+<div style="display: flex; justify-content: space-between; padding: 10px 0px">
+    <div class="flex">
+        <input class="fullMargin" type="text" ng-model="filtroBusqueda" placeholder="Buscar" id="txtBusqueda">
+        <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
+    </div>
+    <div>
+        <button class="h100pc" ng-class="selectClass" ng-click="filtrarPedidos()" title="Ver creados por mi"><i class="fa fa-eye"></i> Filtrar Propios</button>
+        <button class="h100pc" ng-click="mostrarPanelCrearPedido()" title="Agregar nuevo pedido"> <i class="fa fa-plus"></i> Agregar Nuevo</button>
+        <button class="h100pc fullPaddingIzqDer" ng-click="cargarListaPedidos()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+    </div>
+</div>
+<table class="tbLista">
+    <tr class="aCentro">
+        <th>Titulo</th>
+        <th>Líneas Registradas</th>
+        <th>Propietario</th>
+        <th>Opciones</th>
+    </tr>
+    <tr class="aCentro" ng-repeat="pedido in listaPedidos | filter:filtroBusqueda" ng-hide="filtrarSegunPropietario(pedido)">
+        <td>{{pedido.Titulo}}</td>
+        <td>{{pedido.CantidadLineas}}</td>
+        <td>{{pedido.NombrePropietario}}</td>
+        <td>
+            <div class="flex noWrap jcCenter">
+                <i class="fa fa-pencil" ng-click="editarPedido(pedido)" title="Editar"></i>
+                <i class="fa fa-trash" ng-click="preBorrarPedido(pedido)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div ng-init="popupCrearPedido = false" ng-show="popupCrearPedido" class="popup">
+    <form ng-submit="agregarPedido(objPedido)">
+        <div class="popContenido">
+            <h2>Crear Nuevo Pedido <span class="pointer" ng-click="popupCrearPedido=false">X</span></h2>
+            <div>
+                <p><b class="f22">Detalles del Pedido</b></p>
+                <p>Título<input type="text" ng-model="objPedido.Titulo" required></p>
+                <p>Descripción <textarea name="" id="" cols="30" rows="5" ng-model="objPedido.Descripcion"></textarea> </p>
+            </div>
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Agregar">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div ng-init="panelPregunta = false" ng-show="panelPregunta" class="popup">
+    <div class="popContenido mW30pc">
+        <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>
+        <div class="fullPadding"style="font-size: 18px;">
+            <b>{{mensaje}}</b>
+        </div>
+        <div class="buttonContainer aDer">
+            <button ng-click="borrarPedido()" >Borrar</button>
+            <button ng-click="panelPregunta=false">Cancelar</button>
+        </div>
+    </div>
+</div>

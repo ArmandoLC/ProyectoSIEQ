@@ -1,0 +1,181 @@
+<h1>Administración de Pedidos</h1>
+<ul class="ulMenu">
+    <li class="liMenu"><a class="activeMenu aMenu">Editando el Pedido</a></li>
+    <li class="liMenu"><a class="aMenu" href="#!adminPedidos" title="Volver a la gestión de pedidos">Volver a Gestionar Pedidos</a></li>
+</ul>
+<br>
+
+<h2>Editando  el Pedido:<br> <h3><u>{{tituloPedido}}</u></h3></h2>
+<div class="aIzq">
+    <h4>Descripción:</h4>
+    {{descripcionPedido}}
+</div>
+<br>
+<hr>
+
+
+<div style="display: flex; justify-content: space-between; padding: 10px 0px">
+    <div class="flex">
+        <input class="fullMargin" type="text" ng-model="filtroBusqueda" placeholder="Buscar" id="txtBusqueda">
+        <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
+    </div>
+    <div>
+        <button class="h100pc" ng-click="mostrarPanelAgregarArticulo()" title="Agregar nuevo Artículo"> <i class="fa fa-plus"></i> Agregar Artículo</button>
+        <button class="h100pc fullPaddingIzqDer" ng-click="cargarArticulosPedido()" title="Actualizar lista"><i class="fa fa-refresh"></i></button>
+    </div>
+</div>
+<table class="tbLista">
+    <tr class="aCentro">
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>¿En Alerta?</th>
+        <th>Cant Actual</th>
+        <th>Cant de Alerta</th>
+        <th>Cant Solicitada</th>
+        <th>Opciones</th>
+    </tr>
+    <tr class="aCentro" ng-repeat="articulo in listaArticulos | filter:filtroBusqueda">
+        <td>{{articulo.Articulo}}</td>
+        <td>{{articulo.TipoArticulo}}</td>
+        <td ng-show="!{{articulo.EsAlerta}}">Si</td>
+        <td ng-show="{{articulo.EsAlerta}}">No</td>
+        <td>{{articulo.CantidadActual}}</td>
+        <td>{{articulo.PuntoReorden}}</td>
+        <td>{{articulo.CantidadSolicitada}}</td>
+        <td>
+            <div class="flex noWrap jcCenter">
+                <i class="fa fa-eye" ng-click="verArticulo(articulo)" title="Detalles"></i>
+                <i class="fa fa-pencil" ng-click="preActualizarArticulo(articulo)" title="Editar"></i>
+                <i class="fa fa-trash" ng-click="preBorrarArticulo(articulo)" title="Borrar"></i>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div ng-init="popupAgregarArticulo = false" ng-show="popupAgregarArticulo" class="popup">
+    <form ng-submit="agregarArticuloPedido(activoAgregar)">
+        <div class="popContenido">
+            <h2>Agregar Nuevo Artículo <span class="pointer" ng-click="popupAgregarArticulo=false">X</span></h2>
+
+            <div class="aIzq">
+                <p><b class="f22">Seleccionar Artículo</b></p>
+                <div style="display: flex; justify-content: space-between; padding: 10px 0px">
+                    <div class="flex">
+                        <input class="fullMargin fullWidth" type="text" ng-model="filtroBusquedaArticulo" placeholder="Buscar" id="txtBusquedaArticulo">
+                        <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table_outer">
+                <table class="tbLista rowsLista">
+                    <tr class="aCentro">
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Cant Actual</th>
+                        <th>Cant de Alerta</th>
+                        <th>Seleccionar</th>
+                    </tr>
+                    <tr class="aCentro" ng-repeat="activo in listaActivos | filter:filtroBusquedaArticulo">
+                        <td>{{activo.Articulo}}</td>
+                        <td>{{activo.TipoArticulo}}</td>
+                        <td>{{activo.CantidadActual}}</td>
+                        <td>{{activo.PuntoReorden}}</td>
+                        <td>
+                            <div class="flex noWrap jcCenter">
+                                <i class="fa fa-check" ng-click="seleccionarActivo(activo)" title="Seleccionar"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <br>
+            <hr>
+            <div>
+                <p><b class="f22">Detalles del Artículo</b></p>
+                <p>Nombre<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.Articulo" readonly></p>
+                <p>Tipo<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.TipoArticulo" readonly></p>
+                <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.CantidadActual" readonly></p>
+                <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.PuntoReorden" readonly></p>
+                <p>Cantidad Solicitada<input type="number" ng-model="activoAgregar.CantidadSolicitada" required></p>
+                <p>Observación <textarea name="" id="" cols="30" rows="5" ng-model="activoAgregar.Observacion" required></textarea> </p>
+            </div>
+
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Agregar">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div ng-init="popupActualizarArticulo = false" ng-show="popupActualizarArticulo" class="popup">
+    <form ng-submit="actualizarArticulo(articuloXActualizar)">
+        <div class="popContenido">
+            <h2>Actualizar Artículo Solicitado <span class="pointer" ng-click="popupActualizarArticulo=false">X</span></h2>
+
+            <div>
+                <p><b class="f22">Detalles del Artículo</b></p>
+                <br>
+                <hr>
+                <p>Nombre<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.Articulo" readonly></p>
+                <p>Tipo<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.TipoArticulo" readonly></p>
+                <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.CantidadActual" readonly></p>
+                <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.PuntoReorden" readonly></p>
+                <p>Cantidad Solicitada<input type="text" ng-model="articuloXActualizar.CantidadSolicitada" required></p>
+                <p>Observación <textarea name="" id="" cols="30" rows="5" ng-model="articuloXActualizar.Observacion" required></textarea> </p>
+            </div>
+
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Actualizar">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div ng-init="popupVerArticulo = false" ng-show="popupVerArticulo" class="popup">
+    <form ng-submit="popupVerArticulo = false">
+        <div class="popContenido">
+            <h2>Detalles del Artículo <span class="pointer" ng-click="popupVerArticulo=false">X</span></h2>
+
+            <div>
+                <br>
+                <h3>Datos del Artículo</h3>
+                <hr>
+                <br>
+                <p>Nombre<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.Articulo" readonly></p>
+                <p>Tipo<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.TipoArticulo" readonly></p>
+                <p>¿En Alerta?<input class="readonlyStyle" type="text" value="Si" ng-show="!articuloVisualizado.EsAlerta" readonly></p>
+                <p>¿En Alerta?<input class="readonlyStyle" type="text" value="No" ng-show="articuloVisualizado.EsAlerta" readonly></p>
+                <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.CantidadActual" readonly></p>
+                <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.PuntoReorden" readonly></p>
+                <p>Descripción<textarea class="readonlyStyle" name="" id="" cols="30" rows="5" ng-model="articuloVisualizado.Descripcion" readonly></textarea></p>
+                <br>
+
+                <h3>Datos del Pedido</h3>
+                <hr>
+                <br>
+                <p>Cantidad Solicitada<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.CantidadSolicitada" readonly></p>
+                <p>Observación <textarea class="readonlyStyle" name="" id="" cols="30" rows="5" ng-model="articuloVisualizado.Observacion" readonly></textarea></p>
+
+            </div>
+
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Cerrar">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div ng-init="panelPregunta = false" ng-show="panelPregunta" class="popup">
+    <div class="popContenido mW30pc">
+        <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>
+        <div class="fullPadding"style="font-size: 18px;">
+            <b>{{mensaje}}</b>
+        </div>
+        <div class="buttonContainer aDer">
+            <button ng-click="borrarArticulo()" >Borrar</button>
+            <button ng-click="panelPregunta=false">Cancelar</button>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,9 @@
 /* todo lo relacionado con el menú */
 
+.headerHeight{
+    height: 80px;
+}
+
 .menu * {
     font-family: Roboto;
 }
@@ -18,11 +22,13 @@
 }
 
 .menu > span {
-    background: rgba(0, 0, 0, 0.7);
+    /*background: rgba(0, 0, 0, 0.7);*/
+    background: #140e39;
     display: block;
     padding: 20px 15px;
     font-size: 23px;
     color: #fff;
+
 }
 
 .menu label {
@@ -58,7 +64,7 @@
 }
 
 .menu a:hover {
-    background: #140e39;
+    background: #09b047;
     border-left: 2px solid;
     text-decoration: underline;
 }

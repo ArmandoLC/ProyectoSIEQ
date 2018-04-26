@@ -1,24 +1,35 @@
 <h1>Reportes Del Sistema</h1>
 <ul class="ulMenu">
+    <!--
     <li class="liMenu dropdown">
         <a href="#!reporteMovReactivos" class="aMenu dropbtn">Reportes de Reactivos</a>
         <div class="dropdown-contentMenu">
             <a href="#!reporteMovReactivos">Ver Movimientos</a>
-            <a href="#!reporteMovReactivos">Ver Bajos del Mínimo</a>
+            <a href="#!reporteReactBajos">Ver Bajos del Mínimo</a>
         </div>
     </li>
     <li class="liMenu dropdown">
         <a href="#!reporteMovCristaleria" class="aMenu activeMenu dropbtn">Reportes de Cristalería</a>
         <div class="dropdown-contentMenu">
             <a href="#!reporteMovCristaleria">Ver Movimientos</a>
-            <a href="#!reporteMovCristaleria">Ver Bajos del Mínimo</a>
+            <a href="#!reporteCristBaja">Ver Bajos del Mínimo</a>
         </div>
     </li>
+-->
     <li class="liMenu">
-        <a href="#!reportePrestamos" class="aMenu activeMenu">Reportes de Préstamos</a>
+        <a href="#!reporteMovReactivos" class="aMenu">Reportes de Reactivos</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!reporteMovCristaleria" class="aMenu activeMenu">Reportes de Cristalería</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!reportePrestamos" class="aMenu dropbtn">Reportes de Préstamos</a>
+    </li>
+    <li class="liMenu">
+        <a href="#!reportePrecursores" class="aMenu">Reportes de Precursores</a>
     </li>
 </ul>
-<h2>Reporte de movimientos en cristalería</h2>
+<h2>Reporte de Movimientos en Cristalería</h2>
 <br>
 <div class="flex" ng-init="objReporteParam = {}; tipoReporte = 'movCrist'">
     <div style="flex-grow: 1">
@@ -27,7 +38,7 @@
                 <tr>
                     <td>Consultar:</td>
                     <td>
-                        <select ng-model="opcion" ng-init="opcion = opciones[0]" ng-options="opcion as opcion.nombre for opcion in opciones"></select>
+                        <select ng-model="opcion" ng-init="opcion = opciones[5]" ng-options="opcion as opcion.nombre for opcion in opciones"></select>
                     </td>
                 </tr>
                 <tr ng-show="opcion.seleccionarFecha">

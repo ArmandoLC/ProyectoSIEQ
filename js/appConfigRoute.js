@@ -12,18 +12,33 @@ app.config(function ($routeProvider) {
     }).when("/reporteMovReactivos",{
         templateUrl: "includes/reporteMovReactivos.html",
         controller: "reportes"
+    }).when("/adminPedidos",{
+        templateUrl: "includes/adminPedidos.html",
+        controller: "adminPedidos"
+    }).when("/editarPedidos",{
+        templateUrl: "includes/editarPedidos.html",
+        controller: "editarPedidos"
     }).when("/reporteMovCristaleria",{
         templateUrl: "includes/reporteMovCristaleria.html",
         controller: "reportes"
-    }).when("/reporteReactBajos",{
-        templateUrl: "includes/reporteReactBajos.html",
-        controller: "reportes"
-    }).when("/reporteCristBaja",{
-        templateUrl: "includes/reporteCristBaja.html",
-        controller: "reportes"
+    }).when("/alertaReactBajos",{
+        templateUrl: "includes/alertaReactBajos.html",
+        controller: "alertas"
+    }).when("/alertaCristBaja",{
+        templateUrl: "includes/alertaCristBaja.html",
+        controller: "alertas"
+    }).when("/listaNegraReactivos",{
+        templateUrl: "includes/listaNegraReactivos.html",
+        controller: "alertas"
+    }).when("/listaNegraCristaleria",{
+        templateUrl: "includes/listaNegraCristaleria.html",
+        controller: "alertas"
     }).when("/reportePrestamos",{
         templateUrl: "includes/reportePrestamos.html",
         controller: "reportes"
+    }).when("/reportePrecursores",{
+        templateUrl: "includes/reportePrecursores.html",
+        controller: "reportePrecursores"
     }).when("/adminSolicitudes",{
         templateUrl: "includes/adminSolicitudes.html",
         controller: "adminSolicitudes"
