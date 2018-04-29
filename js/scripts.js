@@ -548,10 +548,12 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         $scope.cargarlistaPrestamos = function () {
+
             $rootScope.solicitudHttp(rootHost + "API/VerPrestamos.php", null, function () {
                 $rootScope.agregarAlerta("No se pudo consultar la lista de préstamos");
             }, function (listaDatos) {
                 $scope.listaPrestamos = listaDatos;
+                log($scope.listaPrestamos);
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         $scope.elegirActivo = function (a) {
@@ -935,6 +937,12 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
                 }, function (listaDatos) {
                     $scope.listaMovimientosCristaleria = listaDatos;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            } else if($scope.tipoReporte == 'movPrecursores'){
+                $rootScope.solicitudHttp(rootHost + "API/VerMovimientosPrecursores.php", objReporteParam, function () {
+                    $rootScope.agregarAlerta("Consulta fallida al cargar movimientos");
+                }, function (listaDatos) {
+                    $scope.listaMovimientosPrecursores = listaDatos;
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
             }
 
         }
@@ -956,6 +964,17 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
                 $scope.buscarReporte($scope.opciones[5], $scope.tipoReporte); // carga todos los registros por defecto
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
+
+        $scope.cargarlistaPrestamos = function () {
+
+            $rootScope.solicitudHttp(rootHost + "API/VerPrestamos.php", null, function () {
+                $rootScope.agregarAlerta("Error Desconocido");
+            }, function (listaDatos) {
+                $scope.listaPrestamos = listaDatos;
+                log($scope.listaPrestamos);
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        $scope.cargarlistaPrestamos();
         if (!$scope.categorias) {
             cargarCategorias();
         };

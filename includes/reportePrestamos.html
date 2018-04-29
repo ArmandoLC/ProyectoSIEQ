@@ -32,7 +32,7 @@
 <h2>Reporte de Préstamos de Activos</h2>
 <br>
 <div class="flex" ng-init="objReporteParam = {}; tipoReporte = 'movReact'">
-    <div style="flex-grow: 1">
+    <!-- <div style="flex-grow: 1">
         <table style="display: inline">
             <form ng-submit="buscarReporteReactivos(opcion)">
                 <tr>
@@ -70,7 +70,7 @@
             </form>
         </table>
 
-    </div>
+    </div>-->
 </div>
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
@@ -92,16 +92,15 @@
         <th>Estado</th>
     </tr>
     <tr class="aCentro" ng-repeat="p in listaPrestamos | filter:filtroPrestamosR">
-        <td>{{m.Reactivo}}</td>
-        <td class="mW200px">{{m["Tipo de Movimiento"]}}</td>
-        <td>{{m.Antes}}</td>
-        <td>{{m.Despues}}</td>
-        <td>{{m.Movido}}</td>
-        <td>{{m.Categoria}}</td>
-        <td>{{m.Fecha}}</td>
-        <td>{{m.Destino}}</td>
-        <td>{{m.Observaciones}}</td>
-        <td>{{m.Firma}}</td>
+        <td> {{p.FechaSolicitud}}</td>
+        <td>{{p.UsuarioSolicitante}}</td>
+        <td>{{p.Articulo}}</td>
+        <td> {{p.CantidadSolicitada}}</td>
+        <td class="mW200px">{{p.Descripcion}}</td>
+        <td>{{p.UsuarioAutorizador}}</td>
+        <td> {{p.FechaAutorizacion}}</td>
+        <td> {{p.FechaDevolucion}}</td>
+        <td>{{p.Estado}}</td>
     </tr>
     <tr class="aCentro">
         <td>21/01/1996</td>
