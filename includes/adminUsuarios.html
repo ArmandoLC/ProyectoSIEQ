@@ -19,16 +19,16 @@
         <td>{{usuario.Usuario}}</td>
         <td>{{usuario.Correo}}</td>
         <td>
-            <select ng-model="rolID" ng-init="rolID = usuario.RolID" ng-change="actualizarRolUsuario(usuario.UsuarioID, rolID)">
+            <select ng-model="rolID" ng-init="rolID = usuario.RolID" ng-change="actualizarRolUsuario(usuario.UsuarioID, rolID)" title="Cambiar Rol">
                 <option ng-value="rol.RolID" ng-repeat="rol in roles">{{rol.Nombre}}</option>
             </select>
         </td>
         <td>
-            <label class="checkContainer noPointer">
+            <label class="checkContainer noPointer" title="Cambiar Bloqueo">
                 <input type="checkbox" ng-checked="usuario.Estado == 2"> <!--Estado de Inactividad (bloqueado)-->
                 <span class="checkmark" ng-click="cambiarEstadoBloqueo(usuario.UsuarioID, usuario.Estado)"></span>
             </label>
         </td>
-        <td><i class="fa fa-times-circle deleteHover" ng-click="actualizarEstadoUsuario(usuario.UsuarioID,4)"></i></td>
+        <td><i class="fa fa-times-circle deleteHover" ng-click="actualizarEstadoUsuario(usuario.UsuarioID,4)" title="Eliminar Cuenta"></i></td>
     </tr>
 </table>
