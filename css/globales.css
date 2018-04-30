@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto');
 
+.wordWrap {
+    word-wrap: break-word
+}
+
+.overflowHidden {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50ch;
+}
+
 * {
     margin: 0;
     padding: 0;

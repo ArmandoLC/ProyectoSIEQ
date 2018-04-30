@@ -434,6 +434,7 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
                     $rootScope.agregarAlerta("No hay usuarios en el sistema");
                 } else {
                     log("Lista de usuarios consultada con éxito");
+                    $rootScope.agregarAlerta("Lista de usuarios consultada con éxito");
                     $scope.usuarios = listaDatos;
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
@@ -473,6 +474,7 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
                     log("Lista con datos");
                     log(listaDatos);
                     $scope.verListaUsuarios($rootScope.idUsuarioActivo);
+                    $rootScope.agregarAlerta("Estado del usuario actualizado");
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
@@ -480,8 +482,10 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
         $scope.cambiarEstadoBloqueo = function (UsuarioID, Estado) {
             if (Estado == "1") {
                 $scope.actualizarEstadoUsuario(UsuarioID, 2);
+                $rootScope.agregarAlerta("Cuenta de usuario desactivada");
             } else {
                 $scope.actualizarEstadoUsuario(UsuarioID, 1);
+                $rootScope.agregarAlerta("Cuenta de usuario Activada");
             }
         };
 
@@ -496,11 +500,12 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
             }, function (listaDatos) {
                 $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
-                    $rootScope.agregarAlerta("Lista Tamaño 0");
+                    $rootScope.agregarAlerta("No se pudo actualizar el rol");
                 } else {
                     log("Lista con datos - cambiando rol de usuario");
                     log(listaDatos);
                     $scope.verListaUsuarios($rootScope.idUsuarioActivo);
+                    $rootScope.agregarAlerta("Rol actualizado");
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
@@ -546,11 +551,12 @@ app.controller("adminSolicitudes", function ($scope, $rootScope, $location, $htt
             }, function (listaDatos) {
                 $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
-                    $rootScope.agregarAlerta("Lista Tamaño 0");
+                    $rootScope.agregarAlerta("No se pudo actualizar el estado");
                 } else {
                     log("Lista con datos");
                     log(listaDatos);
                     $scope.verUsuariosPendientes();
+                    $rootScope.agregarAlerta("Estado de la solicitud actualizado");
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };

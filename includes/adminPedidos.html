@@ -22,12 +22,14 @@
         <th>Titulo</th>
         <th>Líneas Registradas</th>
         <th>Propietario</th>
+        <th>Descripción</th>
         <th>Opciones</th>
     </tr>
     <tr class="aCentro" ng-repeat="pedido in listaPedidos | filter:filtroBusqueda" ng-hide="filtrarSegunPropietario(pedido)">
         <td>{{pedido.Titulo}}</td>
         <td>{{pedido.CantidadLineas}}</td>
         <td>{{pedido.NombrePropietario}}</td>
+        <td class="overflowHidden">{{pedido.Descripcion}}</td>
         <td>
             <div class="flex noWrap jcCenter">
                 <i class="fa fa-pencil" ng-click="editarPedido(pedido)" title="Editar"></i>
