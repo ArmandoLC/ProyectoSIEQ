@@ -23,13 +23,14 @@ var app = angular.module('app', ['ngRoute', 'ngCookies']);
 
 }
 // host localhost (xampp)
-//host = "/ProyectoSIEQ/";
-//rootHost = "https://sieq.000webhostapp.com/"
+host = "/ProyectoSIEQ/";
+rootHost = "https://pinacr.com/sieq/"
+//rootHost = "https://pinacr.com/sieq/api"
 
 
 //host webHost
-host = "";
-rootHost = "/"
+//host = "";
+//rootHost = "/"
 
 /*
 // host pinacr
