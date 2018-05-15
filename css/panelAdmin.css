@@ -1,6 +1,14 @@
+/* Variables de Color */
+
+
 .headerPrincipal {
-    background: #140e39;
+    background: var(--colorAzul);
     color: #fff;
+    padding: 10px 30px;
+}
+
+.colorBlanco {
+    color: white;
     padding: 10px 30px;
 }
 
@@ -20,7 +28,7 @@
 }
 
 .mc h1 {
-    background: #09b047;
+    background: var(--colorVerde);
     color: #fff;
     padding: 10px 30px;
 }
@@ -47,7 +55,7 @@
 }
 .tbLista tr:nth-child(even){background-color: #e8e8e8}
 .tbLista th {
-    background-color: #106d5f;
+    background-color: var(--colorVerde3);
     color: white;
 }
 

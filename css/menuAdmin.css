@@ -23,7 +23,7 @@
 
 .menu > span {
     /*background: rgba(0, 0, 0, 0.7);*/
-    background: #140e39;
+    background: var(--colorAzul);
     display: block;
     padding: 20px 15px;
     font-size: 23px;
@@ -64,7 +64,7 @@
 }
 
 .menu a:hover {
-    background: #09b047;
+    background: var(--colorVerde);
     border-left: 2px solid;
     text-decoration: underline;
 }

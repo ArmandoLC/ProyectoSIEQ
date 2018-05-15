@@ -120,6 +120,14 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
     }
 });
 
+/* ACERCA DE LOS AUTORES*/
+app.controller("acercaDe", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = "login.html";
+    } else {
+        log("acercaDe");
+    }
+});
 
 /* REPORTEPRECURSORES CONTROLLER */
 app.controller("reportePrecursores", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {

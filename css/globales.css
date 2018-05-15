@@ -1,5 +1,24 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto');
 
+/* Variables de Color */
+:root {
+    --colorAzul: #140e39;
+    --colorRojo: #c1272d;
+    --colorVerde: #507c0a;
+
+    --colorAzul2: #034a91;
+    --colorVerde2: #09b047;
+    --colorVerde3: #106d5f;
+}
+
+.breakText {
+    word-wrap: break-word;
+}
+
+.colorRojo{
+    background-color: var(--colorRojo);
+}
+
 .wordWrap {
     word-wrap: break-word
 }
@@ -102,7 +121,6 @@ button {
 .miniSombra {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
 }
-
 
 .bgCelestillo {
     background: #0096b0!important;
@@ -227,7 +245,7 @@ button {
     right: -5px;
     font-size: 14px;
     padding: 1px 4px;
-    background: #09b047;
+    background: var(--colorVerde);
     color: #fff;
     border: 1px solid #fff;
     font-weight: bolder;
@@ -238,7 +256,7 @@ button {
 .alert div {
     display: inline-block;
     padding: 8px;
-    background: #09B047;
+    background: var(--colorVerde);
     border-radius: 8px;
     position: relative;
     text-align: left;
@@ -315,7 +333,7 @@ button {
 }
 
 .activeMenu {
-    background-color: #09B047;
+    background-color: var(--colorVerde);
 }
 
 .activeSubMenu{
@@ -404,4 +422,10 @@ button {
 
 .cNegro {
     color: #000;
+}
+
+
+.link{
+    color: darkblue;
+    text-decoration: underline;
 }

@@ -50,6 +50,9 @@ app.config(function ($routeProvider) {
         controller: "adminPrestamos"
     }).when("/login",{
         templateUrl: "login.html"
+    }).when("/acercaDe",{
+        templateUrl: "includes/acercaDe.html",
+        controller: "acercaDe"
     }).otherwise({
         redirectTo: "/adminInventarioReactivos"
     });
