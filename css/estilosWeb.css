@@ -6,6 +6,7 @@
 
 .readonlyStyle{
     background: #eee;
+    cursor: default;
 }
 
 .popup {

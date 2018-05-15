@@ -410,6 +410,24 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
+        $scope.preEnviarPedido = function(pedido){
+            $scope.popupEnviarPedido = true;
+            $scope.pedidoAEnviar = {};
+            $scope.pedidoAEnviar = pedido;
+        };
+
+        $scope.enviarPedido = function (pedidoAEnviar) {
+            $scope.popupEnviarPedido = false;
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/EnviarPedidoPorCorreo.php", pedidoAEnviar, function () {
+                $rootScope.agregarAlerta("No se ha podido enviar el pedido");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Pedido enviado correctamente");
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
         $scope.mostrarPanelCrearPedido = function () {
             $scope.popupCrearPedido = true;
         };
