@@ -34,12 +34,18 @@
         <!-- <div ng-include="templateUrl"></div> -->
         <div class="main">
             <div class="headerPrincipal headerHeight">
-                <div class="aCentro f26">
+
+                <div id="contenedorLogo">
+                    <img src="img/logo-tec.svg" height="38" width="150">
+                </div>
+
+                <div class="f26 aCentro">
                     Sistema de Inventario de la Escuela de Química (SIEQ)
                 </div>
-                <div class="usuarioActivo">
+                <div class="usuarioActivo marginL50">
                     <a title="Usuario Activo">{{nombreUsuarioActivo}} | {{rolUsuarioActivo}}</a>
                 </div>
+
             </div>
 
             <div ng-view class="mc aCentro">

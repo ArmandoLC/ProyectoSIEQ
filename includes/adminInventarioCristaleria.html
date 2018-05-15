@@ -4,7 +4,6 @@
   <li class="liMenu"><a class="activeMenu aMenu pointer" href="#!adminInventarioCristaleria">Cristalería</a></li>
 </ul>
 <br>
-<!--<h2>Inventario de Reactivos Químicos</h2> -->
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
@@ -34,7 +33,7 @@
         <td>
             <div class="flex noWrap">
                 <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i>
-<!--                <i class="fa fa-retweet" title="Movimientos"></i>-->
+                <i class="fa fa-retweet" ng-click="preGenerarMovimiento(c)" title="Generar Movimiento"></i>
                 <i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
             </div>
         </td>
@@ -44,9 +43,10 @@
 <div ng-init="popupCrearCristaleria = false" ng-show="popupCrearCristaleria" class="popup">
     <form ng-submit="agregarCristaleria()">
         <div class="popContenido">
-            <h2 style="padding-left: 30px">Crear Activo de Cristaleria &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="pointer" ng-click="popupCrearCristaleria=false; objCristaleria = {}">X</span></h2>
+            <h2 style="padding-left: 30px">Crear Activo de Cristalería<span class="pointer" ng-click="popupCrearCristaleria=false; objCristaleria = {}">X</span></h2>
             <div ng-init="objCristaleria = {}">
-                <p><b class="f22">Detalles del Reactivo</b></p>
+                <p><b class="f22">Detalles del Artículo</b></p>
+                <hr>
                 <p>Nombre<input type="text" ng-model="objCristaleria.Nombre" required></p>
                 <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="objCristaleria.Descripcion"></textarea> </p>
                 <p>Ubicación<input type="text" ng-model="objCristaleria.Ubicacion" required></p>
@@ -65,7 +65,8 @@
         <div class="popContenido">
             <h2 style="padding-left: 30px">Modificar Artículo de Cristalería &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="pointer" ng-click="popupEditarCristaleria=false">X</span></h2>
             <div>
-                <p><b class="f22">Detalles del Reactivo</b></p>
+                <p><b class="f22">Detalles del Artículo</b></p>
+                <hr>
                 <p>Nombre<input type="text" ng-model="cristaleriaEditar.Nombre" required></p>
                 <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="cristaleriaEditar.Descripcion"></textarea> </p>
                 <p>Ubicación<input type="text" ng-model="cristaleriaEditar.Ubicacion" required></p>
@@ -77,6 +78,42 @@
         </div>
     </form>
 </div>
+
+<div ng-init="popupGenerarMovimiento = false" ng-show="popupGenerarMovimiento" class="popup">
+    <form ng-submit="generarMovimiento(movimientoAGenerar, tipoMovimiento)">
+        <div class="popContenido">
+            <h2>Generar Movimiento<span class="pointer" ng-click="popupGenerarMovimiento=false">X</span></h2>
+            <div class="flex">
+                <div>
+                    <p><b class="f22">Datos del Movimiento</b></p>
+                    <hr>
+                    <p>Tipo de Movimiento:
+                        <select ng-model="tipoMovimiento" ng-init="tipoMovimiento=1">
+                  <option ng-value="1">Ingreso</option>
+                  <option ng-value="2">Egreso</option>
+                </select>
+                    </p>
+                    <p>Cantidad:<input type="number" ng-model="movimientoAGenerar.CantidadSolicitada" required></p>
+                    <p>Destino:<input type="text" ng-model="movimientoAGenerar.Destino" required></p>
+                    <p>Observaciones:<textarea cols="30" rows="5" ng-model="movimientoAGenerar.Observaciones" required></textarea></p>
+                </div>
+
+                <div class="marginL20">
+                    <p><b class="f22">Detalles del Artículo</b></p>
+                    <hr>
+                    <p>Nombre<input class="readonlyStyle" type="text" ng-model="movimientoAGenerar.NombreArticulo" readonly></p>
+                    <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="movimientoAGenerar.CantidadActual" readonly></p>
+                    <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="movimientoAGenerar.PuntoReorden" readonly></p>
+                    <p>Descripción <textarea class="readonlyStyle" cols="30" rows="5" ng-model="movimientoAGenerar.Descripcion" readonly></textarea> </p>
+                </div>
+            </div>
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Generar Movimiento">
+            </div>
+        </div>
+    </form>
+</div>
+
 <div ng-init="panelPregunta" ng-show="panelPregunta" class="popup">
     <div class="popContenido mW30pc">
         <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>

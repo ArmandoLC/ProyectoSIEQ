@@ -410,6 +410,23 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
+        $scope.preEnviarPedido = function(pedido){
+            $scope.popupEnviarPedido = true;
+            $scope.pedidoAEnviar = JSON.clone(pedido);
+        };
+
+        $scope.enviarPedido = function (pedidoAEnviar) {
+            $scope.popupEnviarPedido = false;
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/EnviarPedidoPorCorreo.php", pedidoAEnviar, function () {
+                $rootScope.agregarAlerta("Pedido enviado correctamente");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Pedido enviado correctamente");
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
         $scope.mostrarPanelCrearPedido = function () {
             $scope.popupCrearPedido = true;
         };
@@ -1135,6 +1152,28 @@ app.controller("adminInventarioCristaleria", function ($scope, $rootScope, $loca
                 $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
+
+        $scope.preGenerarMovimiento = function (cristaleria) {
+            $scope.popupGenerarMovimiento = true;
+            $scope.movimientoAGenerar = JSON.clone(cristaleria);
+        }
+        $scope.generarMovimiento = function (movimientoAGenerar, tipoMovimiento) {
+            movimientoAGenerar.TipoMovimientoID = tipoMovimiento;
+            movimientoAGenerar.UsuarioAutorizadorID = $rootScope.idUsuarioActivo;
+            $scope.popupGenerarMovimiento = false;
+
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/AgregarMovimiento.php", movimientoAGenerar, function () {
+                $rootScope.agregarAlerta("No se ha podido agregar el movimiento");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Movimiento agregado");
+                $scope.cargarListaCristaleria();
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+        }
+
         $scope.preBorrarCristaleria = function (c) {
             $scope.panelPregunta = true;
             $scope.mensaje = "¿Está seguro que desea borrar el activo: " + c.NombreArticulo + "?"
@@ -1253,6 +1292,28 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
                 $rootScope.waiting = false;
                 cargarListaReactivos();
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+
+        $scope.preGenerarMovimiento = function (reactivo) {
+            $scope.popupGenerarMovimiento = true;
+            $scope.movimientoAGenerar = JSON.clone(reactivo);
+        }
+        $scope.generarMovimiento = function (movimientoAGenerar, tipoMovimiento) {
+            movimientoAGenerar.TipoMovimientoID = tipoMovimiento;
+            movimientoAGenerar.UsuarioAutorizadorID = $rootScope.idUsuarioActivo;
+            movimientoAGenerar.ArticuloID = movimientoAGenerar.ReactivoID;
+            $scope.popupGenerarMovimiento = false;
+
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/AgregarMovimiento.php", movimientoAGenerar, function () {
+                $rootScope.agregarAlerta("No se ha podido agregar el movimiento");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Movimiento agregado");
+                $scope.cargarListaReactivos();
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
         }
 
         $scope.preBorrarReactivo = function (r) {
