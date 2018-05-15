@@ -48,6 +48,9 @@ app.config(function ($routeProvider) {
     }).when("/adminSoliPrestamos",{
         templateUrl: "includes/adminSoliPrestamos.html",
         controller: "adminPrestamos"
+    }).when("/chat",{
+        templateUrl: "includes/chat.html",
+        controller: "chat"
     }).when("/login",{
         templateUrl: "login.html"
     }).when("/acercaDe",{
