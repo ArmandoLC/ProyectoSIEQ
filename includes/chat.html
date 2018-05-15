@@ -1,0 +1,31 @@
+<h1>Chat</h1>
+<div class="h77vh flex">
+    <div style="width: 300px; max-height: 77vh; overflow-y: auto;" class="miniSombra">
+        <div ng-repeat="c in listaContactos" class="contact flex">
+            <div class="userIcon flexCol jcCenter"><i class="fa fa-user-circle-o" aria-hidden="true"></i></div>
+            <div class="fg1 cNegroAll flexCol jcCenter aIzq" ng-click="seleccionarUsuarioChat(c)">
+                <span>{{c.Nombre}}</span>
+                <span ng-show="c.RolID == 1" class="f14" style="float: ; ">Coordinador</span>
+            </div>
+        </div>
+    </div>
+    <div class="fg1 miniSombra flexCol">
+        <div class="fg1 bgGrisTransparente" style="max-height: 70vh; overflow-y: auto;">
+            <div ng-repeat="m in listaMensajes" ng-class="getChatClass(m)" class="fullMargin">
+                <div class="flexCol fullPadding" ng-attr-id="{{'m-' + listaMensajes.length}}">
+                    <span ng-show="m.UsuarioEmisorID == idUsuarioActivo" style="font-weight: bold">{{nombreUsuarioActivo}}</span>
+                    <span ng-show="m.UsuarioEmisorID !=  idUsuarioActivo" style="font-weight: bold">{{nombreUsuarioChatSeleccionado}}</span>
+                    <span>{{m.Mensaje}}</span>
+                </div>
+            </div>
+        </div>
+        <div style="height: 50px;" class="aIzq">
+            <div class="fullPadding flex" style="height: 100%">
+                <input id="txtMensaje" class="fg1" type="text" style="height: 100%" ng-model="mensajeEnviar">
+                <span class="btnEnviarMsj" ng-click="enviarMensaje()">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

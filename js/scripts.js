@@ -1448,6 +1448,93 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
     }
 });
 
+/*CHAT*/
+app.controller("chat", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        window.location.pathname = host + "login.html";
+    } else {
+        log("CHAT")
+        $scope.listaContactos = [];
+        $scope.verListaUsuarios = function () {
+            var obj = {
+                UsuarioID: $rootScope.idUsuarioActivo
+            }
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/VerListaUsuarios.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.waiting = false;
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("No hay usuarios en el sistema");
+                } else {
+                    log("Lista de usuarios consultada con éxito");
+                    $rootScope.agregarAlerta("Lista de usuarios consultada con éxito");
+                    $scope.listaContactos = listaDatos;
+                    $scope.idUsuarioChatSeleccionado = listaDatos[0].UsuarioID;
+                    $scope.nombreUsuarioChatSeleccionado = listaDatos[0].Nombre;
+                    $scope.verListaMensajes();
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        $scope.verListaMensajes = function () {
+            var obj = {};
+            obj.UsuarioAID = $rootScope.idUsuarioActivo;
+            obj.UsuarioBID = $scope.idUsuarioChatSeleccionado;
+//            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/VerChat.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de mensajes)");
+//                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                log(listaDatos);
+                $scope.listaMensajes = listaDatos;
+                setTimeout(function(){
+//                    focus('m-'+listaDatos.length);
+                    focus('txtMensaje');
+                },2000);
+
+                setTimeout($scope.verListaMensajes,2000);
+//                $rootScope.waiting = false;
+
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        $scope.enviarMensaje = function () {
+            var obj = {
+                UsuarioReceptorID: $scope.idUsuarioChatSeleccionado,
+                UsuarioEmisorID: $rootScope.idUsuarioActivo,
+                Mensaje: $scope.mensajeEnviar
+            }
+            if (obj.Mensaje != undefined && obj.Mensaje != '') {
+                $rootScope.waiting = true;
+                $rootScope.solicitudHttp(rootHost + "API/AgregarMensajeChat.php", obj, function () {
+                    $rootScope.agregarAlerta("Respuesta desconocida (No se agregó el mensaje)");
+                    $rootScope.waiting = false;
+                }, function (listaDatos) {
+                    log(listaDatos);
+                    $rootScope.waiting = false;
+                    $scope.mensajeEnviar = '';
+                    $scope.verListaMensajes();
+                }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            } else {
+                $rootScope.agregarAlerta("Escriba un mensaje");
+            }
+        };
+        $scope.seleccionarUsuarioChat = function (u) {
+            $scope.idUsuarioChatSeleccionado = u.UsuarioID;
+            $scope.nombreUsuarioChatSeleccionado = u.Nombre;
+            $scope.verListaMensajes();
+        }
+        $scope.verListaUsuarios();
+        $scope.getChatClass = function (m) {
+            if (m.UsuarioEmisorID == $rootScope.idUsuarioActivo) {
+                return 'aDer';
+            } else {
+                return 'aIzq bgOpaco';
+            }
+        }
+    }
+});
+
 /* CONTROLADOR PRINCIPAL */
 app.controller("mainController", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     //*********************************************
