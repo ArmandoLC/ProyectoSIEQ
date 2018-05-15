@@ -4,7 +4,6 @@
   <li class="liMenu"><a class="activeMenu aMenu pointer" href="#!adminInventarioCristaleria">Cristalería</a></li>
 </ul>
 <br>
-<!--<h2>Inventario de Reactivos Químicos</h2> -->
 
 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
     <div class="flex">
@@ -34,7 +33,7 @@
         <td>
             <div class="flex noWrap">
                 <i class="fa fa-pencil" ng-click="preEditarCristaleria(c)" title="Editar"></i>
-<!--                <i class="fa fa-retweet" title="Movimientos"></i>-->
+                <i class="fa fa-retweet" ng-click="preGenerarMovimiento(c)" title="Generar Movimiento"></i>
                 <i class="fa fa-trash" ng-click="preBorrarCristaleria(c)" title="Borrar"></i>
             </div>
         </td>

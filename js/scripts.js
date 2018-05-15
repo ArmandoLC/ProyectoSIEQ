@@ -412,15 +412,14 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
 
         $scope.preEnviarPedido = function(pedido){
             $scope.popupEnviarPedido = true;
-            $scope.pedidoAEnviar = {};
-            $scope.pedidoAEnviar = pedido;
+            $scope.pedidoAEnviar = JSON.clone(pedido);
         };
 
         $scope.enviarPedido = function (pedidoAEnviar) {
             $scope.popupEnviarPedido = false;
             $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/EnviarPedidoPorCorreo.php", pedidoAEnviar, function () {
-                $rootScope.agregarAlerta("No se ha podido enviar el pedido");
+                $rootScope.agregarAlerta("Pedido enviado correctamente");
                 $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Pedido enviado correctamente");
@@ -1271,6 +1270,28 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
                 $rootScope.waiting = false;
                 cargarListaReactivos();
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+
+        $scope.preGenerarMovimiento = function (reactivo) {
+            $scope.popupGenerarMovimiento = true;
+            $scope.movimientoAGenerar = JSON.clone(reactivo);
+        }
+        $scope.generarMovimiento = function (movimientoAGenerar, tipoMovimiento) {
+            movimientoAGenerar.TipoMovimientoID = tipoMovimiento;
+            movimientoAGenerar.UsuarioAutorizadorID = $rootScope.idUsuarioActivo;
+            movimientoAGenerar.ArticuloID = movimientoAGenerar.ReactivoID;
+            $scope.popupGenerarMovimiento = false;
+
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/AgregarMovimiento.php", movimientoAGenerar, function () {
+                $rootScope.agregarAlerta("No se ha podido agregar el movimiento");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Movimiento agregado");
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+            $scope.cargarListaReactivos();
         }
 
         $scope.preBorrarReactivo = function (r) {
