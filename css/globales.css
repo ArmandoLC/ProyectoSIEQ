@@ -2,13 +2,30 @@
 
 /* Variables de Color */
 :root {
-    --colorAzul: #140e39;
-    --colorRojo: #c1272d;
-    --colorVerde: #507c0a;
+    --colorAzul: #c1272d;
+    --colorRojo: #507c0a;
+    --colorVerde: #140e39;
+
+    --colorAzul4: #140e39;
+    --colorRojo4: #c1272d;
+    --colorVerde4: #507c0a;
 
     --colorAzul2: #034a91;
     --colorVerde2: #09b047;
-    --colorVerde3: #106d5f;
+    --colorVerde3: #034a91;
+}
+
+#contenedorLogo {
+    position: relative;
+}
+#contenedorLogo img {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.marginL50 {
+    margin-left: 50px;
 }
 
 .breakText {
