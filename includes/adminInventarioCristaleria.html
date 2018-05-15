@@ -76,6 +76,42 @@
         </div>
     </form>
 </div>
+
+<div ng-init="popupGenerarMovimiento = false" ng-show="popupGenerarMovimiento" class="popup">
+    <form ng-submit="generarMovimiento(movimientoAGenerar, tipoMovimiento)">
+        <div class="popContenido">
+            <h2>Generar Movimiento<span class="pointer" ng-click="popupGenerarMovimiento=false">X</span></h2>
+            <div class="flex">
+                <div>
+                    <p><b class="f22">Datos del Movimiento</b></p>
+                    <hr>
+                    <p>Tipo de Movimiento:
+                        <select ng-model="tipoMovimiento" ng-init="tipoMovimiento=1">
+                  <option ng-value="1">Ingreso</option>
+                  <option ng-value="2">Egreso</option>
+                </select>
+                    </p>
+                    <p>Cantidad:<input type="number" ng-model="movimientoAGenerar.CantidadSolicitada" required></p>
+                    <p>Destino:<input type="text" ng-model="movimientoAGenerar.Destino" required></p>
+                    <p>Observaciones:<textarea cols="30" rows="5" ng-model="movimientoAGenerar.Observaciones" required></textarea></p>
+                </div>
+
+                <div class="marginL20">
+                    <p><b class="f22">Detalles del Reactivo</b></p>
+                    <hr>
+                    <p>Nombre<input class="readonlyStyle" type="text" ng-model="movimientoAGenerar.NombreArticulo" readonly></p>
+                    <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="movimientoAGenerar.CantidadActual" readonly></p>
+                    <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="movimientoAGenerar.PuntoReorden" readonly></p>
+                    <p>Descripción <textarea class="readonlyStyle" cols="30" rows="5" ng-model="movimientoAGenerar.Descripcion" readonly></textarea> </p>
+                </div>
+            </div>
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Generar Movimiento">
+            </div>
+        </div>
+    </form>
+</div>
+
 <div ng-init="panelPregunta" ng-show="panelPregunta" class="popup">
     <div class="popContenido mW30pc">
         <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>

@@ -1152,6 +1152,28 @@ app.controller("adminInventarioCristaleria", function ($scope, $rootScope, $loca
                 $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
+
+        $scope.preGenerarMovimiento = function (cristaleria) {
+            $scope.popupGenerarMovimiento = true;
+            $scope.movimientoAGenerar = JSON.clone(cristaleria);
+        }
+        $scope.generarMovimiento = function (movimientoAGenerar, tipoMovimiento) {
+            movimientoAGenerar.TipoMovimientoID = tipoMovimiento;
+            movimientoAGenerar.UsuarioAutorizadorID = $rootScope.idUsuarioActivo;
+            $scope.popupGenerarMovimiento = false;
+
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/AgregarMovimiento.php", movimientoAGenerar, function () {
+                $rootScope.agregarAlerta("No se ha podido agregar el movimiento");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Movimiento agregado");
+                $scope.cargarListaCristaleria();
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+        }
+
         $scope.preBorrarCristaleria = function (c) {
             $scope.panelPregunta = true;
             $scope.mensaje = "¿Está seguro que desea borrar el activo: " + c.NombreArticulo + "?"
@@ -1288,10 +1310,10 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
                 $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Movimiento agregado");
+                $scope.cargarListaReactivos();
                 $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
 
-            $scope.cargarListaReactivos();
         }
 
         $scope.preBorrarReactivo = function (r) {
