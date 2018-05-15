@@ -43,9 +43,10 @@
 <div ng-init="popupCrearCristaleria = false" ng-show="popupCrearCristaleria" class="popup">
     <form ng-submit="agregarCristaleria()">
         <div class="popContenido">
-            <h2 style="padding-left: 30px">Crear Activo de Cristaleria &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="pointer" ng-click="popupCrearCristaleria=false; objCristaleria = {}">X</span></h2>
+            <h2 style="padding-left: 30px">Crear Activo de Cristalería<span class="pointer" ng-click="popupCrearCristaleria=false; objCristaleria = {}">X</span></h2>
             <div ng-init="objCristaleria = {}">
-                <p><b class="f22">Detalles del Reactivo</b></p>
+                <p><b class="f22">Detalles del Artículo</b></p>
+                <hr>
                 <p>Nombre<input type="text" ng-model="objCristaleria.Nombre" required></p>
                 <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="objCristaleria.Descripcion"></textarea> </p>
                 <p>Ubicación<input type="text" ng-model="objCristaleria.Ubicacion" required></p>
@@ -64,7 +65,8 @@
         <div class="popContenido">
             <h2 style="padding-left: 30px">Modificar Artículo de Cristalería &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="pointer" ng-click="popupEditarCristaleria=false">X</span></h2>
             <div>
-                <p><b class="f22">Detalles del Reactivo</b></p>
+                <p><b class="f22">Detalles del Artículo</b></p>
+                <hr>
                 <p>Nombre<input type="text" ng-model="cristaleriaEditar.Nombre" required></p>
                 <p>Descripción <textarea name="" id="" cols="30" rows="3" ng-model="cristaleriaEditar.Descripcion"></textarea> </p>
                 <p>Ubicación<input type="text" ng-model="cristaleriaEditar.Ubicacion" required></p>
@@ -97,7 +99,7 @@
                 </div>
 
                 <div class="marginL20">
-                    <p><b class="f22">Detalles del Reactivo</b></p>
+                    <p><b class="f22">Detalles del Artículo</b></p>
                     <hr>
                     <p>Nombre<input class="readonlyStyle" type="text" ng-model="movimientoAGenerar.NombreArticulo" readonly></p>
                     <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="movimientoAGenerar.CantidadActual" readonly></p>
