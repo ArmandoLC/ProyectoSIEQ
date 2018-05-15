@@ -1488,11 +1488,7 @@ app.controller("chat", function ($scope, $rootScope, $location, $http, $cookies,
             }, function (listaDatos) {
                 log(listaDatos);
                 $scope.listaMensajes = listaDatos;
-                setTimeout(function(){
-//                    focus('m-'+listaDatos.length);
-                    focus('txtMensaje');
-                },2000);
-
+                focus('txtMensaje');
                 setTimeout($scope.verListaMensajes,2000);
 //                $rootScope.waiting = false;
 
