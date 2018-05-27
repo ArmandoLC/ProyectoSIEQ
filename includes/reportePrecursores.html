@@ -65,7 +65,13 @@
         <input class="fullMargin" type="text" ng-model="filtroMovPrec" placeholder="Buscar" id="txtBusqueda">
         <i class="fa fa-search" style="margin-left: -25px; margin-top: 10px; margin-right: 10px;"></i>
     </div>
+
+    <div>
+        <button class="h100pc" ng-click="preEnviarReportePrecursor()" title="Enviar reporte al correo"> <i class="fa fa-envelope"></i> Enviar reporte al correo</button>
+    </div>
+
 </div>
+
 <table class="tbLista">
     <tr class="aCentro">
         <th>Reactivo</th>
@@ -92,4 +98,34 @@
         <td>{{movimiento.Firma}}</td>
     </tr>
 </table>
+
+
+<div ng-init="popupEnviarReporte = false" ng-show="popupEnviarReporte" class="popup">
+    <form ng-submit="enviarReportePrecursores(reporteAEnviar)">
+        <div class="popContenido">
+            <h2>Enviar Reporte por Correo<span class="pointer" ng-click="popupEnviarReporte=false ">X</span></h2>
+            <div class="flex">
+                <div>
+                    <p><b class="f22">Datos del Correo</b></p>
+                    <hr>
+                    <p>Para:<input class="w100pc" type="text" ng-model="reporteAEnviar.Para" required></p>
+                    <p>Asunto:<input class="w100pc" type="text" ng-model="reporteAEnviar.Asunto" required></p>
+                </div>
+                <div class="marginL20">
+                    <p><b class="f22">Fechas a Incluir en el Reporte</b></p>
+                    <hr>
+                    <p>Fecha Inicial:</p>
+                    <p><input class="w100pc" ng-model="reporteAEnviar.fechaDesde" type="date"></p>
+                    <br>
+                    <p>Fecha Final:</p>
+                    <p><input class="w100pc" ng-model="reporteAEnviar.fechaHasta" type="date"></p>
+
+                </div>
+            </div>
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Enviar">
+            </div>
+        </div>
+    </form>
+</div>
 
