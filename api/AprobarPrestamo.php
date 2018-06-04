@@ -25,7 +25,7 @@ if($conexion){
 					".mysqli_real_escape_string($conexion, $UsuarioAutorizadorID).",
 					".mysqli_real_escape_string($conexion, $PrestamoID).",
 					'".mysqli_real_escape_string($conexion, $Comentario)."')";
-
+					
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);

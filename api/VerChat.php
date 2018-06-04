@@ -1,5 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
 // Tell PHP that we're using UTF-8 strings until the end of the script
 mb_internal_encoding('UTF-8');
 // Tell PHP that we'll be outputting UTF-8 to the browser
@@ -10,9 +9,19 @@ if(!@include("funciones/funciones.php")){
 
 $conexion = mysqli_connect($host, $user, $pw, $db);
 
+$obj = cargarObjPost();
+$UsuarioAID = $obj["UsuarioAID"];
+$UsuarioBID = $obj["UsuarioBID"];
+
+
+// $UsuarioAID = 9;
+// $UsuarioBID = 7;
+
 if($conexion){
-    $consulta = "CALL VerUnidadesMetricas()";
-					
+    $consulta = "CALL VerChat(
+					".mysqli_real_escape_string($conexion, $UsuarioAID).",
+					".mysqli_real_escape_string($conexion, $UsuarioBID).")";
+
     $resultado = consultar($consulta,$conexion);
     if(is_bool($resultado)===false){
         echo getJsonSalida("OK", "listaDatos",$resultado);
