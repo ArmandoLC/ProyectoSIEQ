@@ -24,23 +24,20 @@ var app = angular.module('app', ['ngRoute', 'ngCookies']);
 }
 // host localhost (xampp)
 host = "/ProyectoSIEQ/";
-rootHost = "https://sieq.000webhostapp.com/"
+rootHost = "https://pinacr.com/sieq/"
+//rootHost = "https://pinacr.com/sieq/api"
+
+
+//host webHost
+//host = "";
+//rootHost = "/"
 
 /*
-//host webHost
-host = "";
-rootHost = "/"
-
 // host pinacr
 host = "sieq/";
 rootHost = "https://sieq.000webhostapp.com/"
 */
 
-//hostSieq
-/*
-host = "";
-rootHost = "/"
-*/
 /* LOGIN CONTROLLER */
 app.controller("login", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if ($rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
@@ -84,9 +81,12 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
         //$scope.roles = "";
 
         $scope.registrarse = function (obj) {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/AgregarUsuario.php", obj, function () {
                 $rootScope.agregarAlerta("Nombre de usuario no disponible");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("Error desconocido");
                 } else {
@@ -98,9 +98,12 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
         };
 
         $scope.verRolesUsuario = function () {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerRolesUsuario.php", {}, function () {
-                $rootScope.agregarAlerta("Respuesta desconocida");
+                $rootScope.agregarAlerta("Error al cargar los roles de usuario");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("No se encontraron roles de usuario");
                 } else {
@@ -117,6 +120,14 @@ app.controller("registrarse", function ($scope, $rootScope, $location, $http, $c
     }
 });
 
+/* ACERCA DE LOS AUTORES*/
+app.controller("acercaDe", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        //window.location.pathname = "login.html";
+    } else {
+        log("acercaDe");
+    }
+});
 
 /* REPORTEPRECURSORES CONTROLLER */
 app.controller("reportePrecursores", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
@@ -135,7 +146,7 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
     } else {
         log("editarPedidos");
         var urlParams = $location.search();
-        $scope.listaArticulos= [];
+        $scope.listaArticulos = [];
         $scope.listaActivos = [];
         $scope.popupAgregarArticulo = false;
         $scope.activoSeleccionado = {};
@@ -145,14 +156,18 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
         $scope.tituloPedido = urlParams.Titulo;
         $scope.descripcionPedido = urlParams.Descripcion;
 
-        $scope.cargarArticulosPedido = function(){
-            var obj = {'PedidoID': $scope.pedidoID};
+        $scope.cargarArticulosPedido = function () {
+            var obj = {
+                'PedidoID': $scope.pedidoID
+            };
             log("Cargando Articulos del pedido");
             log(obj);
-
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerArticulosDelPedido.php", obj, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida, se esperaba una lista de articulos");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("Pedido sin artículos");
                 } else {
@@ -164,11 +179,13 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
 
         };
 
-        $scope.cargarActivos = function(){
-
+        $scope.cargarActivos = function () {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerListaArticulos.php", {}, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida, se esperaba una lista de activos");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("No existen Activos");
                 } else {
@@ -181,7 +198,7 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
         };
 
 
-        $scope.mostrarPanelAgregarArticulo = function(){
+        $scope.mostrarPanelAgregarArticulo = function () {
             $scope.cargarActivos();
 
             $scope.activoSeleccionado = {};
@@ -189,7 +206,7 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
             $scope.popupAgregarArticulo = true;
         };
 
-        $scope.seleccionarActivo = function(activo){
+        $scope.seleccionarActivo = function (activo) {
             $scope.activoSeleccionado = activo;
             $scope.activoXAgregar = {
                 "PedidoID": $scope.pedidoID,
@@ -198,22 +215,24 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
 
         };
 
-        $scope.agregarArticuloPedido = function(obj){
+        $scope.agregarArticuloPedido = function (obj) {
             log(obj);
             log($scope.activoXAgregar);
 
-            if($scope.activoXAgregar.ArticuloID == undefined){
+            if ($scope.activoXAgregar.ArticuloID == undefined) {
                 $rootScope.agregarAlerta("Seleccione un artículo");
-            }else{
+            } else {
                 obj.PedidoID = $scope.activoXAgregar.PedidoID;
                 obj.ArticuloID = $scope.activoXAgregar.ArticuloID;
 
                 log("Agregando artículo");
                 log(obj);
-
+                $rootScope.waiting = true;
                 $rootScope.solicitudHttp(rootHost + "API/AgregarArticuloAPedido.php", obj, function () {
-                    $rootScope.agregarAlerta("Respuesta desconocida");
+                    $rootScope.agregarAlerta("Error al cargar artículos del pedido");
+                    $rootScope.waiting = false;
                 }, function (listaDatos) {
+                    $rootScope.waiting = false;
                     if (listaDatos.length == 0) {
                         $rootScope.agregarAlerta("Lista vacía");
                     } else {
@@ -232,63 +251,67 @@ app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, 
             $scope.panelPregunta = true;
             $scope.mensaje = "¿Está seguro que desea borrar el artículo: '" + articulo.Articulo + "'?"
             $scope.articuloABorrar = {
-                ArticuloPedidoID : articulo.ArticuloPedidoID
+                ArticuloPedidoID: articulo.ArticuloPedidoID
             }
         };
 
         $scope.borrarArticulo = function () {
+            $scope.panelPregunta = false;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/EliminarArticuloDelPedido.php", $scope.articuloABorrar, function () {
                 $rootScope.agregarAlerta("No se ha podido borrar el artículo");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha eliminado el artículo");
                 $scope.cargarArticulosPedido();
-                $scope.panelPregunta = false;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        $scope.verArticulo = function(articulo){
+        $scope.verArticulo = function (articulo) {
             var obj = {
                 "ArticuloPedidoID": articulo.ArticuloPedidoID
             };
-            log(obj);
-
-            $rootScope.solicitudHttp(rootHost + "API/VerArticuloDelPedido.php", obj , function () {
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/VerArticuloDelPedido.php", obj, function () {
                 $rootScope.agregarAlerta("No se ha podido consultar el artículo");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 log("Artículo consultado con éxito");
                 $scope.articuloVisualizado = listaDatos[0];
-
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
 
             $scope.popupVerArticulo = true;
         };
 
-        $scope.preActualizarArticulo = function(articulo){
+        $scope.preActualizarArticulo = function (articulo) {
             log("Actualizando Articulo");
             $scope.articuloXActualizar = articulo;
             log($scope.articuloXActualizar);
             $scope.popupActualizarArticulo = true;
         };
 
-        $scope.actualizarArticulo = function(articuloActualizado){
-            log(articuloActualizado);
-
+        $scope.actualizarArticulo = function (articuloActualizado) {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/ActualizarArticuloDelPedido.php", articuloActualizado, function () {
-                    $rootScope.agregarAlerta("Respuesta desconocida");
-                }, function (listaDatos) {
-                    if (listaDatos.length == 0) {
-                        $rootScope.agregarAlerta("Lista vacía");
-                    } else {
-                        $rootScope.agregarAlerta("Artículo actualizado con éxito");
+                $rootScope.agregarAlerta("Respuesta desconocida");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.waiting = false;
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("Lista vacía");
+                } else {
+                    $rootScope.agregarAlerta("Artículo actualizado con éxito");
 
-                        $scope.cargarArticulosPedido();
-                        $scope.popupActualizarArticulo = false;
+                    $scope.cargarArticulosPedido();
+                    $scope.popupActualizarArticulo = false;
 
-                    }
-                }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        if($scope.listaArticulos.length == 0){
+        if ($scope.listaArticulos.length == 0) {
             $scope.cargarArticulosPedido();
         };
 
@@ -324,11 +347,13 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
             return false;
         };
 
-        $scope.cargarListaPedidos = function(){
-
+        $scope.cargarListaPedidos = function () {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerPedidos.php", {}, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida, se esperaba una lista de pedidos");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("No se encontraron pedidos");
                 } else {
@@ -339,18 +364,20 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        $scope.agregarPedido = function(obj){
+        $scope.agregarPedido = function (obj) {
             obj.UsuarioID = $rootScope.idUsuarioActivo;
 
             log("Agregando pedido");
             log(obj);
-
+            $scope.popupCrearPedido = false;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/AgregarPedido.php", obj, function () {
-                $rootScope.agregarAlerta("Respuesta desconocida");
+                $rootScope.agregarAlerta("No se ha podido agregar el pedido");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Pedido Creado y listo para editarse");
                 $scope.cargarListaPedidos();
-                $scope.popupCrearPedido = false;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
@@ -371,16 +398,36 @@ app.controller("adminPedidos", function ($scope, $rootScope, $location, $http, $
         };
 
         $scope.borrarPedido = function () {
+            $scope.panelPregunta = false;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/EliminarPedido.php", $scope.pedidoABorrar, function () {
                 $rootScope.agregarAlerta("No se ha podido borrar el pedido");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha eliminado el pedido");
                 $scope.cargarListaPedidos();
-                $scope.panelPregunta = false;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
-        $scope.mostrarPanelCrearPedido = function(){
+        $scope.preEnviarPedido = function(pedido){
+            $scope.popupEnviarPedido = true;
+            $scope.pedidoAEnviar = JSON.clone(pedido);
+        };
+
+        $scope.enviarPedido = function (pedidoAEnviar) {
+            $scope.popupEnviarPedido = false;
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/EnviarPedidoPorCorreo.php", pedidoAEnviar, function () {
+                $rootScope.agregarAlerta("Pedido enviado correctamente");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Pedido enviado correctamente");
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+
+        $scope.mostrarPanelCrearPedido = function () {
             $scope.popupCrearPedido = true;
         };
 
@@ -403,23 +450,30 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
         $scope.verListaUsuarios = function (UsuarioID) {
             var obj = {};
             obj.UsuarioID = UsuarioID;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerListaUsuarios.php", obj, function () {
                 $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("No hay usuarios en el sistema");
                 } else {
                     log("Lista de usuarios consultada con éxito");
+                    $rootScope.agregarAlerta("Lista de usuarios consultada con éxito");
                     $scope.usuarios = listaDatos;
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
         $scope.verRolesUsuario = function () {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerRolesUsuario.php", {}, function () {
-                $rootScope.agregarAlerta("Respuesta desconocida");
+                $rootScope.agregarAlerta("Error en la consulta de roles de usuario");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 if (listaDatos.length == 0) {
+                    $rootScope.waiting = false;
                     $rootScope.agregarAlerta("No se encontraron roles de usuario");
                 } else {
                     log("Roles de usuario consultados con éxito");
@@ -434,15 +488,19 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
             var obj = {}
             obj.EstadoID = tipo;
             obj.UsuarioID = usuarioID;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/ActualizarEstadoUsuario.php", obj, function () {
-                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+                $rootScope.agregarAlerta("No se ha podido actuliazar el estado del usuario");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("Lista Tamaño 0");
                 } else {
                     log("Lista con datos");
                     log(listaDatos);
                     $scope.verListaUsuarios($rootScope.idUsuarioActivo);
+                    $rootScope.agregarAlerta("Estado del usuario actualizado");
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
@@ -450,8 +508,10 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
         $scope.cambiarEstadoBloqueo = function (UsuarioID, Estado) {
             if (Estado == "1") {
                 $scope.actualizarEstadoUsuario(UsuarioID, 2);
+                $rootScope.agregarAlerta("Cuenta de usuario desactivada");
             } else {
                 $scope.actualizarEstadoUsuario(UsuarioID, 1);
+                $rootScope.agregarAlerta("Cuenta de usuario Activada");
             }
         };
 
@@ -459,15 +519,19 @@ app.controller("adminUsuarios", function ($scope, $rootScope, $location, $http, 
             var obj = {}
             obj.UsuarioID = UsuarioID;
             obj.RolID = rolSeleccionado;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/ActualizarRolUsuario.php", obj, function () {
-                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de datos)");
+                $rootScope.agregarAlerta("No se ha podido actualizar el rol de usuario");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
-                    $rootScope.agregarAlerta("Lista Tamaño 0");
+                    $rootScope.agregarAlerta("No se pudo actualizar el rol");
                 } else {
                     log("Lista con datos - cambiando rol de usuario");
                     log(listaDatos);
                     $scope.verListaUsuarios($rootScope.idUsuarioActivo);
+                    $rootScope.agregarAlerta("Rol actualizado");
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
@@ -487,9 +551,12 @@ app.controller("adminSolicitudes", function ($scope, $rootScope, $location, $htt
         $scope.solicitudesCuenta = [];
 
         $scope.verUsuariosPendientes = function () {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerUsuariosPendientes.php", {}, function () {
-                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+                $rootScope.agregarAlerta("No se ha podido consultar la lista de solicitudes de cuentas de usuarios pendientes");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
                     $rootScope.agregarAlerta("No hay solicitudes de cuentas");
                 } else {
@@ -503,15 +570,19 @@ app.controller("adminSolicitudes", function ($scope, $rootScope, $location, $htt
             var obj = {}
             obj.EstadoID = tipo;
             obj.UsuarioID = usuarioID;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/ActualizarEstadoUsuario.php", obj, function () {
-                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+                $rootScope.agregarAlerta("No se ha podido actualizar el estado del usuario");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (listaDatos.length == 0) {
-                    $rootScope.agregarAlerta("Lista Tamaño 0");
+                    $rootScope.agregarAlerta("No se pudo actualizar el estado");
                 } else {
                     log("Lista con datos");
                     log(listaDatos);
                     $scope.verUsuariosPendientes();
+                    $rootScope.agregarAlerta("Estado de la solicitud actualizado");
                 }
             }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
@@ -538,17 +609,24 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             } else {
                 tipoActivo = "VerListaCristaleria";
             }
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/" + tipoActivo + ".php", null, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se pudo consultar la lista de activos");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.listaActivos = listaDatos;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         $scope.cargarlistaPrestamos = function () {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerPrestamos.php", null, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se pudo consultar la lista de préstamos");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.listaPrestamos = listaDatos;
+                $rootScope.waiting = false;
+                log($scope.listaPrestamos);
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         $scope.elegirActivo = function (a) {
@@ -563,24 +641,95 @@ app.controller("adminPrestamos", function ($scope, $rootScope, $location, $http,
             focus('idFiltroActivoPrest');
         }
         $scope.solicitarPrestamo = function (prestamo) {
+            log(prestamo);
             prestamo.EstadoPrestamoID = 1;
             if ($scope.objNuevoPrestamo.ArticuloID == undefined) {
                 $rootScope.agregarAlerta("Seleccione un activo");
             } else if ($scope.objNuevoPrestamo.FechaLimiteDevolucion == undefined) {
                 $rootScope.agregarAlerta("Seleccione una fecha");
+            } else if ($scope.objNuevoPrestamo.FechaLimiteDevolucion.getTime() < new Date().getTime()) {
+                $rootScope.agregarAlerta("Seleccione una fecha posterior o igual a hoy");
+            } else if ($scope.objNuevoPrestamo.Descripcion == undefined) {
+                $rootScope.agregarAlerta("Agregue una descripción");
             } else {
+                $rootScope.waiting = true;
                 prestamo.UsuarioSolicitanteID = $rootScope.idUsuarioActivo;
                 //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
                 $rootScope.solicitudHttp(rootHost + "API/AgregarPrestamo.php", prestamo, function () {
-                    $rootScope.agregarAlerta("No se ha podido ingresar el activo de cristalería");
+                    $rootScope.agregarAlerta("No se ha podido solicitar el préstamo, verifique que hayan suficientes existencias del activo");
+                    $rootScope.waiting = false;
                 }, function (listaDatos) {
                     $rootScope.agregarAlerta("Se ha registrado el préstamo correctamente");
+                    $rootScope.waiting = false;
                     limpiarCamposPrestamo();
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
             }
         };
 
-        $scope.aprobarPrestamo
+        $scope.aprobarPrestamo = function (p) {
+            obj = {
+                UsuarioAutorizadorID: $rootScope.idUsuarioActivo,
+                PrestamoID: p.PrestamoID,
+                Comentario: ''
+            };
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/AprobarPrestamo.php", obj, function () {
+                $rootScope.agregarAlerta("No se ha podido aprobar el préstamo");
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha aprobado el préstamo");
+                $rootScope.waiting = false;
+                $scope.cargarlistaPrestamos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+        $scope.despacharPrestamo = function (p) {
+            obj = {
+                UsuarioAutorizadorID: $rootScope.idUsuarioActivo,
+                PrestamoID: p.PrestamoID,
+                Comentario: ''
+            };
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/DespacharPrestamo.php", obj, function () {
+                $rootScope.agregarAlerta("No se ha podido despachar el préstamo, revise que hayan suficientes existencias en el inventario");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha despachado el préstamo");
+                $rootScope.waiting = false;
+                $scope.cargarlistaPrestamos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+        $scope.rechazarPrestamo = function (p) {
+            obj = {
+                UsuarioAutorizadorID: $rootScope.idUsuarioActivo,
+                PrestamoID: p.PrestamoID,
+                Comentario: ''
+            };
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/RechazarPrestamo.php", obj, function () {
+                $rootScope.agregarAlerta("No se ha podido rechazar el préstamo");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha rechazado el préstamo");
+                $rootScope.waiting = false;
+                $scope.cargarlistaPrestamos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+        $scope.devolverPrestamo = function (p) {
+            obj = {
+                UsuarioAutorizadorID: $rootScope.idUsuarioActivo,
+                PrestamoID: p.PrestamoID,
+                Comentario: '',
+                CantidadDevuelta: p.CantidadSolicitada
+            };
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/DevolverPrestamo.php", obj, function () {
+                $rootScope.agregarAlerta("No se ha podido devolver el préstamo");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Se ha registrado la devolución del préstamo");
+                $rootScope.waiting = false;
+                $scope.cargarlistaPrestamos();
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
 
         function limpiarCamposPrestamo() {
             $scope.objNuevoPrestamo = {
@@ -605,18 +754,22 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
         log("alertas");
         $scope.verActivosBajos = function (obj, tipoActivo) {
             obj.UsuarioID = $rootScope.idUsuarioActivo;
-            log(obj);
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/Ver" + tipoActivo + "DebajoDelMinimo.php", obj, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se ha podido consultar los activos por debajo del mínimo");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.listaActivosBajos = listaDatos;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
         function cargarCategorias() {
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerCategorias.php", null, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se ha podido consultar las categorías");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.categorias = listaDatos;
                 $scope.categorias.forEach(function (c) {
@@ -628,6 +781,7 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                 });
                 $scope.obj.CategoriaID = $scope.categorias[0].CategoriaReactivoID;
                 $scope.verActivosBajos($scope.obj, 'Reactivos');
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
@@ -640,9 +794,12 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
         }, 100);
 
         function cargarLista(lista, tipoActivo) {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerLista" + tipoActivo + ".php", null, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se ha podido consultar la lista de activos");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
+                $rootScope.waiting = false;
                 if (lista == 0) {
                     $scope.listaReactivos = listaDatos;
                     cargarListaNegra(lista);
@@ -657,8 +814,10 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
             obj = {
                 UsuarioID: $rootScope.idUsuarioActivo
             }
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerListaNegraDeUsuario.php", obj, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se ha podido consultar la lista negra de activos");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.listaNegra = listaDatos;
                 if (modo == 0) {
@@ -682,6 +841,7 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                         });
                     });
                 }
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
@@ -691,11 +851,14 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                     UsuarioID: $rootScope.idUsuarioActivo,
                     ArticuloID: a.ArticuloID
                 };
+                $rootScope.waiting = true;
                 $rootScope.solicitudHttp(rootHost + "API/AgregarArticuloAListaNegra.php", obj, function () {
-                    $rootScope.agregarAlerta("Error Desconocido");
+                    $rootScope.agregarAlerta("No se ha podido agregar el artículo a la lista negra");
+                    $rootScope.waiting = false;
                 }, function (listaDatos) {
                     a.enListaNegra = 1;
                     a.ListaNegraID = listaDatos[0].ListaNegraID;
+                    $rootScope.waiting = false;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
             }
         };
@@ -704,10 +867,13 @@ app.controller("alertas", function ($scope, $rootScope, $location, $http, $cooki
                 obj = {
                     ListaNegraID: a.ListaNegraID
                 };
+                $rootScope.waiting = true;
                 $rootScope.solicitudHttp(rootHost + "API/EliminarArticuloListaNegra.php", obj, function () {
-                    $rootScope.agregarAlerta("Error Desconocido");
+                    $rootScope.agregarAlerta("No se ha podido retirar el artículo de la lista negra");
+                    $rootScope.waiting = false;
                 }, function (listaDatos) {
                     a.enListaNegra = 0;
+                    $rootScope.waiting = false;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
             }
         };
@@ -864,16 +1030,31 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
 
         function cargarReporte(objReporteParam) {
             if ($scope.tipoReporte == 'movReact') {
+                $rootScope.waiting = true;
                 $rootScope.solicitudHttp(rootHost + "API/VerMovimientosReactivos.php", objReporteParam, function () {
-                    $rootScope.agregarAlerta("Ha ocurrido un Error");
+                    $rootScope.agregarAlerta("No se ha podido cargar los movimientos de reactivos");
+                    $rootScope.waiting = false;
                 }, function (listaDatos) {
                     $scope.listaMovimientosReactivos = listaDatos;
+                    $rootScope.waiting = false;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
             } else if ($scope.tipoReporte == 'movCrist') {
+                $rootScope.waiting = true;
                 $rootScope.solicitudHttp(rootHost + "API/VerMovimientosCristaleria.php", objReporteParam, function () {
-                    $rootScope.agregarAlerta("Ha ocurrido un Error");
+                    $rootScope.agregarAlerta("No se ha podido cargar los movimientos de cristalería");
+                    $rootScope.waiting = false;
                 }, function (listaDatos) {
                     $scope.listaMovimientosCristaleria = listaDatos;
+                    $rootScope.waiting = false;
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            } else if ($scope.tipoReporte == 'movPrecursores') {
+                $rootScope.waiting = true;
+                $rootScope.solicitudHttp(rootHost + "API/VerMovimientosPrecursores.php", objReporteParam, function () {
+                    $rootScope.agregarAlerta("Consulta fallida al cargar movimientos");
+                    $rootScope.waiting = false;
+                }, function (listaDatos) {
+                    $scope.listaMovimientosPrecursores = listaDatos;
+                    $rootScope.waiting = false;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
             }
 
@@ -881,8 +1062,10 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
         /*FIN REPORTE CRACK*/
         function cargarCategorias() {
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerCategorias.php", null, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se ha podido cargar las categorías de reactivos");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.categorias = listaDatos;
                 $scope.categorias.forEach(function (c) {
@@ -894,8 +1077,21 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
                 });
                 $scope.objReporteParam.CategoriaID = $scope.categorias[0].CategoriaReactivoID;
                 $scope.buscarReporte($scope.opciones[5], $scope.tipoReporte); // carga todos los registros por defecto
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
+
+        $scope.cargarlistaPrestamos = function () {
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/VerPrestamos.php", null, function () {
+                $rootScope.agregarAlerta("No se pudo consultar la lista de préstamos");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $scope.listaPrestamos = listaDatos;
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        $scope.cargarlistaPrestamos();
         if (!$scope.categorias) {
             cargarCategorias();
         };
@@ -911,21 +1107,27 @@ app.controller("adminInventarioCristaleria", function ($scope, $rootScope, $loca
         }
 
         function cargarListaCristaleria() {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerListaCristaleria.php", null, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se ha podido cargar la lista de cristalería");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.listaCristaleria = listaDatos;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
         $scope.agregarCristaleria = function () {
             $scope.objCristaleria.UsuarioID = $rootScope.idUsuarioActivo;
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $scope.popupCrearCristaleria = false;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/AgregarCristaleria.php", $scope.objCristaleria, function () {
                 $rootScope.agregarAlerta("No se ha podido ingresar el activo de cristalería");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha agregado el activo de cristalería");
+                $rootScope.waiting = false;
                 cargarListaCristaleria();
-                $scope.popupCrearCristaleria = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
@@ -936,19 +1138,42 @@ app.controller("adminInventarioCristaleria", function ($scope, $rootScope, $loca
             $scope.cristaleriaEditar.PuntoReorden = parseFloat(c.PuntoReorden);
             $scope.cristaleriaEditar.Descripcion = c.Descripcion;
             $scope.popupEditarCristaleria = true;
-            log($scope.cristaleriaEditar);
         }
 
         $scope.editarCristaleria = function () {
-            log($scope.cristaleriaEditar);
+            $scope.popupEditarCristaleria = false;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/ActualizarCristaleria.php", $scope.cristaleriaEditar, function () {
                 $rootScope.agregarAlerta("No se ha podido actualizar el activo de cristalería");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha modificado el activo de cristalería");
                 cargarListaCristaleria();
-                $scope.popupEditarCristaleria = false;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
+
+        $scope.preGenerarMovimiento = function (cristaleria) {
+            $scope.popupGenerarMovimiento = true;
+            $scope.movimientoAGenerar = JSON.clone(cristaleria);
+        }
+        $scope.generarMovimiento = function (movimientoAGenerar, tipoMovimiento) {
+            movimientoAGenerar.TipoMovimientoID = tipoMovimiento;
+            movimientoAGenerar.UsuarioAutorizadorID = $rootScope.idUsuarioActivo;
+            $scope.popupGenerarMovimiento = false;
+
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/AgregarMovimiento.php", movimientoAGenerar, function () {
+                $rootScope.agregarAlerta("No se ha podido agregar el movimiento");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Movimiento agregado");
+                $scope.cargarListaCristaleria();
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+        }
+
         $scope.preBorrarCristaleria = function (c) {
             $scope.panelPregunta = true;
             $scope.mensaje = "¿Está seguro que desea borrar el activo: " + c.NombreArticulo + "?"
@@ -957,12 +1182,15 @@ app.controller("adminInventarioCristaleria", function ($scope, $rootScope, $loca
             }
         }
         $scope.borrarCristaleria = function () {
+            $rootScope.waiting = true;
+            $scope.panelPregunta = false;
             $rootScope.solicitudHttp(rootHost + "API/EliminarCristaleria.php", $scope.cristaleriaABorrar, function () {
                 $rootScope.agregarAlerta("No se ha podido borrar el activo de cristalería");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha eliminado el activo de cristalería");
                 cargarListaCristaleria();
-                $scope.panelPregunta = false;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
         $scope.cargarListaCristaleria();
@@ -1054,13 +1282,38 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
             } else {
                 objEnviar.EsPrecursor = 0
             }
+            $scope.popupEditarReactivo = false;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/ActualizarReactivo.php", objEnviar, function () {
                 $rootScope.agregarAlerta("No se ha podido actualizar el reactivo");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha modificado el reactivo");
-                $scope.popupEditarReactivo = false;
+                $rootScope.waiting = false;
                 cargarListaReactivos();
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        }
+
+        $scope.preGenerarMovimiento = function (reactivo) {
+            $scope.popupGenerarMovimiento = true;
+            $scope.movimientoAGenerar = JSON.clone(reactivo);
+        }
+        $scope.generarMovimiento = function (movimientoAGenerar, tipoMovimiento) {
+            movimientoAGenerar.TipoMovimientoID = tipoMovimiento;
+            movimientoAGenerar.UsuarioAutorizadorID = $rootScope.idUsuarioActivo;
+            movimientoAGenerar.ArticuloID = movimientoAGenerar.ReactivoID;
+            $scope.popupGenerarMovimiento = false;
+
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/AgregarMovimiento.php", movimientoAGenerar, function () {
+                $rootScope.agregarAlerta("No se ha podido agregar el movimiento");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.agregarAlerta("Movimiento agregado");
+                $scope.cargarListaReactivos();
+                $rootScope.waiting = false;
+            }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
         }
 
         $scope.preBorrarReactivo = function (r) {
@@ -1071,12 +1324,15 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
             }
         }
         $scope.borrarReactivo = function () {
+            $scope.panelPregunta = false;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/EliminarReactivo.php", $scope.reactivoABorrar, function () {
                 $rootScope.agregarAlerta("No se ha podido borrar el reactivo");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha eliminado el reactivo");
-                $scope.panelPregunta = false;
                 cargarListaReactivos();
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
         $scope.agregarReactivo = function () {
@@ -1084,11 +1340,14 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
                 $scope.objReactivo.EsPrecursor = 0;
             };
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $scope.popupCrearReactivo = false;
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/AgregarReactivo.php", $scope.objReactivo, function () {
                 $rootScope.agregarAlerta("No se ha podido ingresar el reactivo");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha agregado el reactivo");
-                $scope.popupCrearReactivo = false;
+                $rootScope.waiting = false;
                 cargarListaReactivos();
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
@@ -1096,12 +1355,14 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
 
         $scope.editarUnidad = function (u) {
             if (u.Nombre != "" && u.Siglas != "") {
-
+                $rootScope.waiting = true;
                 $rootScope.solicitudHttp(rootHost + "API/ActualizarUnidad.php", u, function () {
                     $rootScope.agregarAlerta("No se ha podido modificar la unidad");
+                    $rootScope.waiting = false;
                 }, function (listaDatos) {
                     $rootScope.agregarAlerta("Se ha modificado la unidad");
                     cargarUnidades();
+                    $rootScope.waiting = false;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
 
             } else {
@@ -1111,14 +1372,16 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
 
         $scope.agregarUnidad = function (u) {
             if (u.Nombre != "" && u.Siglas != "") {
-
+                $rootScope.waiting = true;
                 $rootScope.solicitudHttp(rootHost + "API/AgregarUnidadMetrica.php", u, function () {
                     $rootScope.agregarAlerta("La unidad no puede tener valores idénticos a otras unidades");
+                    $rootScope.waiting = false;
                 }, function (listaDatos) {
                     $rootScope.agregarAlerta("Se ha agregado la unidad");
                     u.Nombre = "";
                     u.Siglas = "";
                     cargarUnidades();
+                    $rootScope.waiting = false;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
 
             } else {
@@ -1128,13 +1391,15 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
         $scope.agregarCategoria = function (c) {
 
             if (c.Nombre != "") {
-
+                $rootScope.waiting = true;
                 $rootScope.solicitudHttp(rootHost + "API/agregarCategoria.php", c, function () {
+                    $rootScope.waiting = false;
                     $rootScope.agregarAlerta("La categoría no puede tener valores idénticos a otras unidades");
                 }, function (listaDatos) {
                     $rootScope.agregarAlerta("Se ha agregado la categoría");
                     c.Nombre = "";
                     cargarCategorias();
+                    $rootScope.waiting = false;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
 
             } else {
@@ -1145,11 +1410,14 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
             var obj = {
                 UnidadMetricaID: u.UnidadMetricaID
             }
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/borrarUnidadMetrica.php", obj, function () {
                 $rootScope.agregarAlerta("No se puede borrar la unidad ya que está siendo utilizada");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha borrado la unidad");
                 cargarUnidades();
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
 
@@ -1157,21 +1425,27 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
             var obj = {
                 CategoriaReactivoID: c.CategoriaReactivoID
             }
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/borrarCategoria.php", obj, function () {
                 $rootScope.agregarAlerta("No se puede borrar la categoría ya que está siendo utilizada");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $rootScope.agregarAlerta("Se ha borrado la categoría");
                 cargarCategorias();
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         }
 
         $scope.editarCategoria = function (c) {
             if (c.Nombre != "") {
+                $rootScope.waiting = true;
                 $rootScope.solicitudHttp(rootHost + "API/ActualizarCategoria.php", c, function () {
                     $rootScope.agregarAlerta("No se ha podido modificar la categoría");
+                    $rootScope.waiting = false;
                 }, function (listaDatos) {
                     $rootScope.agregarAlerta("Se ha modificado la categoría");
                     cargarCategorias();
+                    $rootScope.waiting = false;
                 }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
 
             } else {
@@ -1180,36 +1454,45 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
         }
 
         function cargarListaReactivos() {
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerListaReactivos.php", null, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se ha podido cargar la lista de reactivos");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.listaReactivos = listaDatos;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
         function cargarUnidades() {
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerUnidadesMetricas.php", null, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se ha podido cargar las unidades métricas");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.unidades = listaDatos;
                 $scope.unidades.forEach(function (u) {
                     u.UnidadMetricaID = parseInt(u.UnidadMetricaID);
                 })
                 $scope.preUnidades = listaDatos;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
         function cargarCategorias() {
             //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
+            $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerCategorias.php", null, function () {
-                $rootScope.agregarAlerta("Error Desconocido");
+                $rootScope.agregarAlerta("No se ha podido cargar las categorías");
+                $rootScope.waiting = false;
             }, function (listaDatos) {
                 $scope.categorias = listaDatos;
                 $scope.categorias.forEach(function (c) {
                     c.CategoriaReactivoID = parseInt(c.CategoriaReactivoID);
                 })
                 $scope.preCategorias = listaDatos;
+                $rootScope.waiting = false;
             }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
         };
 
@@ -1223,6 +1506,89 @@ app.controller("adminInventarioReactivos", function ($scope, $rootScope, $locati
         if (!$scope.listaReactivos) {
             cargarListaReactivos();
         };
+    }
+});
+
+/*CHAT*/
+app.controller("chat", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
+    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
+        window.location.pathname = host + "login.html";
+    } else {
+        log("CHAT")
+        $scope.listaContactos = [];
+        $scope.verListaUsuarios = function () {
+            var obj = {
+                UsuarioID: $rootScope.idUsuarioActivo
+            }
+            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/VerListaUsuarios.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de usuarios)");
+                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                $rootScope.waiting = false;
+                if (listaDatos.length == 0) {
+                    $rootScope.agregarAlerta("No hay usuarios en el sistema");
+                } else {
+                    log("Lista de usuarios consultada con éxito");
+                    $rootScope.agregarAlerta("Lista de usuarios consultada con éxito");
+                    $scope.listaContactos = listaDatos;
+                    $scope.idUsuarioChatSeleccionado = listaDatos[0].UsuarioID;
+                    $scope.nombreUsuarioChatSeleccionado = listaDatos[0].Nombre;
+                    $scope.verListaMensajes();
+                }
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        $scope.verListaMensajes = function () {
+            var obj = {};
+            obj.UsuarioAID = $rootScope.idUsuarioActivo;
+            obj.UsuarioBID = $scope.idUsuarioChatSeleccionado;
+//            $rootScope.waiting = true;
+            $rootScope.solicitudHttp(rootHost + "API/VerChat.php", obj, function () {
+                $rootScope.agregarAlerta("Respuesta desconocida (Sin lista de mensajes)");
+//                $rootScope.waiting = false;
+            }, function (listaDatos) {
+                log(listaDatos);
+                $scope.listaMensajes = listaDatos;
+                focus('txtMensaje');
+                setTimeout($scope.verListaMensajes,2000);
+//                $rootScope.waiting = false;
+
+            }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+        };
+        $scope.enviarMensaje = function () {
+            var obj = {
+                UsuarioReceptorID: $scope.idUsuarioChatSeleccionado,
+                UsuarioEmisorID: $rootScope.idUsuarioActivo,
+                Mensaje: $scope.mensajeEnviar
+            }
+            if (obj.Mensaje != undefined && obj.Mensaje != '') {
+                $rootScope.waiting = true;
+                $rootScope.solicitudHttp(rootHost + "API/AgregarMensajeChat.php", obj, function () {
+                    $rootScope.agregarAlerta("Respuesta desconocida (No se agregó el mensaje)");
+                    $rootScope.waiting = false;
+                }, function (listaDatos) {
+                    log(listaDatos);
+                    $rootScope.waiting = false;
+                    $scope.mensajeEnviar = '';
+                    $scope.verListaMensajes();
+                }, "Ha ocurrido un error", true, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+            } else {
+                $rootScope.agregarAlerta("Escriba un mensaje");
+            }
+        };
+        $scope.seleccionarUsuarioChat = function (u) {
+            $scope.idUsuarioChatSeleccionado = u.UsuarioID;
+            $scope.nombreUsuarioChatSeleccionado = u.Nombre;
+            $scope.verListaMensajes();
+        }
+        $scope.verListaUsuarios();
+        $scope.getChatClass = function (m) {
+            if (m.UsuarioEmisorID == $rootScope.idUsuarioActivo) {
+                return 'aDer';
+            } else {
+                return 'aIzq bgOpaco';
+            }
+        }
     }
 });
 
@@ -1368,6 +1734,7 @@ app.controller("mainController", function ($scope, $rootScope, $location, $http,
     function actualizarFechaHora() {
         $rootScope.fechaHora = $filter('date')(new Date(), "dd/MM/yyyy hh:mm:ss a", "-0600");
     }
+    $rootScope.waiting = false;
     $interval(actualizarFechaHora, 1000);
 });
 

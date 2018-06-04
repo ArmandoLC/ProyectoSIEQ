@@ -38,7 +38,7 @@ app.config(function ($routeProvider) {
         controller: "reportes"
     }).when("/reportePrecursores",{
         templateUrl: "includes/reportePrecursores.html",
-        controller: "reportePrecursores"
+        controller: "reportes"
     }).when("/adminSolicitudes",{
         templateUrl: "includes/adminSolicitudes.html",
         controller: "adminSolicitudes"
@@ -48,8 +48,14 @@ app.config(function ($routeProvider) {
     }).when("/adminSoliPrestamos",{
         templateUrl: "includes/adminSoliPrestamos.html",
         controller: "adminPrestamos"
+    }).when("/chat",{
+        templateUrl: "includes/chat.html",
+        controller: "chat"
     }).when("/login",{
         templateUrl: "login.html"
+    }).when("/acercaDe",{
+        templateUrl: "includes/acercaDe.html",
+        controller: "acercaDe"
     }).otherwise({
         redirectTo: "/adminInventarioReactivos"
     });

@@ -1,6 +1,6 @@
 <h1>Administración de Pedidos</h1>
 <ul class="ulMenu">
-  <li class="liMenu"><a class="activeMenu aMenu" href="#!adminPedidos">Gestionar Pedidos</a></li>
+    <li class="liMenu"><a class="activeMenu aMenu" href="#!adminPedidos">Gestionar Pedidos</a></li>
 </ul>
 <br>
 <h2>Gestión de Pedidos</h2>
@@ -22,15 +22,18 @@
         <th>Titulo</th>
         <th>Líneas Registradas</th>
         <th>Propietario</th>
+        <th>Descripción</th>
         <th>Opciones</th>
     </tr>
     <tr class="aCentro" ng-repeat="pedido in listaPedidos | filter:filtroBusqueda" ng-hide="filtrarSegunPropietario(pedido)">
         <td>{{pedido.Titulo}}</td>
         <td>{{pedido.CantidadLineas}}</td>
         <td>{{pedido.NombrePropietario}}</td>
+        <td class="overflowHidden">{{pedido.Descripcion}}</td>
         <td>
             <div class="flex noWrap jcCenter">
                 <i class="fa fa-pencil" ng-click="editarPedido(pedido)" title="Editar"></i>
+                <i class="fa fa-envelope" ng-click="preEnviarPedido(pedido)" title="Enviar Correo"></i>
                 <i class="fa fa-trash" ng-click="preBorrarPedido(pedido)" title="Borrar"></i>
             </div>
         </td>
@@ -56,12 +59,38 @@
 <div ng-init="panelPregunta = false" ng-show="panelPregunta" class="popup">
     <div class="popContenido mW30pc">
         <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>
-        <div class="fullPadding"style="font-size: 18px;">
+        <div class="fullPadding" style="font-size: 18px;">
             <b>{{mensaje}}</b>
         </div>
         <div class="buttonContainer aDer">
-            <button ng-click="borrarPedido()" >Borrar</button>
+            <button ng-click="borrarPedido()">Borrar</button>
             <button ng-click="panelPregunta=false">Cancelar</button>
         </div>
     </div>
+</div>
+
+<div ng-init="popupEnviarPedido = false" ng-show="popupEnviarPedido" class="popup">
+    <form ng-submit="enviarPedido(pedidoAEnviar)">
+        <div class="popContenido">
+            <h2>Enviar Pedido por Correo<span class="pointer" ng-click="popupEnviarPedido=false ">X</span></h2>
+            <div class="flex">
+                <div>
+                    <p><b class="f22">Datos del Correo</b></p>
+                    <hr>
+                    <p>Para:<input type="text" ng-model="pedidoAEnviar.Para" required></p>
+                    <p>Asunto:<input type="text" ng-model="pedidoAEnviar.Asunto" required></p>
+                </div>
+                <div class="marginL20">
+                    <p><b class="f22">Detalles del Pedido</b></p>
+                    <hr>
+                    <p>Título<input class="readonlyStyle" type="text" ng-model="pedidoAEnviar.Titulo" readonly></p>
+                    <p>Líneas Registradas<input class="readonlyStyle" type="text" ng-model="pedidoAEnviar.CantidadLineas" readonly></p>
+                    <p>Descripción <textarea class="readonlyStyle" cols="30" rows="5" ng-model="pedidoAEnviar.Descripcion" readonly></textarea> </p>
+                </div>
+            </div>
+            <div class="buttonContainer aDer">
+                <input type="submit" value="Enviar">
+            </div>
+        </div>
+    </form>
 </div>

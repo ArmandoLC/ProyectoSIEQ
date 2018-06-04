@@ -1,5 +1,4 @@
 /* Popups*/
-
 .table_outer {
     max-height: 15em;
     overflow: auto;
@@ -7,6 +6,7 @@
 
 .readonlyStyle{
     background: #eee;
+    cursor: default;
 }
 
 .popup {
@@ -32,7 +32,7 @@
 }
 
 .popContenido h2 {
-    background: #0abf4d;
+    background: var(--colorVerde);
     color: #ffffff;
     font-size: 28px;
     padding: 8px 20px;
@@ -166,7 +166,7 @@ h2 span {
     padding: 8px 10px;
     color: #fff;
     margin-top: 15px;
-    background: #09b047;
+    background: var(--colorVerde);
     box-shadow: 0 2px #666;
     margin: 5px 3px;
     min-width: 100px
@@ -174,7 +174,7 @@ h2 span {
 
 .popup button:hover,
 .popup input[type='submit']:hover {
-    background: #08a141;
+    background: var(--colorVerde2);
 }
 
 .popup button:active,
@@ -207,7 +207,6 @@ table i {
 
 
 /* Efectos al hacer hover*/
-
 .confirmHover:hover {
     color: darkblue;
 }
@@ -227,8 +226,9 @@ table i {
 .h100pc {
     height: 100%
 }
+
 .h100pc.selectClass{
-    background-color: #140e39;
+    background-color: var(--colorAzul);
     color: #fff;
 }
 
@@ -246,3 +246,5 @@ table i {
 .fullMargin {
     margin: 5px;
 }
+
+

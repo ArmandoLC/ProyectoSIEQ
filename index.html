@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <title>SIEQ</title>
     <link rel="icon" href="img/logo.png">
+    <link rel="stylesheet" href="css/globales.css">
     <link rel="stylesheet" href="css/menuAdmin.css">
     <link rel="stylesheet" href="css/panelAdmin.css">
-    <link rel="stylesheet" href="css/globales.css">
     <link rel="stylesheet" href="css/estilosWeb.css">
     <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="icon" type="image/png" href="img/favicon.png" />
@@ -25,7 +25,8 @@
                 <a href="#!alertaReactBajos"><i class="marginDer10 fa fa-exclamation-triangle" aria-hidden="true"></i>Alertas</a>
                 <a href="#!nuevoPrestamo"><i class="marginDer10 fa fa-handshake-o" aria-hidden="true"></i>Préstamos</a>
                 <a href="#!adminSolicitudes" ng-show="esCoordinador()"><i class="marginDer10 fa fa-users" aria-hidden="true"></i>Usuarios</a>
-                <a href="#!precursores"><i class="marginDer10 fa fa-comments-o" aria-hidden="true"></i>Chat</a>
+                <a href="#!chat"><i class="marginDer10 fa fa-comments-o" aria-hidden="true"></i>Chat</a>
+                <a href="#!acercaDe"><i class="marginDer10 fa fa-info" aria-hidden="true"></i>Autores</a>
                 <a ng-click="cerrarSesion()"><i class="marginDer10 fa fa-sign-out" aria-hidden="true"></i>Cerrar Sesión</a>
             </div>
             <div style="visibility: hidden">{{fechaHora}}</div>
@@ -33,12 +34,18 @@
         <!-- <div ng-include="templateUrl"></div> -->
         <div class="main">
             <div class="headerPrincipal headerHeight">
-                <div class="aCentro f26">
+
+                <div id="contenedorLogo">
+                    <img src="img/logo-tec.svg" height="38" width="150">
+                </div>
+
+                <div class="f26 aCentro">
                     Sistema de Inventario de la Escuela de Química (SIEQ)
                 </div>
-                <div class="usuarioActivo">
-                    <a href="#">{{nombreUsuarioActivo}} | {{rolUsuarioActivo}}</a>
+                <div class="usuarioActivo marginL50">
+                    <a title="Usuario Activo">{{nombreUsuarioActivo}} | {{rolUsuarioActivo}}</a>
                 </div>
+
             </div>
 
             <div ng-view class="mc aCentro">
@@ -49,6 +56,9 @@
                 <div class="alert" ng-class="a.classAlert" ng-repeat="a in listaAlerts">
                     <div><span ng-click="a.ocultarAlerta(a)">X</span><i class="fa fa-info-circle" aria-hidden="true"></i> {{a.texto}}</div>
                 </div>
+            </div>
+            <div class="alertContainer" ng-show="waiting">
+                <div class="aCentro" style="min-width: 40px; margin-right: 12px; font-size: 40px"><span><i class="fa fa-spinner fa-spin cNegro" aria-hidden="true"></i></span></div>
             </div>
         </div>
     </div>

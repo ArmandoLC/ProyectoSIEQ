@@ -22,7 +22,7 @@
                     </p>
                     <p>Cantidad a Prestar <input type="number" ng-model="objNuevoPrestamo.CantidadSolicitada" step="1" required></p>
                     <p>Fecha de Devolución <br>  <input type="date" ng-model="objNuevoPrestamo.FechaLimiteDevolucion" required></p>
-                    <p>Descripción <textarea class="f16" name="" rows="2" ng-model="objNuevoPrestamo.Descripcion"></textarea> </p>
+                    <p>Descripción <textarea class="f16" name="" rows="2" ng-model="objNuevoPrestamo.Descripcion" required></textarea> </p>
                     <p class="aDer"><input type="submit" value="Solicitar Préstamo"></p>
                 </div>
             </div>
@@ -37,8 +37,8 @@
             <table class="marginAuto w100pc tbLista">
                 <tr>
                     <th>Nombre</th>
-                    <th class="aCentro">Cantidad Actual</th>
                     <th class="aCentro">Ubicación</th>
+                    <th class="aCentro">Cantidad Actual</th>
                     <th class="aCentro">Elegir</th>
                 </tr>
                 <tr ng-repeat="a in listaActivos | filter:filtroActivosPrestamos as filteredAc">

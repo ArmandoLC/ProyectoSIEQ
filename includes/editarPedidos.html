@@ -5,10 +5,15 @@
 </ul>
 <br>
 
-<h2>Editando  el Pedido:<br> <h3><u>{{tituloPedido}}</u></h3></h2>
+<h2>Editando el Pedido:<br>
+    <h3><u>{{tituloPedido}}</u></h3>
+</h2>
 <div class="aIzq">
     <h4>Descripción:</h4>
-    {{descripcionPedido}}
+    <div class="wordWrap">
+        {{descripcionPedido}}
+    </div>
+
 </div>
 <br>
 <hr>
@@ -59,6 +64,7 @@
 
             <div class="aIzq">
                 <p><b class="f22">Seleccionar Artículo</b></p>
+                <hr>
                 <div style="display: flex; justify-content: space-between; padding: 10px 0px">
                     <div class="flex">
                         <input class="fullMargin fullWidth" type="text" ng-model="filtroBusquedaArticulo" placeholder="Buscar" id="txtBusquedaArticulo">
@@ -91,15 +97,22 @@
             </div>
 
             <br>
-            <hr>
-            <div>
-                <p><b class="f22">Detalles del Artículo</b></p>
-                <p>Nombre<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.Articulo" readonly></p>
-                <p>Tipo<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.TipoArticulo" readonly></p>
-                <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.CantidadActual" readonly></p>
-                <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.PuntoReorden" readonly></p>
-                <p>Cantidad Solicitada<input type="number" ng-model="activoAgregar.CantidadSolicitada" required></p>
-                <p>Observación <textarea name="" id="" cols="30" rows="5" ng-model="activoAgregar.Observacion" required></textarea> </p>
+            <div class="flex">
+                <div>
+                    <p><b class="f22">Detalles del Artículo</b></p>
+                    <hr>
+                    <p>Nombre<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.Articulo" readonly></p>
+                    <p>Tipo<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.TipoArticulo" readonly></p>
+                    <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.CantidadActual" readonly></p>
+                    <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="activoSeleccionado.PuntoReorden" readonly></p>
+                </div>
+
+                <div class="marginL20">
+                    <p><b class="f22">Datos a Solicitar</b></p>
+                    <hr>
+                    <p>Cantidad Solicitada<input type="number" ng-model="activoAgregar.CantidadSolicitada" required></p>
+                    <p>Observación <textarea name="" id="" cols="30" rows="5" ng-model="activoAgregar.Observacion" required></textarea> </p>
+                </div>
             </div>
 
             <div class="buttonContainer aDer">
@@ -114,16 +127,22 @@
         <div class="popContenido">
             <h2>Actualizar Artículo Solicitado <span class="pointer" ng-click="popupActualizarArticulo=false">X</span></h2>
 
-            <div>
-                <p><b class="f22">Detalles del Artículo</b></p>
-                <br>
-                <hr>
-                <p>Nombre<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.Articulo" readonly></p>
-                <p>Tipo<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.TipoArticulo" readonly></p>
-                <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.CantidadActual" readonly></p>
-                <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.PuntoReorden" readonly></p>
-                <p>Cantidad Solicitada<input type="text" ng-model="articuloXActualizar.CantidadSolicitada" required></p>
-                <p>Observación <textarea name="" id="" cols="30" rows="5" ng-model="articuloXActualizar.Observacion" required></textarea> </p>
+            <div class="flex">
+                <div>
+                    <p><b class="f22">Detalles del Artículo</b></p>
+                    <hr>
+                    <p>Nombre<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.Articulo" readonly></p>
+                    <p>Tipo<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.TipoArticulo" readonly></p>
+                    <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.CantidadActual" readonly></p>
+                    <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="articuloXActualizar.PuntoReorden" readonly></p>
+                </div>
+
+                <div class="marginL20">
+                    <p><b class="f22">Detalles del Pedido</b></p>
+                    <hr>
+                    <p>Cantidad Solicitada<input type="text" ng-model="articuloXActualizar.CantidadSolicitada" required></p>
+                    <p>Observación <textarea name="" id="" cols="30" rows="5" ng-model="articuloXActualizar.Observacion" required></textarea> </p>
+                </div>
             </div>
 
             <div class="buttonContainer aDer">
@@ -138,25 +157,26 @@
         <div class="popContenido">
             <h2>Detalles del Artículo <span class="pointer" ng-click="popupVerArticulo=false">X</span></h2>
 
-            <div>
-                <br>
-                <h3>Datos del Artículo</h3>
-                <hr>
-                <br>
-                <p>Nombre<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.Articulo" readonly></p>
-                <p>Tipo<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.TipoArticulo" readonly></p>
-                <p>¿En Alerta?<input class="readonlyStyle" type="text" value="Si" ng-show="!articuloVisualizado.EsAlerta" readonly></p>
-                <p>¿En Alerta?<input class="readonlyStyle" type="text" value="No" ng-show="articuloVisualizado.EsAlerta" readonly></p>
-                <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.CantidadActual" readonly></p>
-                <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.PuntoReorden" readonly></p>
-                <p>Descripción<textarea class="readonlyStyle" name="" id="" cols="30" rows="5" ng-model="articuloVisualizado.Descripcion" readonly></textarea></p>
-                <br>
+            <div class="flex">
+                <div>
+                    <h3>Datos del Artículo</h3>
+                    <hr>
+                    <p>Nombre<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.Articulo" readonly></p>
+                    <p>Tipo<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.TipoArticulo" readonly></p>
+                    <p>¿En Alerta?<input class="readonlyStyle" type="text" value="Si" ng-show="articuloVisualizado.EsAlerta" readonly>
+                        <input class="readonlyStyle" type="text" value="No" ng-show="!articuloVisualizado.EsAlerta" readonly></p>
+                    <p>Cantidad Actual<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.CantidadActual" readonly></p>
+                    <p>Cantidad de Alerta<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.PuntoReorden" readonly></p>
+                    <p>Descripción<textarea class="readonlyStyle" name="" id="" cols="30" rows="5" ng-model="articuloVisualizado.Descripcion" readonly></textarea></p>
+                </div>
 
-                <h3>Datos del Pedido</h3>
-                <hr>
-                <br>
-                <p>Cantidad Solicitada<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.CantidadSolicitada" readonly></p>
-                <p>Observación <textarea class="readonlyStyle" name="" id="" cols="30" rows="5" ng-model="articuloVisualizado.Observacion" readonly></textarea></p>
+                <div class="marginL20">
+                    <h3>Datos del Pedido</h3>
+                    <hr>
+                    <br>
+                    <p>Cantidad Solicitada<input class="readonlyStyle" type="text" ng-model="articuloVisualizado.CantidadSolicitada" readonly></p>
+                    <p>Observación <textarea class="readonlyStyle" name="" id="" cols="30" rows="5" ng-model="articuloVisualizado.Observacion" readonly></textarea></p>
+                </div>
 
             </div>
 
@@ -170,11 +190,11 @@
 <div ng-init="panelPregunta = false" ng-show="panelPregunta" class="popup">
     <div class="popContenido mW30pc">
         <h2>Atención<span class="pointer" ng-click="panelPregunta=false">X</span></h2>
-        <div class="fullPadding"style="font-size: 18px;">
+        <div class="fullPadding" style="font-size: 18px;">
             <b>{{mensaje}}</b>
         </div>
         <div class="buttonContainer aDer">
-            <button ng-click="borrarArticulo()" >Borrar</button>
+            <button ng-click="borrarArticulo()">Borrar</button>
             <button ng-click="panelPregunta=false">Cancelar</button>
         </div>
     </div>

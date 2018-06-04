@@ -13,7 +13,7 @@ body {
 }
 
 .login .title {
-    background: #09b047;
+    background: var(--colorVerde);
     color: #fff;
     padding: 10px;
 }
