@@ -129,16 +129,6 @@ app.controller("acercaDe", function ($scope, $rootScope, $location, $http, $cook
     }
 });
 
-/* REPORTEPRECURSORES CONTROLLER */
-app.controller("reportePrecursores", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
-    if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
-        //window.location.pathname = "login.html";
-    } else {
-        log("reportePrecursores");
-    }
-});
-
-
 /* EDITARPEDIDO CONTROLLER */
 app.controller("editarPedidos", function ($scope, $rootScope, $location, $http, $cookies, $interval, $filter, $log) {
     if (!$rootScope.sesionActiva()) { // verificamos si una sesion ya fue iniciada
@@ -907,7 +897,39 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
     } else {
         log("reportes");
 
-        /*INICIO REPORTE CRACK*/
+        // Reporte de precursores
+        $scope.preEnviarReportePrecursor = function(){
+            $scope.popupEnviarReporte = true;
+
+        };
+
+        $scope.enviarReportePrecursores = function(reporte){
+            log('enviando reporte');
+            log(reporte);
+            var obj = {};
+
+            if (reporte.fechaDesde && reporte.fechaHasta) {
+                obj.Para = reporte.Para;
+                obj.Asunto = reporte.Asunto;
+                obj.FechaDesde = formatearFecha(reporte.fechaDesde);
+                obj.FechaHasta = formatearFecha(reporte.fechaHasta);
+
+                $rootScope.waiting = true;
+                $rootScope.solicitudHttp(rootHost + "API/EnviarReporteMensualPrecursores.php", obj, function () {
+                    $rootScope.waiting = false;
+                    $rootScope.agregarAlerta("Correo enviado con éxito");
+                }, function (listaDatos) {
+                    $rootScope.waiting = false;
+                    $rootScope.agregarAlerta("No se ha podido enviar el reporte de precursores");
+
+                }, "Ha ocurrido un error", false, "Error de comunicación con el servidor, por favor intente de nuevo en un momento");
+
+
+            } else {
+                $rootScope.agregarAlerta("Debe seleccionar una fecha válida");
+            }
+        };
+
         function formatearFecha(fecha) {
             return fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
         }
@@ -1059,9 +1081,8 @@ app.controller("reportes", function ($scope, $rootScope, $location, $http, $cook
             }
 
         }
-        /*FIN REPORTE CRACK*/
+
         function cargarCategorias() {
-            //solicitudHttp(url, objEnviar, casoSoloOK, casoOKconLista, casoFallo, forzarDebug, casoCatch)
             $rootScope.waiting = true;
             $rootScope.solicitudHttp(rootHost + "API/VerCategorias.php", null, function () {
                 $rootScope.agregarAlerta("No se ha podido cargar las categorías de reactivos");
